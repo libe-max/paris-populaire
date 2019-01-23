@@ -1,14 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import ParisPopulaire from './ParisPopulaire'
 import * as serviceWorker from './serviceWorker'
 import config from './config.json'
 
-const App = props => <div>
-  {/* Replace this App component with your app */}
-</div>
-
 ReactDOM.render(
-  <App {...config} />,
+  <ParisPopulaire {...config} />,
   document.getElementById('libe-labo-app-wrapper')
 )
 
