@@ -6,6 +6,9 @@ import enrichData from './utils/enrich-data.js'
 
 import LibeLoader from './components/Loader'
 import LibeLoadingError from './components/DataLoadingError'
+import FiltersBlock from './components/FiltersBlock'
+
+import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 
 /* [WIP] host this file in libe-static-ressources once the work is done */
 import './parispop.css'
@@ -21,15 +24,22 @@ export default class ParisPopulaire extends Component {
     super(props)
     this.c = 'parispop'
     this.state = {
-      page: 'intro',       // 'intro' || 'map' || 'filters'
-      loading: true,       // <Boolean>
-      error: null,         // null || <Error>
-      data: null,          // null || <Array>
-      active_place: null,  // null || <Number>
-      active_filter: null  // null || <Object>
+      page: 'intro',         // 'intro' || 'map' || 'filters' || 'cards'
+      suggest_intro: false,  // <Boolean>
+      loading: true,         // <Boolean>
+      error: null,           // null || <Error>
+      data: null,            // null || <Object>
+      active_place: null,    // null || <Number>
+      active_filter: null    // null || <Object>
     }
     this.fetchData = this.fetchData.bind(this)
+    this.toggleFilters = this.toggleFilters.bind(this)
+    this.toggleIntro = this.toggleIntro.bind(this)
+    this.suggestIntro = this.suggestIntro.bind(this)
     this.interpretUrlQuery = this.interpretUrlQuery.bind(this)
+    this.activateRandomPlace = this.activateRandomPlace.bind(this)
+    this.activatePlace = this.activatePlace.bind(this)
+    this.unactivatePlace = this.unactivatePlace.bind(this)
     this.fetchData().catch(err => {
       this.setState({
         loading: false,
@@ -82,7 +92,8 @@ export default class ParisPopulaire extends Component {
 
     const page = (rawPage === 'intro' ||
       rawPage === 'map' ||
-      rawPage === 'filters')
+      rawPage === 'filters' ||
+      rawPage === 'cards')
       ? rawPage
       : null
     const rawActivePlaceExists = data.places
@@ -94,20 +105,119 @@ export default class ParisPopulaire extends Component {
     const rawActiveFilterValueExists = rawActiveFilterTypeExists
       ? data[rawActiveFilterType].some(filter => filter.id === rawActiveFilterValue)
       : false
+    const activeFilterDisplayValue = rawActiveFilterValueExists
+      ? data[rawActiveFilterType]
+        .filter(filter => filter.id === rawActiveFilterValue)
+        .map(filter => filter.name)[0]
+      : null
     const activeFilter = (rawActiveFilterTypeExists &&
-      rawActiveFilterValueExists)
+      rawActiveFilterValueExists &&
+      activeFilterDisplayValue)
       ? {
         type: rawActiveFilterType,
-        value: rawActiveFilterValue }
+        value: rawActiveFilterValue,
+        display_value: activeFilterDisplayValue }
       : null
     
+    // [WIP] re-work this using this.activatePlace
+    // and this.activateFiltersPanel
     const ret = {}
-    if (activePlace) ret.active_place = activePlace
     if (activeFilter) ret.active_filter = activeFilter
-    if (activeFilter) ret.page = 'filters'
-    else if (activePlace) ret.page = 'map'
+    if (activePlace) {
+      ret.active_place = activePlace
+      ret.page = 'cards'
+    }
     else if (page) ret.page = page
+    if (search) window.history.pushState(
+      {},
+      document.title,
+      window.location.href.replace(search, '')
+    )
     return ret
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * TOGGLE INTRO
+   *
+   * * * * * * * * * * * * * * * */
+  toggleIntro (a) {
+    if (typeof a !== 'boolean') return
+    const { page } = this.state
+    if (a && page === 'intro') return
+    if (!a && page !== 'intro') return
+    return this.setState({ page: a ? 'intro' : 'map' })
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * SUGGEST INTRO
+   *
+   * * * * * * * * * * * * * * * */
+  suggestIntro (a) {
+    if (typeof a !== 'boolean') return
+    const { suggest_intro: suggestIntro } = this.state
+    if (a && suggestIntro) return
+    else if (!a && !suggestIntro) return
+    return this.setState({ suggest_intro: a })
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * TOGGLE FILTERS
+   *
+   * * * * * * * * * * * * * * * */
+  toggleFilters (a) {
+    if (typeof a !== 'boolean') return
+    const { page, active_filter: activeFilter } = this.state
+    if (a && page === 'filters') return
+    if (!a && page !== 'filters') return
+    return this.setState({
+      page: a ? 'filters' : 'map',
+      active_filter: a ? null : activeFilter
+    })
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * ACTIVATE RANDOM PLACE
+   *
+   * * * * * * * * * * * * * * * */
+  activateRandomPlace () {
+    const { data } = this.state
+    if (!data) return
+    const { places } = data
+    const randomPlace = places[Math.floor(Math.random() * places.length)]
+    return this.activatePlace(randomPlace.id)
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * ACTIVATE PLACE
+   *
+   * * * * * * * * * * * * * * * */
+  activatePlace (id) {
+    const { data } = this.state
+    if (!data) return
+    const { places } = data
+    const placeExists = places.some(place => place.id === id)
+    if (!placeExists) return
+    return this.setState({
+      page: 'cards',
+      active_place: id
+    })
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * UNACTIVATE PLACE
+   *
+   * * * * * * * * * * * * * * * */
+  unactivatePlace () {
+    return this.setState({
+      page: 'map',
+      active_place: null
+    })
   }
 
   /* * * * * * * * * * * * * * * *
@@ -117,19 +227,59 @@ export default class ParisPopulaire extends Component {
    * * * * * * * * * * * * * * * */
   render () {
     const { props, state, c } = this
+    const { data } = state
+    const pageIsReady = !state.loading && !state.error
 
-    const classes = [c, `${c}_${state.page}-page`]
-    // classes.push(`${c}_loading`)
+    /* Assign state related classes */
+    const classes = [c]
     if (state.loading) classes.push(`${c}_loading`)
     if (state.error) classes.push(`${c}_error`)
+    if (pageIsReady && state.page === 'intro') classes.push(`${c}_intro-page`)
+    if (pageIsReady && state.page === 'map') classes.push(`${c}_map-page`)
+    if (pageIsReady && state.page === 'filters') classes.push(`${c}_filters-page`)
+    if (pageIsReady && state.page === 'cards') classes.push(`${c}_cards-page`)
+    if (state.page !== 'intro' && state.suggest_intro) classes.push(`${c}_suggest-intro`)
 
+    /* Display component */
     return <div className={classes.join(' ')}>
       <div className={`${c}__loading`}><LibeLoader /></div>
       <div className={`${c}__error`}><LibeLoadingError /></div>
-      <div className={`${c}__map`}>Map component</div>
-      <div className={`${c}__caption`}>Légende</div>
-      <div className={`${c}__filters`}>Filters</div>
-      <div className={`${c}__intro`}>Intro</div>
+      <div className={`${c}__map`}
+        onClick={this.activateRandomPlace}>
+        <Paragraph>Map component</Paragraph>
+      </div>
+      <div className={`${c}__caption`}>
+        <Paragraph>Légende</Paragraph>
+      </div>
+      <div className={`${c}__app-logo`}
+        onMouseOver={() => this.suggestIntro(true)}
+        onMouseOut={() => this.suggestIntro(false)}
+        onClick={() => this.toggleIntro(true)}>
+        <Paragraph>App logo with a very long text</Paragraph>
+      </div>
+      <div className={`${c}__filters`}
+        onClick={() => this.toggleFilters(state.page !== 'filters')}>
+        <FiltersBlock activeFilter={state.active_filter}
+          isActive={state.page === 'filters'}
+          appRootClass={c}
+          filters={[
+            { type: 'notions', label: 'Notions', data: data ? data.notions || [] : [] },
+            { type: 'periods', label: 'Périodes', data: data ? data.periods || [] : [] },
+            { type: 'persons', label: 'Personages', data: data ? data.persons || [] : [] },
+            { type: 'chapters', label: 'Chapitres', data: data ? data.chapters || [] : [] },
+            { type: 'areas', label: 'Zones géographiques', data: data ? data.areas || [] : [] },
+            { type: 'place_types', label: 'Types de lieux', data: data ? data.place_types || [] : [] }
+          ]} />
+      </div>
+      <div className={`${c}__intro-overlay`}
+        onClick={() => this.toggleIntro(false)} />
+      <div className={`${c}__intro`}>
+        <br/><br/><br/><br/>
+        <Paragraph>Intro</Paragraph>
+        <button onClick={() => this.toggleIntro(false)}>Close</button>
+      </div>
+      <div className={`${c}__cards-overlay`}
+        onClick={this.unactivatePlace} />
       <div className={`${c}__cards`}>Fiches</div>
     </div>
   }

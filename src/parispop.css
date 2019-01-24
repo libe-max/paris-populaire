@@ -25,11 +25,8 @@
 .parispop {
   height: 100%;
   width: 100%;
-}
-
-.parispop__map-wrapper {
-  height: 100%;
-  width: 100%;
+  position: relative;
+  overflow-x: hidden;
 }
 
 .parispop__loading {
@@ -43,6 +40,14 @@
   height: 100%;
   width: 100%;
   background: aliceblue;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.parispop__error
+  .lblb-paragraph {
+    margin-bottom: 10rem;
 }
 
 .parispop__map {
@@ -52,23 +57,117 @@
 }
 
 .parispop__caption {
-  height: 100%;
-  width: 100%;
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  background: white;
+  box-shadow: 0 .25rem 0 0 rgba(0, 0, 0, .3);
+  padding: .5rem;
+}
+
+.parispop__app-logo {
+  cursor: pointer;
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  background: white;
+  box-shadow: 0 .25rem 0 0 rgba(0, 0, 0, .3);
+  padding: .5rem; 
 }
 
 .parispop__filters {
-  height: 100%;
-  width: 100%;
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: white;
+  box-shadow: 0 .25rem 0 0 rgba(0, 0, 0, .3);
+  padding: .5rem;
+}
+
+.parispop__intro-overlay {
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  background: #212121;
+  opacity: 0;
+  transition: opacity 200ms;
 }
 
 .parispop__intro {
+  position: absolute;
+  left: 0;
+  top: 0;
   height: 100%;
-  width: 100%;
+  width: 50rem;
+  max-width: 100%;
+  background: white;
+  transform: translate(-100%, 0);
+  transition: transform 200ms;
+}
+
+.parispop__cards-overlay {
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  background: #212121;
+  opacity: 0;
+  transition: opacity 200ms;
 }
 
 .parispop__cards {
+  position: absolute;
+  right: 0;
+  top: 0;
   height: 100%;
-  width: 100%;
+  width: 50rem;
+  max-width: 100%;
+  background: white;
+  transform: translate(100%, 0);
+  transition: transform 200ms;
+}
+
+/* * * * * * * * * * * * * * 
+ *
+ * Media queries
+ *
+ * * * * * * * * * * * * * */
+
+@media screen and (max-width: 63rem) {
+  .parispop__app-logo {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .parispop__caption {
+    display: none;
+  }
+
+  .parispop__filters {
+    top: unset;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+  }
+}
+
+@media screen and (max-width: 40rem) {
+  .parispop__app-logo {
+    top: .5rem;
+    left: .5rem;
+  }
+
+  .parispop__filters {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 -.25rem 0 0 rgba(0, 0, 0, .3);
+  }
 }
 
 /* * * * * * * * * * * * * * 
@@ -78,29 +177,72 @@
  * * * * * * * * * * * * * */
 
  /* Default */
-.parispop .parispop__loading,
-.parispop .parispop__error {
-  display: none;
+.parispop
+  .parispop__loading,
+.parispop
+  .parispop__error {
+    display: none;
 }
 
 /* Loading */
-.parispop.parispop_loading .parispop__loading {
-  display: flex;
+.parispop.parispop_loading
+  .parispop__loading {
+    display: flex;
 }
 
-.parispop.parispop_loading .parispop__error,
-.parispop.parispop_loading .parispop__map {
-  display: none;
+.parispop.parispop_loading
+  .parispop__error,
+.parispop.parispop_loading
+  .parispop__map {
+    display: none;
 }
 
 /* Error */
-.parispop.parispop_error .parispop__error {
-  display: block;
+.parispop.parispop_error
+  .parispop__error {
+    display: flex;
 }
 
-.parispop.parispop_error .parispop__loading,
-.parispop.parispop_error .parispop__map {
-  display: none;
+.parispop.parispop_error
+  .parispop__loading,
+.parispop.parispop_error
+  .parispop__map {
+    display: none;
+}
+
+/* Intro page */
+.parispop.parispop_intro-page
+  .parispop__intro {
+    box-shadow: .25rem 0 0 0 rgba(0, 0, 0, .3);
+    transform: translate(0, 0);
+}
+
+.parispop.parispop_intro-page
+  .parispop__intro-overlay {
+    width: 100%;
+    height: 100%;
+    opacity: .5;
+}
+
+/* Suggest intro */
+.parispop.parispop_suggest-intro
+  .parispop__intro {
+    box-shadow: .25rem 0 0 0 rgba(0, 0, 0, .3);
+    transform: translate(-90%, 0);
+}
+
+/* Cards page */
+.parispop.parispop_cards-page
+  .parispop__cards {
+    box-shadow: -.25rem 0 0 0 rgba(0, 0, 0, .3);
+    transform: translate(0, 0);
+}
+
+.parispop.parispop_cards-page
+  .parispop__cards-overlay {
+    width: 100%;
+    height: 100%;
+    opacity: .5;
 }
 
 /*░░░░░░ █████████░░░░░░░░ █████░░░░░░░░ ████░░░░░░░░░░░░ ████░░░ █████████████░░░░░░░░░░░░
@@ -122,10 +264,39 @@
        ░░░░█   █████ ░░░░░░█ ███░░░█  █████░░█ ███████████████░░█ ███░░░█  █████░░░░░░░░█ ███░░░░░░░░█   ███████████ ░░░
         ░░░░░░█     ░░░░░░░░█   ░░░░░█     ░░░█               ░░░█   ░░░░░█     ░░░░░░░░░█   ░░░░░░░░░░░█           ░░░*/
 
+/* * * * * * * * * * * * * * 
+ *
+ * Filters block
+ *
+ * * * * * * * * * * * * * */
 
+.parispop__filters-block-head {
+  cursor: pointer;
+}
 
+.parispop__filters-block-active-filter {
+  display: none;
+}
 
+.parispop__filters-list {
+  display: none;
+}
 
+/* States */
+.parispop__filters-block.parispop__filters-block_active
+  .parispop__filters-list {
+    display: block;
+}
+
+.parispop__filters-block.parispop__filters-block_with-filter
+  .parispop__filters-block-title {
+    display: none;
+}
+
+.parispop__filters-block.parispop__filters-block_with-filter
+  .parispop__filters-block-active-filter {
+    display: block;
+}
 
 /*░░░ ███████████░░░░░ ███████████████░░░░░░ █████████░░░░░░ █████░░░░░ ███░░░ ████████████░░░░░░░░░░░░░
  ░░░ ███         ███░░█       ███     ░░░░░ █████████████░░░█ ██████░░░█ ███░░█ ███        ███░░░░░░░░░░░
