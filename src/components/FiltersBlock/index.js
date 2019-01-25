@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import BlockTitle from 'libe-components/lib/text-levels/BlockTitle'
 import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 
 export default class FiltersBlock extends Component {
@@ -9,33 +10,63 @@ export default class FiltersBlock extends Component {
 
   render () {
     const { c, props } = this
-    const { isActive, activeFilter, filters } = props
+    const { isActive, activeFilter, filters, toggleFilters, setFilter } = props
+    const activeFilterDisplayName = activeFilter
+      ? filters.filter(filter => {
+        return filter.type === activeFilter.type
+      })[0].data.filter(option => {
+        return activeFilter.value === option.id
+      })[0].name
+      : ''
 
     const classes = [`${c}__filters-block`]
     if (isActive) classes.push(`${c}__filters-block_active`)
     if (activeFilter) classes.push(`${c}__filters-block_with-filter`)
 
-    return <div className={classes.join(' ')}>
-      <div className={`${c}__filters-block-head`}>
+    return <div className={classes.join(' ')}
+      ref={n => this.$root = n}>
+      <div className={`${c}__filters-block-head`}
+        onClick={() => toggleFilters(!isActive)}>
         <div className={`${c}__filters-block-title`}>
-          <Paragraph>Filtrer</Paragraph>
+          <BlockTitle>Filtrer</BlockTitle>
         </div>
         <div className={`${c}__filters-block-active-filter`}>
-          <Paragraph>
+          <BlockTitle>
             <span>Filtré sur : </span>
-            <span>{activeFilter ? activeFilter.display_value : ''}</span>
-            <button>Close</button>
-          </Paragraph>
+            <span>{activeFilterDisplayName}</span>
+            <button onClick={e => {
+              e.stopPropagation()
+              setFilter(null)
+            }}>X</button>
+          </BlockTitle>
         </div>
-        <div className={`${c}__filters-list`}>{
-          filters.map((filter, i) => {
-            return <select key={i}>
-              <option value='lol'>Lol</option>
-              <option value='lol'>Lol</option>
-            </select>
-          })
-        }</div>
       </div>
+      <div className={`${c}__filters-list`}>{
+        filters.map((filter, i) => {
+          return <div key={i}
+            className={`${c}__filter`}>
+            <Paragraph>{filter.label}</Paragraph>
+            <select defaultValue='placeholder'
+              data-type={filter.type}
+              onChange={e => setFilter(
+                filter.type,
+                e.target.value
+              )}>{[
+              <option disabled
+                key={-1}
+                value='placeholder'>
+                Choisir...
+              </option>,
+              ...filter.data.map((opt, j) => {
+                return <option key={j}
+                  value={opt.id}>
+                  {opt.name}
+                </option>
+              })]
+            }</select>
+          </div>
+        })
+      }</div>
     </div>
   }
 }

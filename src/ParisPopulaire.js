@@ -34,6 +34,7 @@ export default class ParisPopulaire extends Component {
     }
     this.fetchData = this.fetchData.bind(this)
     this.toggleFilters = this.toggleFilters.bind(this)
+    this.setFilter = this.setFilter.bind(this)
     this.toggleIntro = this.toggleIntro.bind(this)
     this.suggestIntro = this.suggestIntro.bind(this)
     this.interpretUrlQuery = this.interpretUrlQuery.bind(this)
@@ -105,18 +106,11 @@ export default class ParisPopulaire extends Component {
     const rawActiveFilterValueExists = rawActiveFilterTypeExists
       ? data[rawActiveFilterType].some(filter => filter.id === rawActiveFilterValue)
       : false
-    const activeFilterDisplayValue = rawActiveFilterValueExists
-      ? data[rawActiveFilterType]
-        .filter(filter => filter.id === rawActiveFilterValue)
-        .map(filter => filter.name)[0]
-      : null
     const activeFilter = (rawActiveFilterTypeExists &&
-      rawActiveFilterValueExists &&
-      activeFilterDisplayValue)
+      rawActiveFilterValueExists)
       ? {
         type: rawActiveFilterType,
-        value: rawActiveFilterValue,
-        display_value: activeFilterDisplayValue }
+        value: rawActiveFilterValue }
       : null
     
     // [WIP] re-work this using this.activatePlace
@@ -169,13 +163,50 @@ export default class ParisPopulaire extends Component {
    * * * * * * * * * * * * * * * */
   toggleFilters (a) {
     if (typeof a !== 'boolean') return
-    const { page, active_filter: activeFilter } = this.state
+    const { page } = this.state
     if (a && page === 'filters') return
     if (!a && page !== 'filters') return
     return this.setState({
-      page: a ? 'filters' : 'map',
-      active_filter: a ? null : activeFilter
+      page: a ? 'filters' : 'map'
     })
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * SET FILTER
+   *
+   * * * * * * * * * * * * * * * */
+  setFilter (type = null, value) {
+    const { data } = this.state
+    if (!data) return
+    const typeExists = ['notions', 'periods', 'persons', 'chapters', 'areas', 'place_types']
+      .indexOf(type) > -1
+    const valueExists = typeExists ? data[type].some(filter => filter.id === value) : false
+    const $selectors = this.$filtersBlock.$root.querySelectorAll('select')
+    if (typeExists && valueExists) {
+      for (let i = 0; i < $selectors.length; i++) {
+        const $selector = $selectors[i]
+        const selectorType = $selectors[i].getAttribute('data-type')
+        const selectorValue = $selectors[i].value
+        if (selectorType !== type) $selector.value = 'placeholder'
+      }
+      return this.setState({
+        page: 'map',
+        active_filter: {
+          type,
+          value
+        }
+      })
+    } else {
+      for (let i = 0; i < $selectors.length; i++) {
+        const $selector = $selectors[i]
+        $selector.value = 'placeholder'
+      }
+      return this.setState({
+        page: 'map',
+        active_filter: null
+      })
+    }
   }
 
   /* * * * * * * * * * * * * * * *
@@ -257,10 +288,12 @@ export default class ParisPopulaire extends Component {
         onClick={() => this.toggleIntro(true)}>
         <Paragraph>App logo with a very long text</Paragraph>
       </div>
-      <div className={`${c}__filters`}
-        onClick={() => this.toggleFilters(state.page !== 'filters')}>
+      <div className={`${c}__filters`}>
         <FiltersBlock activeFilter={state.active_filter}
           isActive={state.page === 'filters'}
+          toggleFilters={this.toggleFilters}
+          ref={n => this.$filtersBlock = n}
+          setFilter={this.setFilter}
           appRootClass={c}
           filters={[
             { type: 'notions', label: 'Notions', data: data ? data.notions || [] : [] },
