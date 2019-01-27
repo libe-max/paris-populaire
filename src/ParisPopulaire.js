@@ -7,6 +7,7 @@ import enrichData from './utils/enrich-data.js'
 import LibeLoader from './components/Loader'
 import LibeLoadingError from './components/DataLoadingError'
 import FiltersBlock from './components/FiltersBlock'
+import ParisPopMap from './components/ParisPopMap'
 
 import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 
@@ -275,9 +276,11 @@ export default class ParisPopulaire extends Component {
     return <div className={classes.join(' ')}>
       <div className={`${c}__loading`}><LibeLoader /></div>
       <div className={`${c}__error`}><LibeLoadingError /></div>
-      <div className={`${c}__map`}
+      <div className={`${c}__map-panel`}
         onClick={this.activateRandomPlace}>
-        <Paragraph>Map component</Paragraph>
+        <ParisPopMap activeFilter={state.active_filter}
+          appRootClass={c}
+          places={data ? data.places : []} />
       </div>
       <div className={`${c}__caption`}>
         <Paragraph>Légende</Paragraph>
@@ -288,7 +291,7 @@ export default class ParisPopulaire extends Component {
         onClick={() => this.toggleIntro(true)}>
         <Paragraph>App logo with a very long text</Paragraph>
       </div>
-      <div className={`${c}__filters`}>
+      <div className={`${c}__filters-panel`}>
         <FiltersBlock activeFilter={state.active_filter}
           isActive={state.page === 'filters'}
           toggleFilters={this.toggleFilters}
@@ -306,14 +309,14 @@ export default class ParisPopulaire extends Component {
       </div>
       <div className={`${c}__intro-overlay`}
         onClick={() => this.toggleIntro(false)} />
-      <div className={`${c}__intro`}>
+      <div className={`${c}__intro-panel`}>
         <br/><br/><br/><br/>
         <Paragraph>Intro</Paragraph>
         <button onClick={() => this.toggleIntro(false)}>Close</button>
       </div>
       <div className={`${c}__cards-overlay`}
         onClick={this.unactivatePlace} />
-      <div className={`${c}__cards`}>Fiches</div>
+      <div className={`${c}__cards-panel`}>Fiches</div>
     </div>
   }
 }

@@ -50,7 +50,7 @@
     margin-bottom: 10rem;
 }
 
-.parispop__map {
+.parispop__map-panel {
   height: 100%;
   width: 100%;
   background: limegreen;
@@ -75,7 +75,7 @@
   padding: .5rem; 
 }
 
-.parispop__filters {
+.parispop__filters-panel {
   position: absolute;
   top: 2rem;
   right: 2rem;
@@ -96,7 +96,7 @@
   transition: opacity 200ms;
 }
 
-.parispop__intro {
+.parispop__intro-panel {
   position: absolute;
   left: 0;
   top: 0;
@@ -120,7 +120,7 @@
   transition: opacity 200ms;
 }
 
-.parispop__cards {
+.parispop__cards-panel {
   position: absolute;
   right: 0;
   top: 0;
@@ -148,7 +148,7 @@
     display: none;
   }
 
-  .parispop__filters {
+  .parispop__filters-panel {
     top: unset;
     bottom: 1rem;
     left: 1rem;
@@ -162,7 +162,7 @@
     left: .5rem;
   }
 
-  .parispop__filters {
+  .parispop__filters-panel {
     bottom: 0;
     left: 0;
     right: 0;
@@ -193,7 +193,7 @@
 .parispop.parispop_loading
   .parispop__error,
 .parispop.parispop_loading
-  .parispop__map {
+  .parispop__map-panel {
     display: none;
 }
 
@@ -206,13 +206,13 @@
 .parispop.parispop_error
   .parispop__loading,
 .parispop.parispop_error
-  .parispop__map {
+  .parispop__map-panel {
     display: none;
 }
 
 /* Intro page */
 .parispop.parispop_intro-page
-  .parispop__intro {
+  .parispop__intro-panel {
     box-shadow: .25rem 0 0 0 rgba(0, 0, 0, .3);
     transform: translate(0, 0);
 }
@@ -226,14 +226,14 @@
 
 /* Suggest intro */
 .parispop.parispop_suggest-intro
-  .parispop__intro {
+  .parispop__intro-panel {
     box-shadow: .25rem 0 0 0 rgba(0, 0, 0, .3);
     transform: translate(-90%, 0);
 }
 
 /* Cards page */
 .parispop.parispop_cards-page
-  .parispop__cards {
+  .parispop__cards-panel {
     box-shadow: -.25rem 0 0 0 rgba(0, 0, 0, .3);
     transform: translate(0, 0);
 }
@@ -296,6 +296,18 @@
 .parispop__filters-block.parispop__filters-block_with-filter
   .parispop__filters-block-active-filter {
     display: block;
+}
+
+/* * * * * * * * * * * * * * 
+ *
+ * Paris pop map
+ *
+ * * * * * * * * * * * * * */
+
+.parispop__map {
+  background: violet;
+  width: 100%;
+  height: 100%;
 }
 
 /*░░░ ███████████░░░░░ ███████████████░░░░░░ █████████░░░░░░ █████░░░░░ ███░░░ ████████████░░░░░░░░░░░░░
