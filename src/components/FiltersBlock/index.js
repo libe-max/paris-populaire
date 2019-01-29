@@ -10,7 +10,7 @@ export default class FiltersBlock extends Component {
 
   render () {
     const { c, props } = this
-    const { isActive, activeFilter, filters, toggleFilters, setFilter } = props
+    const { isActive, activeFilter, filters, toggleFiltersPanel, setFilter } = props
     const activeFilterDisplayName = activeFilter
       ? filters.filter(filter => {
         return filter.type === activeFilter.type
@@ -26,7 +26,7 @@ export default class FiltersBlock extends Component {
     return <div className={classes.join(' ')}
       ref={n => this.$root = n}>
       <div className={`${c}__filters-block-head`}
-        onClick={() => toggleFilters(!isActive)}>
+        onClick={() => toggleFiltersPanel(!isActive)}>
         <div className={`${c}__filters-block-title`}>
           <BlockTitle>Filtrer</BlockTitle>
         </div>

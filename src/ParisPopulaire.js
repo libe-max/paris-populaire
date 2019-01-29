@@ -25,7 +25,7 @@ export default class ParisPopulaire extends Component {
     super(props)
     this.c = 'parispop'
     this.state = {
-      page: 'intro',         // 'intro' || 'map' || 'filters' || 'cards'
+      page: 'map',         // 'intro' || 'map' || 'filters' || 'cards'
       suggest_intro: false,  // <Boolean>
       loading: true,         // <Boolean>
       error: null,           // null || <Error>
@@ -34,7 +34,7 @@ export default class ParisPopulaire extends Component {
       active_filter: null    // null || <Object>
     }
     this.fetchData = this.fetchData.bind(this)
-    this.toggleFilters = this.toggleFilters.bind(this)
+    this.toggleFiltersPanel = this.toggleFiltersPanel.bind(this)
     this.setFilter = this.setFilter.bind(this)
     this.toggleIntro = this.toggleIntro.bind(this)
     this.suggestIntro = this.suggestIntro.bind(this)
@@ -162,7 +162,7 @@ export default class ParisPopulaire extends Component {
    * TOGGLE FILTERS
    *
    * * * * * * * * * * * * * * * */
-  toggleFilters (a) {
+  toggleFiltersPanel (a) {
     if (typeof a !== 'boolean') return
     const { page } = this.state
     if (a && page === 'filters') return
@@ -188,7 +188,6 @@ export default class ParisPopulaire extends Component {
       for (let i = 0; i < $selectors.length; i++) {
         const $selector = $selectors[i]
         const selectorType = $selectors[i].getAttribute('data-type')
-        const selectorValue = $selectors[i].value
         if (selectorType !== type) $selector.value = 'placeholder'
       }
       return this.setState({
@@ -258,7 +257,7 @@ export default class ParisPopulaire extends Component {
    *
    * * * * * * * * * * * * * * * */
   render () {
-    const { props, state, c } = this
+    const { state, c } = this
     const { data } = state
     const pageIsReady = !state.loading && !state.error
 
@@ -280,6 +279,7 @@ export default class ParisPopulaire extends Component {
         onClick={this.activateRandomPlace}>
         <ParisPopMap activeFilter={state.active_filter}
           appRootClass={c}
+          pageIsReady={pageIsReady}
           places={data ? data.places : []} />
       </div>
       <div className={`${c}__caption`}>
@@ -294,7 +294,7 @@ export default class ParisPopulaire extends Component {
       <div className={`${c}__filters-panel`}>
         <FiltersBlock activeFilter={state.active_filter}
           isActive={state.page === 'filters'}
-          toggleFilters={this.toggleFilters}
+          toggleFiltersPanel={this.toggleFiltersPanel}
           ref={n => this.$filtersBlock = n}
           setFilter={this.setFilter}
           appRootClass={c}
