@@ -30,7 +30,7 @@ export default class ParisPopulaire extends Component {
       loading: true,         // <Boolean>
       error: null,           // null || <Error>
       data: null,            // null || <Object>
-      active_place: null,    // null || <Number>
+      active_place_id: null,    // null || <Number>
       active_filter: null    // null || <Object>
     }
     this.fetchData = this.fetchData.bind(this)
@@ -88,7 +88,7 @@ export default class ParisPopulaire extends Component {
   interpretUrlQuery (search, data) {
     const query = qs.parse(search.slice(1))
     const rawPage = query.page
-    const rawActivePlace = parseInt(query.active_place, 10) || null
+    const rawActivePlace = parseInt(query.active_place_id, 10) || null
     const rawActiveFilterType = query.active_filter_type
     const rawActiveFilterValue = query.active_filter_value
 
@@ -119,7 +119,7 @@ export default class ParisPopulaire extends Component {
     const ret = {}
     if (activeFilter) ret.active_filter = activeFilter
     if (activePlace) {
-      ret.active_place = activePlace
+      ret.active_place_id = activePlace
       ret.page = 'cards'
     }
     else if (page) ret.page = page
@@ -235,7 +235,7 @@ export default class ParisPopulaire extends Component {
     if (!placeExists) return
     return this.setState({
       page: 'cards',
-      active_place: id
+      active_place_id: id
     })
   }
 
@@ -247,7 +247,7 @@ export default class ParisPopulaire extends Component {
   unactivatePlace () {
     return this.setState({
       page: 'map',
-      active_place: null
+      active_place_id: null
     })
   }
 
@@ -280,6 +280,7 @@ export default class ParisPopulaire extends Component {
         <ParisPopMap activeFilter={state.active_filter}
           appRootClass={c}
           pageIsReady={pageIsReady}
+          activePlaceId={state.active_place_id}
           places={data ? data.places : []} />
       </div>
       <div className={`${c}__caption`}>
