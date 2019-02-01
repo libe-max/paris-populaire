@@ -56,35 +56,25 @@
   background: limegreen;
 }
 
-.parispop__caption {
+.parispop__caption-panel {
+  z-index: 10;
   position: absolute;
   bottom: 2rem;
   left: 2rem;
-  background: white;
-  box-shadow: 0 .25rem 0 0 rgba(0, 0, 0, .3);
-  padding: .5rem;
-}
-
-.parispop__app-logo {
-  cursor: pointer;
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  background: white;
-  box-shadow: 0 .25rem 0 0 rgba(0, 0, 0, .3);
-  padding: .5rem; 
 }
 
 .parispop__filters-panel {
+  z-index: 11;
   position: absolute;
   top: 2rem;
   right: 2rem;
   background: white;
-  box-shadow: 0 .25rem 0 0 rgba(0, 0, 0, .3);
+  box-shadow: 0 .25rem 0 0 rgba(33, 33, 33, .3);
   padding: .5rem;
 }
 
 .parispop__intro-overlay {
+  z-index: 12;
   cursor: pointer;
   position: absolute;
   left: 0;
@@ -96,7 +86,32 @@
   transition: opacity 200ms;
 }
 
+.parispop__cards-overlay {
+  z-index: 13;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  background: #212121;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.parispop__app-logo {
+  z-index: 14;
+  cursor: pointer;
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  background: white;
+  box-shadow: 0 .25rem 0 0 rgba(33, 33, 33, .3);
+  padding: 1rem;
+}
+
 .parispop__intro-panel {
+  z-index: 15;
   position: absolute;
   left: 0;
   top: 0;
@@ -108,19 +123,8 @@
   transition: transform 200ms;
 }
 
-.parispop__cards-overlay {
-  cursor: pointer;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 0;
-  height: 0;
-  background: #212121;
-  opacity: 0;
-  transition: opacity 200ms;
-}
-
 .parispop__cards-panel {
+  z-index: 16;
   position: absolute;
   right: 0;
   top: 0;
@@ -130,6 +134,9 @@
   background: white;
   transform: translate(100%, 0);
   transition: transform 200ms;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* * * * * * * * * * * * * * 
@@ -144,7 +151,7 @@
     left: 1rem;
   }
 
-  .parispop__caption {
+  .parispop__caption-panel {
     display: none;
   }
 
@@ -166,7 +173,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    box-shadow: 0 -.25rem 0 0 rgba(0, 0, 0, .3);
+    box-shadow: 0 -.25rem 0 0 rgba(33, 33, 33, .3);
   }
 }
 
@@ -213,7 +220,7 @@
 /* Intro page */
 .parispop.parispop_intro-page
   .parispop__intro-panel {
-    box-shadow: .25rem 0 0 0 rgba(0, 0, 0, .3);
+    box-shadow: .25rem 0 0 0 rgba(33, 33, 33, .3);
     transform: translate(0, 0);
 }
 
@@ -227,14 +234,14 @@
 /* Suggest intro */
 .parispop.parispop_suggest-intro
   .parispop__intro-panel {
-    box-shadow: .25rem 0 0 0 rgba(0, 0, 0, .3);
+    box-shadow: .25rem 0 0 0 rgba(33, 33, 33, .3);
     transform: translate(-90%, 0);
 }
 
 /* Cards page */
 .parispop.parispop_cards-page
   .parispop__cards-panel {
-    box-shadow: -.25rem 0 0 0 rgba(0, 0, 0, .3);
+    box-shadow: -.25rem 0 0 0 rgba(33, 33, 33, .3);
     transform: translate(0, 0);
 }
 
@@ -300,6 +307,29 @@
 
 /* * * * * * * * * * * * * * 
  *
+ * Caption block
+ *
+ * * * * * * * * * * * * * */
+
+.parispop__caption-panel {
+  background: white;
+  box-shadow: 0 .25rem 0 0 rgba(33, 33, 33, .3);
+  padding: .5rem;
+}
+
+.parispop__caption-field {
+  display: flex;
+  align-items: center;
+  padding: .25rem 0;
+}
+
+.parispop__caption-field
+  .parispop__map-marker {
+    margin-right: .5rem;
+}
+
+/* * * * * * * * * * * * * * 
+ *
  * Paris pop map
  *
  * * * * * * * * * * * * * */
@@ -308,6 +338,73 @@
   background: violet;
   width: 100%;
   height: 100%;
+}
+
+/* Dirty fix for mapbox-gl mess */
+.parispop__map
+  .mapboxgl-marker {
+    z-index: 0 !important;
+}
+
+.parispop__map
+  .mapboxgl-marker:hover {
+    z-index: 1 !important;
+}
+/* End of dirty fix for mapbox-gl mess */
+
+.parispop__map-marker {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: opacity 200ms;
+}
+
+.parispop__map-marker:hover {
+  box-shadow: 0 0 1rem 0 rgba(33, 33, 33, .3);
+}
+
+.parispop__map-marker_exists {
+  background-color: #8B1002;
+}
+
+.parispop__map-marker_not-exists {
+  background-color: #FFFFFF;
+  box-shadow: inset 0 0 0 .25rem #8B1002;
+}
+
+.parispop__map-marker_not-exists:hover {
+  box-shadow: inset 0 0 0 .25rem #8B1002,
+    0 0 1rem 0 rgba(33, 33, 33, .3);
+}
+
+.parispop__map-marker_out-filter {
+  opacity: 0.2;
+}
+
+.parispop__map-marker-tooltip {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  box-shadow: 0 0 1rem 0 rgba(33, 33, 33, .3);
+  width: 10rem;
+  padding: .5rem;
+  background: #FFFFFF;
+  display: none;
+  justify-content: center;
+}
+
+.parispop__map-marker:hover
+  .parispop__map-marker-tooltip {
+    display: flex;
+}
+
+.parispop__map-marker-tooltip
+  .lblb-annotation {
+    text-align: center;
 }
 
 /*░░░ ███████████░░░░░ ███████████████░░░░░░ █████████░░░░░░ █████░░░░░ ███░░░ ████████████░░░░░░░░░░░░░

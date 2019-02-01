@@ -17,20 +17,50 @@ export default class MapBoxGL extends Component {
         style: props.mapStyle
       }
     }
+    this.flyTo = this.flyTo.bind(this)
+    this.zoomTo = this.zoomTo.bind(this)
+    this.flyAndZoomTo = this.flyAndZoomTo.bind(this)
+  }
+
+  flyTo (lon, lat) {
+    this.setState(({ map }) => ({
+      map: {
+        ...map,
+        center: [lon, lat]
+      }
+    }))
+  }
+
+  zoomTo (z) {
+    this.setState(({ map }) => ({
+      map: {
+        ...map,
+        zoom: [z]
+      }
+    }))
+  }
+
+  flyAndZoomTo (lon, lat, z) {
+    this.setState(({ map }) => ({
+      map: {
+        ...map,
+        center: [lon, lat],
+        zoom: [z]
+      }
+    }))
   }
 
   render () {
     const { state, props, Map } = this
+    const { children } = props
     const { map } = state
-    const { layers } = props
-
 
     return <Map style={map.style}
       maxBounds={map.maxBounds}
       center={map.center}
       zoom={map.zoom}
-      containerStyle={{ width: '100%', height: '100%' }}>{
-      layers
-    }</Map>
+      containerStyle={{ width: '100%', height: '100%' }}>
+      {children}
+    </Map>
   }
 }

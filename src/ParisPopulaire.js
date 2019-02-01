@@ -8,7 +8,10 @@ import LibeLoader from './components/Loader'
 import LibeLoadingError from './components/DataLoadingError'
 import FiltersBlock from './components/FiltersBlock'
 import ParisPopMap from './components/ParisPopMap'
+import ParisPopCard from './components/ParisPopCard'
+import ParisPopCaption from './components/ParisPopCaption'
 
+import InterTitle from 'libe-components/lib/text-levels/InterTitle'
 import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 
 /* [WIP] host this file in libe-static-ressources once the work is done */
@@ -23,14 +26,14 @@ export default class ParisPopulaire extends Component {
    * * * * * * * * * * * * * * * */
   constructor (props) {
     super(props)
-    this.c = 'parispop'
+    this.c = 'parispop'      // Prefix for all css classes (BEM method)
     this.state = {
-      page: 'map',         // 'intro' || 'map' || 'filters' || 'cards'
+      page: 'intro',         // 'intro' || 'map' || 'filters' || 'cards'
       suggest_intro: false,  // <Boolean>
       loading: true,         // <Boolean>
       error: null,           // null || <Error>
       data: null,            // null || <Object>
-      active_place_id: null,    // null || <Number>
+      active_place_id: null, // null || <Number>
       active_filter: null    // null || <Object>
     }
     this.fetchData = this.fetchData.bind(this)
@@ -231,8 +234,15 @@ export default class ParisPopulaire extends Component {
     const { data } = this.state
     if (!data) return
     const { places } = data
-    const placeExists = places.some(place => place.id === id)
-    if (!placeExists) return
+    const place = places.filter(place => place.id === id)[0]
+    if (!place) return
+    if (this.parisPopMap) {
+      this.parisPopMap.flyAndZoomTo(
+        place.longitude + 0.0022,
+        place.latitude,
+        17
+      )
+    }
     return this.setState({
       page: 'cards',
       active_place_id: id
@@ -245,6 +255,9 @@ export default class ParisPopulaire extends Component {
    *
    * * * * * * * * * * * * * * * */
   unactivatePlace () {
+    if (this.parisPopMap) {
+      this.parisPopMap.zoomTo(14.3)
+    }
     return this.setState({
       page: 'map',
       active_place_id: null
@@ -260,6 +273,10 @@ export default class ParisPopulaire extends Component {
     const { state, c } = this
     const { data } = state
     const pageIsReady = !state.loading && !state.error
+    const activePlaceId = state.active_place_id
+    const activePlace = data
+      ? data.places.filter(p => p.id === activePlaceId)
+      : null
 
     /* Assign state related classes */
     const classes = [c]
@@ -275,22 +292,18 @@ export default class ParisPopulaire extends Component {
     return <div className={classes.join(' ')}>
       <div className={`${c}__loading`}><LibeLoader /></div>
       <div className={`${c}__error`}><LibeLoadingError /></div>
-      <div className={`${c}__map-panel`}
-        onClick={this.activateRandomPlace}>
+      <div className={`${c}__map-panel`}>
         <ParisPopMap activeFilter={state.active_filter}
+          ref={n => this.parisPopMap = n}
           appRootClass={c}
           pageIsReady={pageIsReady}
-          activePlaceId={state.active_place_id}
+          activatePlace={this.activatePlace}
+          unactivatePlace={this.unactivatePlace}
+          activePlaceId={activePlaceId}
           places={data ? data.places : []} />
       </div>
-      <div className={`${c}__caption`}>
-        <Paragraph>Légende</Paragraph>
-      </div>
-      <div className={`${c}__app-logo`}
-        onMouseOver={() => this.suggestIntro(true)}
-        onMouseOut={() => this.suggestIntro(false)}
-        onClick={() => this.toggleIntro(true)}>
-        <Paragraph>App logo with a very long text</Paragraph>
+      <div className={`${c}__caption-panel`}>
+        <ParisPopCaption appRootClass={c} />
       </div>
       <div className={`${c}__filters-panel`}>
         <FiltersBlock activeFilter={state.active_filter}
@@ -300,24 +313,34 @@ export default class ParisPopulaire extends Component {
           setFilter={this.setFilter}
           appRootClass={c}
           filters={[
-            { type: 'notions', label: 'Notions', data: data ? data.notions || [] : [] },
+            /*{ type: 'notions', label: 'Notions', data: data ? data.notions || [] : [] },
+            { type: 'chapters', label: 'Chapitres', data: data ? data.chapters || [] : [] },
+            { type: 'areas', label: 'Zones géographiques', data: data ? data.areas || [] : [] },*/
             { type: 'periods', label: 'Périodes', data: data ? data.periods || [] : [] },
             { type: 'persons', label: 'Personages', data: data ? data.persons || [] : [] },
-            { type: 'chapters', label: 'Chapitres', data: data ? data.chapters || [] : [] },
-            { type: 'areas', label: 'Zones géographiques', data: data ? data.areas || [] : [] },
             { type: 'place_types', label: 'Types de lieux', data: data ? data.place_types || [] : [] }
           ]} />
       </div>
-      <div className={`${c}__intro-overlay`}
-        onClick={() => this.toggleIntro(false)} />
+      <div className={`${c}__intro-overlay`} onClick={() => this.toggleIntro(false)} />
+      <div className={`${c}__cards-overlay`} onClick={this.unactivatePlace} />
+      <div className={`${c}__app-logo`}
+        onMouseOver={() => this.suggestIntro(true)}
+        onMouseOut={() => this.suggestIntro(false)}
+        onClick={() => this.toggleIntro(true)}>
+        <InterTitle small level={2}>
+          Paris<br/>
+          Populaire
+        </InterTitle>
+      </div>
       <div className={`${c}__intro-panel`}>
         <br/><br/><br/><br/>
         <Paragraph>Intro</Paragraph>
         <button onClick={() => this.toggleIntro(false)}>Close</button>
+        <ParisPopCaption appRootClass={c} />
       </div>
-      <div className={`${c}__cards-overlay`}
-        onClick={this.unactivatePlace} />
-      <div className={`${c}__cards-panel`}>Fiches</div>
+      <div className={`${c}__cards-panel`}>
+        <ParisPopCard place={activePlace} />
+      </div>
     </div>
   }
 }

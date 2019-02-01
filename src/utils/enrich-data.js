@@ -40,6 +40,7 @@ function enrichData (data) {
     const _persons = []
     const _areas = []
     const _notions = []
+    const _place_types = [p.type]
     const div = document.createElement('div')
     div.innerHTML = p.text
     const spans = div.querySelectorAll('span')
@@ -68,9 +69,9 @@ function enrichData (data) {
       city: p.city,           district: p.district,   photo: p.photo,
       exists: p.exists,       text: p.text,           lifespan: p.lifespan,
       type: p.type,           author: p.author,       long_read_intro: p.long_read_intro,
-      long_read: p.long_read, chapters: p.chapters,
-      _persons,                _areas,                _notions,
-      _periods,                _type: p.type,         _chapters: p.chapters
+      long_read: p.long_read, chapters: p.chapters,   _persons,
+      _areas,                 _notions,               _periods,
+      _place_types
     }
   })
   
