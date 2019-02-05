@@ -17,7 +17,6 @@
  */
 
 function enrichData (data) {
-
   // Check if input data is valid
   if (!Array.isArray(data) || data.length !== 7) {
     const msg = 'Cannot enrich data which is not an array of length 7'
@@ -35,7 +34,6 @@ function enrichData (data) {
   // containing only useful props
   const filteredPlaces = unfilteredPlaces.filter(p => p.publish)
   const places = filteredPlaces.map(p => {
-
     // Getting persons, areas and notions from p.text
     const _persons = []
     const _areas = []
@@ -69,7 +67,7 @@ function enrichData (data) {
       city: p.city,           district: p.district,   photo: p.photo,
       exists: p.exists,       text: p.text,           lifespan: p.lifespan,
       type: p.type,           author: p.author,       long_read_intro: p.long_read_intro,
-      long_read: p.long_read, chapters: p.chapters,   _persons,
+      long_read: p.long_read, _chapters: p.chapters,   _persons,
       _areas,                 _notions,               _periods,
       _place_types
     }

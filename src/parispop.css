@@ -326,6 +326,12 @@
 .parispop__caption-field
   .parispop__map-marker {
     margin-right: .5rem;
+    cursor: default;
+}
+
+.parispop__caption-field
+  .parispop__map-marker:hover {
+    box-shadow: none;
 }
 
 /* * * * * * * * * * * * * * 
@@ -405,6 +411,70 @@
 .parispop__map-marker-tooltip
   .lblb-annotation {
     text-align: center;
+}
+
+/* * * * * * * * * * * * * * 
+ *
+ * Paris pop card
+ *
+ * * * * * * * * * * * * * */
+.parispop__card {
+  position: relative;
+}
+
+.parispop__card
+  .parispop__card-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    border: none;
+    background: #FFFFFF url('/assets/close-icon_40.svg');
+    height: 2.5rem;
+    width: 2.5rem;
+    cursor: pointer;
+}
+
+.parispop__card-illustration {
+  display: flex;
+  justify-content: center;
+  background: #212121;
+}
+
+.parispop__card-illustration img {
+  max-height: 35rem;
+}
+
+@media screen and (max-width: 63rem) {
+  .parispop__card
+    .parispop__card-close {
+      top: 1rem;
+      right: 1rem;
+  }
+
+  .parispop__card-illustration img {
+    max-height: 30rem;
+  }
+}
+
+@media screen and (max-width: 50rem) {
+  .parispop__card
+    .parispop__card-close {
+      right: unset;
+      left: 1rem;
+      background: #FFFFFF url('/assets/back-icon_40.svg');
+  }
+}
+
+@media screen and (max-width: 40rem) {
+  .parispop__card
+    .parispop__card-close {
+      top: .5rem;
+      left: .5rem;
+  }
+
+  .parispop__card-illustration img {
+    max-height: 20rem;
+  }
 }
 
 /*░░░ ███████████░░░░░ ███████████████░░░░░░ █████████░░░░░░ █████░░░░░ ███░░░ ████████████░░░░░░░░░░░░░

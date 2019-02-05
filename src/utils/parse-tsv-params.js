@@ -45,7 +45,9 @@ export default [{
     author: v => v.trim(),
     long_read_intro: v => v.trim(),
     long_read: v => v.trim(),
-    chapters: v => v.split(',').map(chp => chp.trim())
+    chapters: v => v.split(',')
+      .map(chp => chp.trim())
+      .filter(chp => chp)
   }
 }, {
 

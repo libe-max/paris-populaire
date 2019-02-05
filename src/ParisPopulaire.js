@@ -45,21 +45,23 @@ export default class ParisPopulaire extends Component {
     this.activateRandomPlace = this.activateRandomPlace.bind(this)
     this.activatePlace = this.activatePlace.bind(this)
     this.unactivatePlace = this.unactivatePlace.bind(this)
+
+    // [WIP] Pre-load data
     this.fetchData().catch(err => {
       this.setState({
         loading: false,
         error: err
       })
     }).then(r => {
+      console.log(r)
       const ret = enrichData(r)
       const interpretedState = this.interpretUrlQuery(window.location.search, ret)
-      const newState = {
+      this.setState({
         ...interpretedState,
         data: ret,
         loading: false,
         error: null
-      }
-      this.setState(newState)
+      })
     })
   }
 
@@ -236,13 +238,11 @@ export default class ParisPopulaire extends Component {
     const { places } = data
     const place = places.filter(place => place.id === id)[0]
     if (!place) return
-    if (this.parisPopMap) {
-      this.parisPopMap.flyAndZoomTo(
-        place.longitude + 0.0022,
-        place.latitude,
-        17
-      )
-    }
+    if (this.parisPopMap) this.parisPopMap.flyAndZoomTo(
+      place.longitude + 0.00216,
+      place.latitude,
+      17
+    )
     return this.setState({
       page: 'cards',
       active_place_id: id
@@ -255,9 +255,8 @@ export default class ParisPopulaire extends Component {
    *
    * * * * * * * * * * * * * * * */
   unactivatePlace () {
-    if (this.parisPopMap) {
-      this.parisPopMap.zoomTo(14.3)
-    }
+    const { parisPopMap } = this
+    if (parisPopMap) parisPopMap.zoomTo(14.1)
     return this.setState({
       page: 'map',
       active_place_id: null
@@ -275,7 +274,7 @@ export default class ParisPopulaire extends Component {
     const pageIsReady = !state.loading && !state.error
     const activePlaceId = state.active_place_id
     const activePlace = data
-      ? data.places.filter(p => p.id === activePlaceId)
+      ? data.places.filter(p => p.id === activePlaceId)[0]
       : null
 
     /* Assign state related classes */
@@ -327,7 +326,7 @@ export default class ParisPopulaire extends Component {
         onMouseOver={() => this.suggestIntro(true)}
         onMouseOut={() => this.suggestIntro(false)}
         onClick={() => this.toggleIntro(true)}>
-        <InterTitle small level={2}>
+        <InterTitle small level={1}>
           Paris<br/>
           Populaire
         </InterTitle>
@@ -339,7 +338,10 @@ export default class ParisPopulaire extends Component {
         <ParisPopCaption appRootClass={c} />
       </div>
       <div className={`${c}__cards-panel`}>
-        <ParisPopCard place={activePlace} />
+        <ParisPopCard place={activePlace}
+          activatePlace={this.activatePlace}
+          unactivatePlace={this.unactivatePlace}
+          appRootClass={c} />
       </div>
     </div>
   }

@@ -5,9 +5,9 @@ import Annotation from 'libe-components/lib/text-levels/Annotation'
 import MapBoxGL from './components/MapBoxGL'
 import LeafletMap from './components/LeafletMap'
 
+// [WIP] these params should be passed down to the ParisPopMap component
 import token from '../../.mapbox-token'
 // import mapStyle from './map-style.json'
-
 const mapStyle = 'mapbox://styles/libe-max/cjrj00aqu6ydy2snu1lf36lgi'
 const maxBounds = [[1.860, 48.613], [2.824, 49.100]]
 const initCenter = [2.342, 48.854]
@@ -18,34 +18,42 @@ export default class ParisPopMap extends Component {
   constructor (props) {
     super(props)
     this.c = props.appRootClass
+    this.state = { webgl: false }
     this.h2r = new Parser()
     this.flyTo = this.flyTo.bind(this)
     this.zoomTo = this.zoomTo.bind(this)
     this.flyAndZoomTo = this.flyAndZoomTo.bind(this)
+  }
 
-    // Detect WebGLRenderingContext
+  componentDidMount () {
     const canvas = document.createElement('canvas')
-    const webGl = canvas.getContext('webgl')
-    const expWebGl = canvas.getContext('experimental-webgl')
-    if (webGl || expWebGl) this.webgl = true
-    else this.webgl = false
+    const webgl = canvas.getContext('webgl') ||
+      canvas.getContext('experimental-webgl')
+    if (webgl) this.setState({ webgl })
+    return
   }
 
   flyTo (lon, lat) {
-    if (this.mapBoxGL && this.mapBoxGL.flyTo) this.mapBoxGL.flyTo(lon, lat)
-    if (this.leaflet && this.leaflet.flyTo) this.leaflet.flyTo(lon, lat)
+    if (this.mapBoxGL &&
+      this.mapBoxGL.flyTo) this.mapBoxGL.flyTo(lon, lat)
+    if (this.leaflet &&
+      this.leaflet.flyTo) this.leaflet.flyTo(lon, lat)
     return [lon, lat]
   }
 
   zoomTo (z) {
-    if (this.mapBoxGL && this.mapBoxGL.zoomTo) this.mapBoxGL.zoomTo(z)
-    if (this.leaflet && this.leaflet.zoomTo) this.leaflet.zoomTo(z)
+    if (this.mapBoxGL &&
+      this.mapBoxGL.zoomTo) this.mapBoxGL.zoomTo(z)
+    if (this.leaflet &&
+      this.leaflet.zoomTo) this.leaflet.zoomTo(z)
     return z
   }
 
   flyAndZoomTo (lon, lat, z) {
-    if (this.mapBoxGL && this.mapBoxGL.flyAndZoomTo) this.mapBoxGL.flyAndZoomTo(lon, lat, z)
-    if (this.leaflet && this.leaflet.flyAndZoomTo) this.leaflet.flyAndZoomTo(lon, lat, z)
+    if (this.mapBoxGL &&
+      this.mapBoxGL.flyAndZoomTo) this.mapBoxGL.flyAndZoomTo(lon, lat, z)
+    if (this.leaflet &&
+      this.leaflet.flyAndZoomTo) this.leaflet.flyAndZoomTo(lon, lat, z)
     return {
       center: [lon, lat],
       zoom: z
@@ -53,7 +61,8 @@ export default class ParisPopMap extends Component {
   }
 
   render () {
-    const { c, props, state, webgl } = this
+    const { c, props, state } = this
+    const { webgl } = state
     const {
       pageIsReady,
       places,
