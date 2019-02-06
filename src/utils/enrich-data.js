@@ -35,21 +35,53 @@ function enrichData (data) {
   const filteredPlaces = unfilteredPlaces.filter(p => p.publish)
   const places = filteredPlaces.map(p => {
     // Getting persons, areas and notions from p.text
+    const _place_types = [p.type]
     const _persons = []
     const _areas = []
     const _notions = []
-    const _place_types = [p.type]
-    const div = document.createElement('div')
-    div.innerHTML = p.text
-    const spans = div.querySelectorAll('span')
-    for (let i = 0 ; i < spans.length ; i++) {
-      const span = spans[i]
+    const _display_text = document.createElement('div')
+    _display_text.innerHTML = p.text
+    const $sources = document.createElement('div')
+    $sources.innerHTML = p.sources
+    const sources = $sources.querySelectorAll('span.source')
+    const sourcesArr = []
+    for (let source of sources) sourcesArr.push(source)
+    const _display_sources = sourcesArr.map(s => {
+      const urlRegexp = /((http|ftp|https):\/\/)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/igm
+      return s.innerHTML.replace(urlRegexp, txt => `<a href="${txt}" target="_blank">${txt}</a>`)
+    })
+
+    // Handle data-* spans (links between cards, people markup, sources markup...)
+    let whileCnt = 0
+    while (_display_text.querySelector('span:not([data-handled])') && whileCnt < 100) {
+      const span = _display_text.querySelector('span:not([data-handled])')
       const person = span.getAttribute('data-person')
       const area = span.getAttribute('data-place')
       const notion = span.getAttribute('data-notion')
-      if (person) _persons.push(person)
-      if (area) _areas.push(area)
-      if (notion) _notions.push(notion)
+      const source = span.getAttribute('data-source')
+      const link = span.getAttribute('data-link')
+      if (person) {
+        _persons.push(person)
+        const spanContent = span.innerHTML
+        span.innerHTML = `<a>${spanContent}</a>`
+      } else if (area) {
+        _areas.push(area)
+        const spanContent = span.innerHTML
+        span.innerHTML = `<a>${spanContent}</a>`
+      } else if (notion) {
+        _notions.push(notion)
+        const spanContent = span.innerHTML
+        span.innerHTML = `<a>${spanContent}</a>`
+      } else if (source) {
+        span.innerHTML += ` <sup>${source}</sup>`
+        const spanContent = span.innerHTML
+        span.innerHTML = `<a>${spanContent}</a>`
+      } else if (link) {
+        const spanContent = span.innerHTML
+        span.innerHTML = `<a>${spanContent}</a>`
+      }
+      span.setAttribute('data-handled', 'true')
+      whileCnt ++
     }
 
     // Getting periods from matching p.lifespan and data[2]
@@ -67,9 +99,10 @@ function enrichData (data) {
       city: p.city,           district: p.district,   photo: p.photo,
       exists: p.exists,       text: p.text,           lifespan: p.lifespan,
       type: p.type,           author: p.author,       long_read_intro: p.long_read_intro,
-      long_read: p.long_read, _chapters: p.chapters,   _persons,
-      _areas,                 _notions,               _periods,
-      _place_types
+      long_read: p.long_read, sources: p.sources,     _chapters: p.chapters,
+      _persons,               _areas,                 _notions,
+      _periods,               _place_types,           _display_text,
+      _display_sources
     }
   })
   

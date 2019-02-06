@@ -18,6 +18,7 @@ export default [{
     photo: v => v.trim(),
     exists: v => (v === 'oui' || v === 'rehab' || v === 'maybe'),
     text: v => v,
+    sources: v => v,
     lifespan: v => {
       const bounds = v.split('-').map(t => t.trim())
       if (!bounds.length) bounds.push('01/01/0000')

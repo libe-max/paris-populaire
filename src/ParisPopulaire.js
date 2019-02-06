@@ -17,6 +17,10 @@ import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 /* [WIP] host this file in libe-static-ressources once the work is done */
 import './parispop.css'
 
+// [WIP] Bring back here the init data from ParisPopMap
+const initCenter = [2.342, 48.854]
+const initZoom = [11.5]
+
 export default class ParisPopulaire extends Component {
   
   /* * * * * * * * * * * * * * * *
@@ -42,7 +46,6 @@ export default class ParisPopulaire extends Component {
     this.toggleIntro = this.toggleIntro.bind(this)
     this.suggestIntro = this.suggestIntro.bind(this)
     this.interpretUrlQuery = this.interpretUrlQuery.bind(this)
-    this.activateRandomPlace = this.activateRandomPlace.bind(this)
     this.activatePlace = this.activatePlace.bind(this)
     this.unactivatePlace = this.unactivatePlace.bind(this)
 
@@ -53,7 +56,6 @@ export default class ParisPopulaire extends Component {
         error: err
       })
     }).then(r => {
-      console.log(r)
       const ret = enrichData(r)
       const interpretedState = this.interpretUrlQuery(window.location.search, ret)
       this.setState({
@@ -146,6 +148,7 @@ export default class ParisPopulaire extends Component {
     const { page } = this.state
     if (a && page === 'intro') return
     if (!a && page !== 'intro') return
+    if (page === 'cards') this.unactivatePlace() // [WIP] not so clean (duplicate setState)
     return this.setState({ page: a ? 'intro' : 'map' })
   }
 
@@ -183,18 +186,20 @@ export default class ParisPopulaire extends Component {
    *
    * * * * * * * * * * * * * * * */
   setFilter (type = null, value) {
-    const { data } = this.state
+    const { state, parisPopMap, filtersBlock } = this
+    const { data } = state
     if (!data) return
     const typeExists = ['notions', 'periods', 'persons', 'chapters', 'areas', 'place_types']
       .indexOf(type) > -1
     const valueExists = typeExists ? data[type].some(filter => filter.id === value) : false
-    const $selectors = this.$filtersBlock.$root.querySelectorAll('select')
+    const $selectors = filtersBlock.$root.querySelectorAll('select')
     if (typeExists && valueExists) {
       for (let i = 0; i < $selectors.length; i++) {
         const $selector = $selectors[i]
         const selectorType = $selectors[i].getAttribute('data-type')
         if (selectorType !== type) $selector.value = 'placeholder'
       }
+      if (parisPopMap) parisPopMap.flyAndZoomTo(...initCenter, ...initZoom)
       return this.setState({
         page: 'map',
         active_filter: {
@@ -216,37 +221,36 @@ export default class ParisPopulaire extends Component {
 
   /* * * * * * * * * * * * * * * *
    *
-   * ACTIVATE RANDOM PLACE
-   *
-   * * * * * * * * * * * * * * * */
-  activateRandomPlace () {
-    const { data } = this.state
-    if (!data) return
-    const { places } = data
-    const randomPlace = places[Math.floor(Math.random() * places.length)]
-    return this.activatePlace(randomPlace.id)
-  }
-
-  /* * * * * * * * * * * * * * * *
-   *
    * ACTIVATE PLACE
    *
    * * * * * * * * * * * * * * * */
-  activatePlace (id) {
-    const { data } = this.state
+  activatePlace (id, options = {}) {
+    const { data, active_place_id: activePlaceId } = this.state
     if (!data) return
     const { places } = data
     const place = places.filter(place => place.id === id)[0]
     if (!place) return
+    const newState = {
+      page: 'cards',
+      active_place_id: id
+    }
+    if (activePlaceId && options.smooth) {
+      this.unactivatePlace()
+      return window.setTimeout(() => {
+        if (this.parisPopMap) this.parisPopMap.flyAndZoomTo(
+          place.longitude + 0.00216,
+          place.latitude,
+          17
+        )
+        this.setState(newState)
+      }, 200)
+    }
     if (this.parisPopMap) this.parisPopMap.flyAndZoomTo(
       place.longitude + 0.00216,
       place.latitude,
       17
     )
-    return this.setState({
-      page: 'cards',
-      active_place_id: id
-    })
+    return this.setState(newState)
   }
 
   /* * * * * * * * * * * * * * * *
@@ -308,7 +312,7 @@ export default class ParisPopulaire extends Component {
         <FiltersBlock activeFilter={state.active_filter}
           isActive={state.page === 'filters'}
           toggleFiltersPanel={this.toggleFiltersPanel}
-          ref={n => this.$filtersBlock = n}
+          ref={n => this.filtersBlock = n}
           setFilter={this.setFilter}
           appRootClass={c}
           filters={[
@@ -341,6 +345,7 @@ export default class ParisPopulaire extends Component {
         <ParisPopCard place={activePlace}
           activatePlace={this.activatePlace}
           unactivatePlace={this.unactivatePlace}
+          setFilter={this.setFilter}
           appRootClass={c} />
       </div>
     </div>
