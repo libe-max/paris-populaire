@@ -1,6 +1,6 @@
 # Paris Populaire
 
-This app has been built on top of the (Libé apps template)[https://github.com/libe-max/libe-apps-template], and uses custom NPM packages (Libé components)[https://github.com/libe-max/libe-components] and (Libé utils)[https://github.com/libe-max/libe-utils]
+This app has been built on top of the [Libé apps template](https://github.com/libe-max/libe-apps-template), and uses custom NPM packages [Libé components](https://github.com/libe-max/libe-components) and [Libé utils](https://github.com/libe-max/libe-utils)
 
 ## To do
 
