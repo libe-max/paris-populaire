@@ -4,7 +4,7 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 
 ## To do
 
-### Rédaction
+### Redaction
 
 - [ ] Ajouter les dates dans les fiches ?
 - [ ] Remplacer les maybe
@@ -19,6 +19,8 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 
 ### Code
 
+#### Before publication
+
 - [ ] Share component
 - [ ] Récupérer les images
 - [ ] Intro panel
@@ -27,6 +29,9 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Styliser l'app
 - [ ] Optimiser la position du btn back sur les cartes
 - [ ] Mettre le bon style pour le fond de carte
+
+### After publication
+
 - [ ] Faire un data preload
 - [ ] Commenter le code
 - [ ] Compléter README.md
