@@ -5,15 +5,6 @@ import Annotation from 'libe-components/lib/text-levels/Annotation'
 import MapBoxGL from './components/MapBoxGL'
 import LeafletMap from './components/LeafletMap'
 
-// [WIP] these params should be passed down to the ParisPopMap component
-import token from '../../.mapbox-token'
-// import mapStyle from './map-style.json'
-const mapStyle = 'mapbox://styles/libe-max/cjrj00aqu6ydy2snu1lf36lgi'
-const maxBounds = [[1.860, 48.613], [2.824, 49.100]]
-const initCenter = [2.342, 48.854]
-const initZoom = [11.5]
-const minZoom = 10
-
 export default class ParisPopMap extends Component {
   constructor (props) {
     super(props)
@@ -64,12 +55,10 @@ export default class ParisPopMap extends Component {
     const { c, props, state } = this
     const { webgl } = state
     const {
-      pageIsReady,
-      places,
-      activeFilter,
-      activePlaceId,
-      activatePlace,
-      unactivatePlace
+      pageIsReady,   places,         activeFilter,
+      activePlaceId, activatePlace,  unactivatePlace,
+      mapboxToken,   vectorMapStyle, maxBounds,
+      initCenter,    initZoom,       minZoom
     } = props
 
     const mapboxChildren = places.map(place => {
@@ -98,11 +87,11 @@ export default class ParisPopMap extends Component {
     if (!pageIsReady) return <div />
     return <div className={`${c}__map`}>{
       webgl
-        ? <MapBoxGL token={token}
+        ? <MapBoxGL token={mapboxToken}
           ref={n => this.mapBoxGL = n}
           minZoom={minZoom}
           maxBounds={maxBounds}
-          mapStyle={mapStyle}
+          mapStyle={vectorMapStyle}
           initCenter={initCenter}
           initZoom={initZoom}>
           {mapboxChildren}

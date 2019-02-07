@@ -17,9 +17,13 @@ import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 /* [WIP] host this file in libe-static-ressources once the work is done */
 import './parispop.css'
 
-// [WIP] Bring back here the init data from ParisPopMap
+import mapboxToken from './.mapbox-token'
+// import vectorMapStyle from './map-style.json'
+const vectorMapStyle = 'mapbox://styles/libe-max/cjrj00aqu6ydy2snu1lf36lgi'
+const maxBounds = [[1.860, 48.613], [2.824, 49.100]]
 const initCenter = [2.342, 48.854]
 const initZoom = [11.5]
+const minZoom = 10
 
 export default class ParisPopulaire extends Component {
   
@@ -303,7 +307,13 @@ export default class ParisPopulaire extends Component {
           activatePlace={this.activatePlace}
           unactivatePlace={this.unactivatePlace}
           activePlaceId={activePlaceId}
-          places={data ? data.places : []} />
+          places={data ? data.places : []}
+          mapboxToken={mapboxToken}
+          vectorMapStyle={vectorMapStyle}
+          maxBounds={maxBounds}
+          initCenter={initCenter}
+          initZoom={initZoom}
+          minZoom={minZoom}/>
       </div>
       <div className={`${c}__caption-panel`}>
         <ParisPopCaption appRootClass={c} />
