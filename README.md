@@ -22,10 +22,11 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Récupérer les images
 - [ ] Intro panel
 - [ ] Prev / Next
+- [ ] Vous êtes ici
 - [ ] Styliser l'app
 - [ ] Optimiser la position du btn back sur les cartes
-- [ ] Mettre le style de la carte
+- [ ] Mettre le bon style pour le fond de carte
 - [ ] Faire un data preload
-- [ ] Comments in code
-- [ ] Write README.md
+- [ ] Commenter le code
+- [ ] Compléter README.md
 - [ ] Standalone components —> libe-components
