@@ -14,7 +14,7 @@ This app has been built on top of the [Libé apps template](https://github.com/l
   - [ ] Il y a un signe = entre data-*** et sa valeur
   - [ ] Il y a du contenu à l'intérieur de la balise span (<span>Du texte ici</span>)
   - [ ] Les <span data-***> ne sont pas imbriquées les unes dans les autres, à l'exception des data-source, qui peuvent contenir toutes les autres sauf une autre data-source
-- [ ] S'assurer qu'il y a le même nombre de balises ouvrantes que fermantes
+  - [ ] S'assurer qu'il y a le même nombre de balises ouvrantes que fermantes
 
 ### Code
 
