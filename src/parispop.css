@@ -493,6 +493,10 @@
   margin-bottom: .5rem;
 }
 
+.parispop__card-source.parispop__card-source_active {
+  background: blue;
+}
+
 @media screen and (max-width: 63rem) {
   .parispop__card-close {
     top: 1rem;

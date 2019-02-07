@@ -11,8 +11,10 @@ export default class ParisPopCard extends Component {
   constructor (props) {
     super(props)
     this.c = props.appRootClass
+    this.state = { active_source_id: null }
     this.h2r = new Parser()
     this.handleClicksInCard = this.handleClicksInCard.bind(this)
+    this.activateSource = this.activateSource.bind(this)
   }
 
   componentDidMount () {
@@ -42,22 +44,30 @@ export default class ParisPopCard extends Component {
       const type = 'notions'
       const value = isPerson.getAttribute('data-notion')
       return this.props.setFilter(type, value)
-    } else if (isNotion) {
-      const type = 'notions'
-      const value = isPerson.getAttribute('data-notion')
-      return this.props.setFilter(type, value)
     } else if (isLink) {
       const id = parseInt(isLink.getAttribute('data-link'), 10)
       return this.props.activatePlace(id, { smooth: true })
     } else if (isSource) {
-      // Work here !
+      const sourceId = parseInt(isSource.getAttribute('data-source'), 10) - 1
+      return this.activateSource(sourceId)
     }
     return
   }
 
+  activateSource (id) {
+    const { props, $root } = this
+    const { _display_sources: sources } = props.place
+    if (typeof id !== 'number' ||
+      id >= sources.length ||
+      id < 0) return
+    $root.parentNode.scrollTop = $root.clientHeight
+    return this.setState({ active_source_id: id })
+  }
+
   render () {
-    const { props, c, h2r } = this
+    const { props, state, c, h2r } = this
     const { unactivatePlace, place } = props
+    const { active_source_id: activeSourceId } = state
     if (!place) return <div className={`${c}__card`} ref={n => this.$root = n} />
 
     const photo = place.photo
@@ -92,8 +102,12 @@ export default class ParisPopCard extends Component {
       <div className={`${c}__card-sources`}>
         <BlockTitle level={4}>Sources</BlockTitle>
         {displaySources.map((s, i) => {
+          const activeClass = (i === activeSourceId)
+            ? ` ${c}__card-source_active`
+            : ''
           return <div key={i}
-            className={`${c}__card-source`}>
+            id={`${c}__card-source-${i}`}
+            className={`${c}__card-source${activeClass}`}>
             <Annotation literary>
               {`(${i + 1})`} {h2r.parse(s)}
             </Annotation>

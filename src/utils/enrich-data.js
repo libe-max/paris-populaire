@@ -47,7 +47,7 @@ function enrichData (data) {
     const sourcesArr = []
     for (let source of sources) sourcesArr.push(source)
     const _display_sources = sourcesArr.map(s => {
-      const urlRegexp = /((http|ftp|https):\/\/)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/igm
+      const urlRegexp = /https?:\/\/[a-z0-9-._~/?#[\]@!$&'()*+,;=:%]+/igm
       return s.innerHTML.replace(urlRegexp, txt => `<a href="${txt}" target="_blank">${txt}</a>`)
     })
 
