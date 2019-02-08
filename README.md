@@ -11,6 +11,7 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Remplacer les maybe
 - [ ] Mettre les bons liens vers les photos (idéalement hébergées dans le quai)
 - [ ] Ajouter les crédits des photos dans une colonne dédiée
+- [ ] Pré-remplir les tweets de partage
 - [ ] S'assurer que les <span data-***> sont bien renseignés, c'est à dire :
   - [ ] La valeur de l'attribut data-*** est entre guillemets doubles informatiques ( " )
   - [ ] Il y a un signe = entre data-*** et sa valeur
@@ -30,6 +31,7 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Styliser l'app
 - [ ] Optimiser la position du btn back sur les cartes
 - [ ] Mettre le bon style pour le fond de carte
+- [ ] Leaflet fallback
 
 ### After publication
 
