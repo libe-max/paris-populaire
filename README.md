@@ -7,6 +7,7 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 ### Redaction
 
 - [ ] Ajouter les dates dans les fiches ?
+- [ ] Rédiger le texte d'intro (sera ajouté dans un onglet du spreadsheet)
 - [ ] Remplacer les maybe
 - [ ] Mettre les bons liens vers les photos (idéalement hébergées dans le quai)
 - [ ] Ajouter les crédits des photos dans une colonne dédiée
