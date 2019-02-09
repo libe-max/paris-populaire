@@ -193,17 +193,17 @@ export default class ParisPopulaire extends Component {
     const { state, parisPopMap, filtersBlock } = this
     const { data } = state
     if (!data) return
-    const typeExists = ['notions', 'periods', 'persons', 'chapters', 'areas', 'place_types']
+    const typeExists = [/*'notions',*/ 'periods', /*'persons', 'chapters', 'areas',*/ 'place_types']
       .indexOf(type) > -1
     const valueExists = typeExists ? data[type].some(filter => filter.id === value) : false
     const $selectors = filtersBlock.$root.querySelectorAll('select')
+    if (parisPopMap) parisPopMap.flyAndZoomTo(...initCenter, ...initZoom)
     if (typeExists && valueExists) {
       for (let i = 0; i < $selectors.length; i++) {
         const $selector = $selectors[i]
         const selectorType = $selectors[i].getAttribute('data-type')
         if (selectorType !== type) $selector.value = 'placeholder'
       }
-      if (parisPopMap) parisPopMap.flyAndZoomTo(...initCenter, ...initZoom)
       return this.setState({
         page: 'map',
         active_filter: {
@@ -330,7 +330,7 @@ export default class ParisPopulaire extends Component {
             { type: 'chapters', label: 'Chapitres', data: data ? data.chapters || [] : [] },
             { type: 'areas', label: 'Zones géographiques', data: data ? data.areas || [] : [] },*/
             { type: 'periods', label: 'Périodes', data: data ? data.periods || [] : [] },
-            { type: 'persons', label: 'Personages', data: data ? data.persons || [] : [] },
+            /*{ type: 'persons', label: 'Personages', data: data ? data.persons || [] : [] },*/
             { type: 'place_types', label: 'Types de lieux', data: data ? data.place_types || [] : [] }
           ]} />
       </div>

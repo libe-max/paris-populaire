@@ -62,16 +62,16 @@ function enrichData (data) {
       const link = span.getAttribute('data-link')
       if (person) {
         _persons.push(person)
-        const spanContent = span.innerHTML
-        span.innerHTML = `<a>${spanContent}</a>`
+        // const spanContent = span.innerHTML
+        // span.innerHTML = `<a>${spanContent}</a>`
       } else if (area) {
         _areas.push(area)
-        const spanContent = span.innerHTML
-        span.innerHTML = `<a>${spanContent}</a>`
+        // const spanContent = span.innerHTML
+        // span.innerHTML = `<a>${spanContent}</a>`
       } else if (notion) {
         _notions.push(notion)
-        const spanContent = span.innerHTML
-        span.innerHTML = `<a>${spanContent}</a>`
+        // const spanContent = span.innerHTML
+        // span.innerHTML = `<a>${spanContent}</a>`
       } else if (source) {
         span.innerHTML += ` <sup>${source}</sup>`
         const spanContent = span.innerHTML

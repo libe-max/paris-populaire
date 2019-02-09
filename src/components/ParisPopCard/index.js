@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Parser } from 'html-to-react'
 import getParent from 'libe-utils/get-closest-dom-parent'
+import ShareArticle from 'libe-components/lib/blocks/ShareArticle'
 import Slug from 'libe-components/lib/text-levels/Slug'
 import SectionTitle from 'libe-components/lib/text-levels/SectionTitle'
 import BlockTitle from 'libe-components/lib/text-levels/BlockTitle'
@@ -74,24 +75,30 @@ export default class ParisPopCard extends Component {
       ? 'https://upload.wikimedia.org/wikipedia/commons/2/26/Barricades_rue_Saint-Maur._Avant_l%27attaque%2C_25_juin_1848._Apr%C3%A8s_l%E2%80%99attaque%2C_26_juin_1848.jpg'
       : null
     const {
-      address,
-      name,
-      text,
-      author,
-      long_read,
+      id, address, name,
+      text, author, long_read,
       long_read_intro,
       _display_text: displayText,
       _display_sources: displaySources
     } = place
+    const { origin, pathname } = window.location
+    const tweetUrl = origin + pathname + `?active_place_id=${id}`
 
     return <div className={`${c}__card`} ref={n => this.$root = n}>
       <button className={`${c}__card-close`} onClick={unactivatePlace} />
       <div className={`${c}__card-illustration`}>{photo ? <img src={photo} /> : ''}</div>
       <div className={`${c}__card-slug`}><Slug big>{address}</Slug></div>
       <div className={`${c}__card-title`}><SectionTitle level={2}>{h2r.parse(name)}</SectionTitle></div>
-      <div className={`${c}__card-share`}>Share card !</div>
       <div className={`${c}__card-content`}><Paragraph>{h2r.parse(displayText.innerHTML)}</Paragraph></div>
       <div className={`${c}__card-signature`}><Paragraph>{author}</Paragraph></div>
+      <div className={`${c}__card-share`}>
+        <BlockTitle level={4}>Partager</BlockTitle>
+        <ShareArticle short
+          iconsOnly
+          url={tweetUrl}
+          tweetText={`Vous connaissez l'histoire de ${name} ?`}
+          tweetVia='@libe, @Libe_Labo' />
+      </div>
       <div className={`${c}__card-read-also`}>{long_read
         ? <div>
           <BlockTitle level={4}>À lire aussi</BlockTitle>
@@ -114,7 +121,6 @@ export default class ParisPopCard extends Component {
           </div>
         })}
       </div>
-      <div className={`${c}__card-share`}>Share card !</div>
     </div>
   }
 }
