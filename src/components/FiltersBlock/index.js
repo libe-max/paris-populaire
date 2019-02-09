@@ -11,17 +11,20 @@ export default class FiltersBlock extends Component {
   render () {
     const { c, props } = this
     const { isActive, activeFilter, filters, toggleFiltersPanel, setFilter } = props
-    const activeFilterDisplayName = activeFilter
+    const activeFilterWithData = activeFilter
       ? filters.filter(filter => {
         return filter.type === activeFilter.type
-      })[0].data.filter(option => {
+      })[0]
+      : null
+    const activeFilterDisplayName = activeFilterWithData
+      ? activeFilterWithData.data.filter(option => {
         return activeFilter.value === option.id
       })[0].name
-      : ''
+      : null
 
     const classes = [`${c}__filters-block`]
     if (isActive) classes.push(`${c}__filters-block_active`)
-    if (activeFilter) classes.push(`${c}__filters-block_with-filter`)
+    if (activeFilterDisplayName) classes.push(`${c}__filters-block_with-filter`)
 
     return <div className={classes.join(' ')}
       ref={n => this.$root = n}>

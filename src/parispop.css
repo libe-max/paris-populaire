@@ -462,6 +462,20 @@
   margin-bottom: 1rem;
 }
 
+.parispop__card-share {
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
+
+.parispop__card-share .lblb-share-article {
+  margin-left: 1rem;
+}
+
+.parispop__card-share .lblb-share-article > * {
+  min-width: 2rem;
+}
+
 .parispop__card-content span[data-source] a {
   border-bottom: 1px solid rgba(204, 204, 204, 0);
 }

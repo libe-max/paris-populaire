@@ -26,6 +26,12 @@ export default class ParisPopCard extends Component {
     this.$root.addEventListener('click', this.handleClicksInCard)
   }
 
+  componentDidUpdate (prevProps) {
+    const prevPlace = prevProps.place || {}
+    const place = this.props.place || {}
+    if (place.id !== prevPlace.id) this.setState({ active_source_id: null })
+  }
+
   handleClicksInCard (e) {
     const isPerson = getParent(e.target, 'span[data-person]')
     const isArea = getParent(e.target, 'span[data-place]')
@@ -39,11 +45,11 @@ export default class ParisPopCard extends Component {
       return this.props.setFilter(type, value)
     } else if (isArea) {
       const type = 'areas'
-      const value = isPerson.getAttribute('data-place')
+      const value = isArea.getAttribute('data-place')
       return this.props.setFilter(type, value)
     } else if (isNotion) {
       const type = 'notions'
-      const value = isPerson.getAttribute('data-notion')
+      const value = isNotion.getAttribute('data-notion')
       return this.props.setFilter(type, value)
     } else if (isLink) {
       const id = parseInt(isLink.getAttribute('data-link'), 10)
