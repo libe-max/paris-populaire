@@ -23,7 +23,7 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 
 #### Before publication
 
-- [ ] Share component
+- [x] Share component
 - [ ] Récupérer les images
 - [ ] Intro panel
 - [ ] Prev / Next
@@ -33,7 +33,7 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Mettre le bon style pour le fond de carte
 - [ ] Leaflet fallback
 
-### After publication
+#### After publication
 
 - [ ] Faire un data preload
 - [ ] Commenter le code
