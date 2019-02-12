@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
-import { Layer, Feature, Marker } from 'react-mapbox-gl'
+import { Layer, Feature, Marker as MbMarker } from 'react-mapbox-gl'
+import { Marker as LfMarker } from 'react-leaflet'
 import { Parser } from 'html-to-react'
 import Annotation from 'libe-components/lib/text-levels/Annotation'
 import MapBoxGL from './components/MapBoxGL'
 import LeafletMap from './components/LeafletMap'
 
 export default class ParisPopMap extends Component {
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * CONSTRUCTOR
+   *
+   * * * * * * * * * * * * * * * */
   constructor (props) {
     super(props)
     this.c = props.appRootClass
@@ -16,6 +23,11 @@ export default class ParisPopMap extends Component {
     this.flyAndZoomTo = this.flyAndZoomTo.bind(this)
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * DID MOUNT
+   *
+   * * * * * * * * * * * * * * * */
   componentDidMount () {
     const canvas = document.createElement('canvas')
     const webgl = canvas.getContext('webgl') ||
@@ -24,6 +36,11 @@ export default class ParisPopMap extends Component {
     return
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * FLY TO
+   *
+   * * * * * * * * * * * * * * * */
   flyTo (lon, lat) {
     if (this.mapBoxGL &&
       this.mapBoxGL.flyTo) this.mapBoxGL.flyTo(lon, lat)
@@ -32,6 +49,11 @@ export default class ParisPopMap extends Component {
     return [lon, lat]
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * ZOOM TO
+   *
+   * * * * * * * * * * * * * * * */
   zoomTo (z) {
     if (this.mapBoxGL &&
       this.mapBoxGL.zoomTo) this.mapBoxGL.zoomTo(z)
@@ -40,6 +62,11 @@ export default class ParisPopMap extends Component {
     return z
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * FLY AND ZOOM TO
+   *
+   * * * * * * * * * * * * * * * */
   flyAndZoomTo (lon, lat, z) {
     if (this.mapBoxGL &&
       this.mapBoxGL.flyAndZoomTo) this.mapBoxGL.flyAndZoomTo(lon, lat, z)
@@ -51,9 +78,15 @@ export default class ParisPopMap extends Component {
     }
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * RENDER
+   *
+   * * * * * * * * * * * * * * * */
   render () {
     const { c, props, state } = this
-    const { webgl } = state
+    // const { webgl } = state
+    const webgl = false
     const {
       pageIsReady,   places,         activeFilter,
       activePlaceId, activatePlace,  unactivatePlace,
@@ -61,13 +94,14 @@ export default class ParisPopMap extends Component {
       initCenter,    initZoom,       minZoom
     } = props
 
+    // Mapbox children
     const mapboxChildren = places.map(place => {
       const { longitude: lon, latitude: lat, id, exists } = place
       const filterType = activeFilter ? activeFilter.type : null
       const filterValue = activeFilter ? activeFilter.value : null
       const placeFilters = place[`_${filterType}`] || []
       const inFilter = filterValue ? (placeFilters.indexOf(filterValue) > -1) : true
-      return <Marker key={id}
+      return <MbMarker key={id}
         anchor="center"
         coordinates={[lon, lat]}
         onClick={() => activatePlace(id)}>
@@ -81,7 +115,13 @@ export default class ParisPopMap extends Component {
             <Annotation>{this.h2r.parse(place.name)}</Annotation>
           </div>
         </div>
-      </Marker>
+      </MbMarker>
+    })
+
+    // Leaflet children
+    const leafletChildren = places.map(place => {
+      const { longitude: lon, latitude: lat, id, exists } = place
+      return <LfMarker position={[lat, lon]} />
     })
 
     if (!pageIsReady) return <div />
@@ -96,7 +136,14 @@ export default class ParisPopMap extends Component {
           initZoom={initZoom}>
           {mapboxChildren}
         </MapBoxGL>
-        : <LeafletMap places={places} />
+        : <LeafletMap
+          ref={n => this.leaflet = n}
+          minZoom={minZoom}
+          maxBounds={maxBounds}
+          initCenter={initCenter}
+          initZoom={initZoom}>
+          {leafletChildren}
+        </LeafletMap>
     }</div>
   }
 }

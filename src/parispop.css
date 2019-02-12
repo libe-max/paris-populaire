@@ -341,9 +341,20 @@
  * * * * * * * * * * * * * */
 
 .parispop__map {
-  background: violet;
+  background: #FFFFFF;
   width: 100%;
   height: 100%;
+}
+
+.parispop__map
+  .leaflet-container {
+    width: 100%;
+    height: 100%;
+}
+
+.parispop__map
+  .leaflet-pane {
+    z-index: 0 !important; 
 }
 
 /* Dirty fix for mapbox-gl mess */

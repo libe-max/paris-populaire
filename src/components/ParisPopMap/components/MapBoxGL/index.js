@@ -1,27 +1,40 @@
 import React, { Component } from 'react'
-import ReactMapboxGL, { Layer, Feature } from 'react-mapbox-gl'
+import MapboxGL, { Layer, Feature } from 'react-mapbox-gl'
 import PageTitle from 'libe-components/lib/text-levels/PageTitle'
 
 export default class MapBoxGL extends Component {
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * CONSTRUCTOR
+   *
+   * * * * * * * * * * * * * * * */
   constructor (props) {
     super(props)
-    this.Map = ReactMapboxGL({
-      minZoom: props.minZoom,
-      accessToken: props.token
-    })
     this.state = {
       map: {
         center: props.initCenter,
         zoom: props.initZoom,
         maxBounds: props.maxBounds,
+        minZoom: props.minZoom,
+        token: props.token,
         style: props.mapStyle
       }
     }
+    this.Map = MapboxGL({
+      minZoom: props.minZoom,
+      accessToken: props.token
+    })
     this.flyTo = this.flyTo.bind(this)
     this.zoomTo = this.zoomTo.bind(this)
     this.flyAndZoomTo = this.flyAndZoomTo.bind(this)
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * FLY TO
+   *
+   * * * * * * * * * * * * * * * */
   flyTo (lon, lat) {
     this.setState(({ map }) => ({
       map: {
@@ -31,6 +44,11 @@ export default class MapBoxGL extends Component {
     }))
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * ZOOM TO
+   *
+   * * * * * * * * * * * * * * * */
   zoomTo (z) {
     this.setState(({ map }) => ({
       map: {
@@ -40,6 +58,11 @@ export default class MapBoxGL extends Component {
     }))
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * FLY AND ZOOM TO
+   *
+   * * * * * * * * * * * * * * * */
   flyAndZoomTo (lon, lat, z) {
     this.setState(({ map }) => ({
       map: {
@@ -50,6 +73,11 @@ export default class MapBoxGL extends Component {
     }))
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * RENDER
+   *
+   * * * * * * * * * * * * * * * */
   render () {
     const { state, props, Map } = this
     const { children } = props
