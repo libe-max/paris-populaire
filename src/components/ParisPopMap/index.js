@@ -85,8 +85,7 @@ export default class ParisPopMap extends Component {
    * * * * * * * * * * * * * * * */
   render () {
     const { c, props, state } = this
-    // const { webgl } = state
-    const webgl = false
+    const { webgl } = state
     const {
       pageIsReady,   places,         activeFilter,
       activePlaceId, activatePlace,  unactivatePlace,
