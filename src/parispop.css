@@ -324,13 +324,13 @@
 }
 
 .parispop__caption-field
-  .parispop__map-marker {
+  .parispop__mb-map-marker {
     margin-right: .5rem;
     cursor: default;
 }
 
 .parispop__caption-field
-  .parispop__map-marker:hover {
+  .parispop__mb-map-marker:hover {
     box-shadow: none;
 }
 
@@ -346,18 +346,7 @@
   height: 100%;
 }
 
-.parispop__map
-  .leaflet-container {
-    width: 100%;
-    height: 100%;
-}
-
-.parispop__map
-  .leaflet-pane {
-    z-index: 0 !important; 
-}
-
-/* Dirty fix for mapbox-gl mess */
+/* Mapbox */
 .parispop__map
   .mapboxgl-marker {
     z-index: 0 !important;
@@ -367,9 +356,31 @@
   .mapboxgl-marker:hover {
     z-index: 1 !important;
 }
-/* End of dirty fix for mapbox-gl mess */
 
-.parispop__map-marker {
+/* Leaflet */
+.parispop__map
+  .leaflet-container {
+    width: 100%;
+    height: 100%;
+}
+
+.parispop__map
+  .leaflet-pane {
+    z-index: 0; 
+}
+
+.parispop__map
+  .leaflet-top {
+    z-index: 1; 
+}
+
+.parispop__map
+  .leaflet-bottom {
+    z-index: 1; 
+}
+
+/* Markers */
+.parispop__mb-map-marker {
   position: relative;
   width: 1rem;
   height: 1rem;
@@ -378,29 +389,43 @@
   transition: opacity 200ms;
 }
 
-.parispop__map-marker:hover {
+.parispop__lf-map-marker {
+  stroke-width: 0;
+  fill-opacity: 1;
+  transition: opacity 200ms
+}
+
+.parispop__mb-map-marker:hover,
+.parispop__lf-map-marker:hover {
   box-shadow: 0 0 1rem 0 rgba(33, 33, 33, .3);
 }
 
-.parispop__map-marker_exists {
+.parispop__mb-map-marker_exists,
+.parispop__lf-map-marker_exists {
   background-color: #8B1002;
+  fill: #8B1002;
 }
 
-.parispop__map-marker_not-exists {
+.parispop__mb-map-marker_not-exists,
+.parispop__lf-map-marker_not-exists {
   background-color: #FFFFFF;
+  fill: #FFFFFF;
+  stroke: #8B1002;
+  stroke-width: .25rem;
   box-shadow: inset 0 0 0 .25rem #8B1002;
 }
 
-.parispop__map-marker_not-exists:hover {
+.parispop__mb-map-marker_not-exists:hover,
+.parispop__lf-map-marker_not-exists:hover {
   box-shadow: inset 0 0 0 .25rem #8B1002,
     0 0 1rem 0 rgba(33, 33, 33, .3);
 }
 
-.parispop__map-marker_out-filter {
+.parispop__mb-map-marker_out-filter {
   opacity: 0.2;
 }
 
-.parispop__map-marker-tooltip {
+.parispop__mb-map-marker-tooltip {
   position: absolute;
   z-index: 2;
   top: 0;
@@ -414,14 +439,43 @@
   justify-content: center;
 }
 
-.parispop__map-marker:hover
-  .parispop__map-marker-tooltip {
+.parispop__mb-map-marker:hover
+  .parispop__mb-map-marker-tooltip {
     display: flex;
 }
 
-.parispop__map-marker-tooltip
+.parispop__mb-map-marker-tooltip
   .lblb-annotation {
     text-align: center;
+}
+
+.parispop__map
+  .leaflet-popup-content-wrapper {
+    border-radius: 0;
+    padding: 0;
+    transform: translateY(1rem);
+}
+
+.parispop__map
+  .leaflet-popup-tip-container {
+    display: none;
+}
+
+.parispop__map
+  .leaflet-popup-close-button {
+    display: none;
+}
+
+.parispop__map
+  .leaflet-popup-content {
+    display: flex;
+    justify-content: center;
+}
+
+.parispop__map
+  .leaflet-popup-content
+    .lblb-annotation {
+      text-align: center;
 }
 
 /* * * * * * * * * * * * * * 

@@ -12,13 +12,57 @@ export default class LeafletMap extends Component {
     super(props)
     this.state = {
       map: {
-        center: props.initCenter.reverse(),
+        center: [...props.initCenter].reverse(),
         zoom: props.initZoom[0],
         maxBounds: props.maxBounds.map(bound => bound.reverse()),
-        minZoom: props.minZoom
+        minZoom: props.minZoom,
+        rasterTiles: props.rasterTiles,
+        rasterAttribution: props.rasterAttribution
       }
     }
+    this.flyTo = this.flyTo.bind(this)
+    this.zoomTo = this.zoomTo.bind(this)
+    this.flyAndZoomTo = this.flyAndZoomTo.bind(this)
   }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * FLY TO
+   *
+   * * * * * * * * * * * * * * * */
+  flyTo (lon, lat) {
+    const { node } = this
+    if (!node ||
+      !node.leafletElement ||
+      !node.leafletElement.flyTo) return
+    node.leafletElement.flyTo([lat, lon + 0.00216])
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * ZOOM TO
+   *
+   * * * * * * * * * * * * * * * */
+  zoomTo (z) {
+    const { node } = this
+    if (!node ||
+      !node.leafletElement ||
+      !node.leafletElement.setZoom) return
+    node.leafletElement.setZoom(z)
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * FLY AND ZOOM TO
+   *
+   * * * * * * * * * * * * * * * */
+  flyAndZoomTo (lon, lat, z) {
+    const { node } = this
+    if (!node ||
+      !node.leafletElement ||
+      !node.leafletElement.setView) return
+    node.leafletElement.setView([lat, lon + 0.00216], z)
+  }  
 
   /* * * * * * * * * * * * * * * *
    *
@@ -32,10 +76,11 @@ export default class LeafletMap extends Component {
     return <Leaflet center={map.center}
       zoom={map.zoom}
       maxBounds={map.maxBounds}
-      minZoom={map.minZoom}>
+      minZoom={map.minZoom}
+      ref={n => this.node = n}>
       <TileLayer
-        url='https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png'
-        attribution='&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors' />
+        url={map.rasterTiles}
+        attribution={map.rasterAttribution} />
       {children}
     </Leaflet>
   }

@@ -27,15 +27,17 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Récupérer les images
 - [ ] Intro panel
 - [ ] Prev / Next
-- [ ] Vous êtes ici
 - [ ] Styliser l'app
 - [ ] Optimiser la position du btn back sur les cartes
 - [ ] Mettre le bon style pour le fond de carte
-- [ ] Leaflet fallback
+- [x] Leaflet fallback
+- [ ] Corriger l'affichage des "liens" dans les cartes
+- [ ] Scroll to source
 
 #### After publication
 
 - [ ] Faire un data preload
+- [ ] Vous êtes ici
 - [ ] Commenter le code
 - [ ] Compléter README.md
 - [ ] Standalone components —> libe-components

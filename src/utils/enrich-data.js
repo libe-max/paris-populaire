@@ -75,7 +75,7 @@ function enrichData (data) {
       } else if (source) {
         span.innerHTML += ` <sup>${source}</sup>`
         const spanContent = span.innerHTML
-        span.innerHTML = `<a>${spanContent}</a>`
+        span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
       } else if (link) {
         const spanContent = span.innerHTML
         span.innerHTML = `<a>${spanContent}</a>`
@@ -94,15 +94,15 @@ function enrichData (data) {
 
     // Return final place object
     return {
-      id: p.id,               name: p.name,
-      address: p.address,     longitude: p.longitude, latitude: p.latitude,
-      city: p.city,           district: p.district,   photo: p.photo,
-      exists: p.exists,       text: p.text,           lifespan: p.lifespan,
-      type: p.type,           author: p.author,       long_read_intro: p.long_read_intro,
-      long_read: p.long_read, sources: p.sources,     _chapters: p.chapters,
-      _persons,               _areas,                 _notions,
-      _periods,               _place_types,           _display_text,
-      _display_sources
+      id: p.id,                           name: p.name,
+      address: p.address,                 longitude: p.longitude, latitude: p.latitude,
+      city: p.city,                       district: p.district,   photo: p.photo,
+      photo_credits: p.photo_credits,     exists: p.exists,       text: p.text,
+      lifespan: p.lifespan,               type: p.type,           author: p.author,
+      long_read_intro: p.long_read_intro, long_read: p.long_read, sources: p.sources,
+      _chapters: p.chapters,              _persons,               _areas,
+      _notions,                           _periods,               _place_types,
+      _display_text,                      _display_sources
     }
   })
   

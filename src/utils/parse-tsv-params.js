@@ -4,7 +4,7 @@ export default [{
 
   // Places
   start: 0,
-  end: 20,
+  end: 21,
   keysLinePos: 2,
   types: {
     id: 'number',
@@ -16,6 +16,7 @@ export default [{
     city: v => v.trim(),
     district: v => v.trim(),
     photo: v => v.trim(),
+    photo_credits: v => v.trim(),
     exists: v => (v === 'oui' || v === 'rehab' || v === 'maybe'),
     text: v => v,
     sources: v => v,
@@ -53,8 +54,8 @@ export default [{
 }, {
 
   // Periods
-  start: 21,
-  end: 24,
+  start: 22,
+  end: 25,
   keysLinePos: 2,
   types: {
     start_date: v => moment(v, 'DD/MM/YYYY').startOf('day'),
@@ -63,31 +64,31 @@ export default [{
 }, {
 
   // People
-  start: 25,
-  end: 26,
+  start: 26,
+  end: 27,
   keysLinePos: 2
 }, {
 
   // Areas
-  start: 27,
-  end: 28,
+  start: 28,
+  end: 29,
   keysLinePos: 2
 }, {
 
   // Notions
-  start: 29,
-  end: 30,
+  start: 30,
+  end: 31,
   keysLinePos: 2
 }, {
 
   // Chapters
-  start: 31,
-  end: 32,
+  start: 32,
+  end: 33,
   keysLinePos: 2
 }, {
 
   // Place types
-  start: 33,
-  end: 34,
+  start: 34,
+  end: 35,
   keysLinePos: 2
 }]

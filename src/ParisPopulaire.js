@@ -20,6 +20,8 @@ import './parispop.css'
 import mapboxToken from './.mapbox-token'
 // import vectorMapStyle from './map-style.json'
 const vectorMapStyle = 'mapbox://styles/libe-max/cjrj00aqu6ydy2snu1lf36lgi'
+const rasterTiles = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png'
+const rasterAttribution = '&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
 const maxBounds = [[1.860, 48.613], [2.824, 49.100]]
 const initCenter = [2.342, 48.854]
 const initZoom = [11.5]
@@ -310,6 +312,8 @@ export default class ParisPopulaire extends Component {
           places={data ? data.places : []}
           mapboxToken={mapboxToken}
           vectorMapStyle={vectorMapStyle}
+          rasterTiles={rasterTiles}
+          rasterAttribution={rasterAttribution}
           maxBounds={maxBounds}
           initCenter={initCenter}
           initZoom={initZoom}

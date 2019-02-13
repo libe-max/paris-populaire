@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Layer, Feature, Marker as MbMarker } from 'react-mapbox-gl'
-import { Marker as LfMarker } from 'react-leaflet'
+import { CircleMarker as LfMarker, Popup as LfPopup } from 'react-leaflet'
 import { Parser } from 'html-to-react'
 import Annotation from 'libe-components/lib/text-levels/Annotation'
 import MapBoxGL from './components/MapBoxGL'
@@ -91,7 +91,8 @@ export default class ParisPopMap extends Component {
       pageIsReady,   places,         activeFilter,
       activePlaceId, activatePlace,  unactivatePlace,
       mapboxToken,   vectorMapStyle, maxBounds,
-      initCenter,    initZoom,       minZoom
+      initCenter,    initZoom,       minZoom,
+      rasterTiles,   rasterAttribution
     } = props
 
     // Mapbox children
@@ -102,16 +103,14 @@ export default class ParisPopMap extends Component {
       const placeFilters = place[`_${filterType}`] || []
       const inFilter = filterValue ? (placeFilters.indexOf(filterValue) > -1) : true
       return <MbMarker key={id}
-        anchor="center"
+        anchor='center'
         coordinates={[lon, lat]}
         onClick={() => activatePlace(id)}>
-        <div className={`
-          ${c}__map-marker
-          ${c}__map-marker_${inFilter ? 'in-filter' : 'out-filter'}
-          ${c}__map-marker_${exists ? 'exists' : 'not-exists'}
-          ${c}__map-marker_${activePlaceId === id ? 'active' : 'inactive'}
-          `.replace(/\s{2,}/g, ' ').trim()}>
-          <div className={`${c}__map-marker-tooltip`}>
+        <div className={`${c}__mb-map-marker
+          ${c}__mb-map-marker_${inFilter ? 'in-filter' : 'out-filter'}
+          ${c}__mb-map-marker_${exists ? 'exists' : 'not-exists'}
+          ${c}__mb-map-marker_${activePlaceId === id ? 'active' : 'inactive'}`}>
+          <div className={`${c}__mb-map-marker-tooltip`}>
             <Annotation>{this.h2r.parse(place.name)}</Annotation>
           </div>
         </div>
@@ -119,9 +118,26 @@ export default class ParisPopMap extends Component {
     })
 
     // Leaflet children
-    const leafletChildren = places.map(place => {
+    const leafletChildren = places.filter(place => {
+      const filterType = activeFilter ? activeFilter.type : null
+      const filterValue = activeFilter ? activeFilter.value : null
+      const placeFilters = place[`_${filterType}`] || []
+      const inFilter = filterValue ? (placeFilters.indexOf(filterValue) > -1) : true
+      return inFilter
+    }).map(place => {
       const { longitude: lon, latitude: lat, id, exists } = place
-      return <LfMarker position={[lat, lon]} />
+      return <LfMarker key={id}
+        radius={7}
+        center={[lat, lon]}
+        ref={n => this[`lfMarker_${id}`] = n}
+        onClick={() => activatePlace(id)}
+        onMouseOver={() => this[`lfMarker_${id}`].leafletElement.openPopup()}
+        onMouseOut={() => {this[`lfMarker_${id}`].leafletElement.closePopup()}}
+        className={`${c}__lf-map-marker
+          ${c}__lf-map-marker_${exists ? 'exists' : 'not-exists'}
+          ${c}__lf-map-marker_${activePlaceId === id ? 'active' : 'inactive'}`}>
+          <LfPopup><Annotation>{this.h2r.parse(place.name)}</Annotation></LfPopup>
+        </LfMarker>
     })
 
     if (!pageIsReady) return <div />
@@ -136,7 +152,8 @@ export default class ParisPopMap extends Component {
           initZoom={initZoom}>
           {mapboxChildren}
         </MapBoxGL>
-        : <LeafletMap
+        : <LeafletMap rasterTiles={rasterTiles}
+          rasterAttribution={rasterAttribution}
           ref={n => this.leaflet = n}
           minZoom={minZoom}
           maxBounds={maxBounds}
