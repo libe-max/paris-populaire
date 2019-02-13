@@ -63,22 +63,22 @@ function enrichData (data) {
       if (person) {
         _persons.push(person)
         // const spanContent = span.innerHTML
-        // span.innerHTML = `<a>${spanContent}</a>`
+        // span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
       } else if (area) {
         _areas.push(area)
         // const spanContent = span.innerHTML
-        // span.innerHTML = `<a>${spanContent}</a>`
+        // span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
       } else if (notion) {
         _notions.push(notion)
         // const spanContent = span.innerHTML
-        // span.innerHTML = `<a>${spanContent}</a>`
+        // span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
       } else if (source) {
         span.innerHTML += ` <sup>${source}</sup>`
         const spanContent = span.innerHTML
         span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
       } else if (link) {
         const spanContent = span.innerHTML
-        span.innerHTML = `<a>${spanContent}</a>`
+        span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
       }
       span.setAttribute('data-handled', 'true')
       whileCnt ++
