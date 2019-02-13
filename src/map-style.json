@@ -1236,7 +1236,7 @@
         "property": "render_min_height",
         "type": "identity"
       },
-      "fill-extrusion-opacity": 0.8
+      "fill-extrusion-opacity": 0.1
     }
   }, {
     "id": "bridge_motorway_link_casing",

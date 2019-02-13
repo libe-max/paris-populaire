@@ -17,9 +17,9 @@ import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 /* [WIP] host this file in libe-static-ressources once the work is done */
 import './parispop.css'
 
+/* Map parameters */
 import mapboxToken from './.mapbox-token'
-// import vectorMapStyle from './map-style.json'
-const vectorMapStyle = 'mapbox://styles/libe-max/cjrj00aqu6ydy2snu1lf36lgi'
+import vectorMapStyle from './map-style.json'
 const rasterTiles = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png'
 const rasterAttribution = '&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
 const maxBounds = [[1.860, 48.613], [2.824, 49.100]]
