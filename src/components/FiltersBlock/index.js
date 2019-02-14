@@ -1,11 +1,20 @@
 import React, { Component } from 'react'
+import Svg from 'libe-components/lib/primitives/Svg'
 import BlockTitle from 'libe-components/lib/text-levels/BlockTitle'
+import Overhead from 'libe-components/lib/text-levels/Overhead'
 import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 
 export default class FiltersBlock extends Component {
   constructor (props) {
     super(props)
     this.c = props.appRootClass
+    this.handleClearFilterClick = this.handleClearFilterClick.bind(this)
+  }
+
+  handleClearFilterClick (e) {
+    const { setFilter } = this.props
+    e.stopPropagation()
+    setFilter(null)
   }
 
   render () {
@@ -31,17 +40,16 @@ export default class FiltersBlock extends Component {
       <div className={`${c}__filters-block-head`}
         onClick={() => toggleFiltersPanel(!isActive)}>
         <div className={`${c}__filters-block-title`}>
-          <BlockTitle>Filtrer</BlockTitle>
+          <Overhead>Filtrer</Overhead>
         </div>
         <div className={`${c}__filters-block-active-filter`}>
-          <BlockTitle>
+          <Paragraph>
             <span>Filtré sur : </span>
             <span>{activeFilterDisplayName}</span>
-            <button onClick={e => {
-              e.stopPropagation()
-              setFilter(null)
-            }}>X</button>
-          </BlockTitle>
+          </Paragraph>
+          <button onClick={this.handleClearFilterClick}>
+            <Svg src='https://www.liberation.fr/apps/static/assets/tilted-cross-icon_24.svg?x=x' />
+          </button>
         </div>
       </div>
       <div className={`${c}__filters-list`}>{
