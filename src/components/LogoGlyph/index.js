@@ -47,7 +47,8 @@ export default class LogoGlyph extends Component {
       height: `${state.parentFontSize * 0.7}px`,
       lineHeight: `${state.parentLineHeight}px`
     }
-    return <img src={logoGlyph}
+    return <img alt=""
+      src={logoGlyph}
       className="lblb-logo-glyph"
       ref={n => this.$node = n}
       style={style} />

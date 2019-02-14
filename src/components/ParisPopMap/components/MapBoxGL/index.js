@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import MapboxGL, { Layer, Feature } from 'react-mapbox-gl'
-import PageTitle from 'libe-components/lib/text-levels/PageTitle'
+import MapboxGL from 'react-mapbox-gl'
 
 export default class MapBoxGL extends Component {
 
@@ -23,7 +22,7 @@ export default class MapBoxGL extends Component {
     }
     this.Map = MapboxGL({
       minZoom: props.minZoom,
-      accessToken: props.token
+      accessToken: props.token || ''
     })
     this.flyTo = this.flyTo.bind(this)
     this.zoomTo = this.zoomTo.bind(this)

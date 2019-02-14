@@ -11,6 +11,7 @@ import ParisPopMap from './components/ParisPopMap'
 import ParisPopCard from './components/ParisPopCard'
 import ParisPopCaption from './components/ParisPopCaption'
 
+import PageTitle from 'libe-components/lib/text-levels/PageTitle'
 import InterTitle from 'libe-components/lib/text-levels/InterTitle'
 import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 
@@ -18,7 +19,6 @@ import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 import './parispop.css'
 
 /* Map parameters */
-import mapboxToken from './.mapbox-token'
 import vectorMapStyle from './map-style.json'
 const rasterTiles = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png'
 const rasterAttribution = '&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
@@ -266,7 +266,7 @@ export default class ParisPopulaire extends Component {
    * * * * * * * * * * * * * * * */
   unactivatePlace () {
     const { parisPopMap } = this
-    if (parisPopMap) parisPopMap.zoomTo(14.1)
+    if (parisPopMap) parisPopMap.zoomTo(initZoom)
     return this.setState({
       page: 'map',
       active_place_id: null
@@ -310,7 +310,6 @@ export default class ParisPopulaire extends Component {
           unactivatePlace={this.unactivatePlace}
           activePlaceId={activePlaceId}
           places={data ? data.places : []}
-          mapboxToken={mapboxToken}
           vectorMapStyle={vectorMapStyle}
           rasterTiles={rasterTiles}
           rasterAttribution={rasterAttribution}
@@ -344,10 +343,10 @@ export default class ParisPopulaire extends Component {
         onMouseOver={() => this.suggestIntro(true)}
         onMouseOut={() => this.suggestIntro(false)}
         onClick={() => this.toggleIntro(true)}>
-        <InterTitle small level={1}>
-          Paris<br/>
-          Populaire
-        </InterTitle>
+        <PageTitle small>
+          <span>Plongée dans le Paris</span>
+          <span>Populaire</span>
+        </PageTitle>
       </div>
       <div className={`${c}__intro-panel`}>
         <br/><br/><br/><br/>

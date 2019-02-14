@@ -67,7 +67,6 @@ export default class ParisPopCard extends Component {
     if (typeof id !== 'number' ||
       id >= sources.length ||
       id < 0) return
-    // $root.parentNode.scrollTop = $root.clientHeight
     const source = $root.querySelectorAll('.parispop__card-source')[id]
     source.scrollIntoView({
       behavior: 'smooth',
@@ -82,13 +81,10 @@ export default class ParisPopCard extends Component {
     const { active_source_id: activeSourceId } = state
     if (!place) return <div className={`${c}__card`} ref={n => this.$root = n} />
 
-    const photo = place.photo
-      ? 'https://upload.wikimedia.org/wikipedia/commons/2/26/Barricades_rue_Saint-Maur._Avant_l%27attaque%2C_25_juin_1848._Apr%C3%A8s_l%E2%80%99attaque%2C_26_juin_1848.jpg'
-      : null
     const {
-      id, address, name,
-      text, author, long_read,
-      long_read_intro,
+      id,     address,   name,
+      author, photo,     photo_credits,
+      long_read,         long_read_intro,
       _display_text: displayText,
       _display_sources: displaySources
     } = place
@@ -98,6 +94,7 @@ export default class ParisPopCard extends Component {
     return <div className={`${c}__card`} ref={n => this.$root = n}>
       <button className={`${c}__card-close`} onClick={unactivatePlace} />
       <div className={`${c}__card-illustration`}>{photo ? <img src={photo} /> : ''}</div>
+      <div className={`${c}__card-illustration-credits`}>{photo_credits ? <Annotation>{photo_credits}</Annotation> : ''}</div>
       <div className={`${c}__card-slug`}><Slug big>{address}</Slug></div>
       <div className={`${c}__card-title`}><SectionTitle level={2}>{h2r.parse(name)}</SectionTitle></div>
       <div className={`${c}__card-content`}><Paragraph>{h2r.parse(displayText.innerHTML)}</Paragraph></div>
@@ -107,7 +104,7 @@ export default class ParisPopCard extends Component {
         <ShareArticle short
           iconsOnly
           url={tweetUrl}
-          tweetText={`Vous connaissez l'histoire de ${name} ?`}
+          tweetText={``}
           tweetVia='@libe, @Libe_Labo' />
       </div>
       <div className={`${c}__card-read-also`}>{long_read

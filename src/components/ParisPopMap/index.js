@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Layer, Feature, Marker as MbMarker } from 'react-mapbox-gl'
+import { Marker as MbMarker } from 'react-mapbox-gl'
 import { CircleMarker as LfMarker, Popup as LfPopup } from 'react-leaflet'
 import { Parser } from 'html-to-react'
 import Annotation from 'libe-components/lib/text-levels/Annotation'
@@ -86,12 +86,13 @@ export default class ParisPopMap extends Component {
   render () {
     const { c, props, state } = this
     const { webgl } = state
+    // const webgl = false
     const {
       pageIsReady,   places,         activeFilter,
-      activePlaceId, activatePlace,  unactivatePlace,
-      mapboxToken,   vectorMapStyle, maxBounds,
-      initCenter,    initZoom,       minZoom,
-      rasterTiles,   rasterAttribution
+      activePlaceId, activatePlace,  mapboxToken,
+      vectorMapStyle, maxBounds,     initCenter,
+      initZoom,       minZoom,       rasterTiles,
+      rasterAttribution
     } = props
 
     // Mapbox children

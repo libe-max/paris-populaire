@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Map as Leaflet, TileLayer, Marker } from 'react-leaflet'
+import { Map as Leaflet, TileLayer } from 'react-leaflet'
 
 export default class LeafletMap extends Component {
 

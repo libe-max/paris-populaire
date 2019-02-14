@@ -104,9 +104,21 @@
   position: absolute;
   top: 2rem;
   left: 2rem;
-  background: white;
+  background-color: #771619;
   box-shadow: 0 .25rem 0 0 rgba(33, 33, 33, .3);
   padding: 1rem;
+}
+
+.parispop__app-logo
+  .lblb-page-title h1 span {
+    color: #FFFFFF;
+}
+
+.parispop__app-logo
+  .lblb-page-title
+    span:nth-child(1) {
+      font-size: 1.96rem;
+      line-height: 2rem;
 }
 
 .parispop__intro-panel {
@@ -150,6 +162,13 @@
     left: 1rem;
   }
 
+  .parispop__app-logo
+    .lblb-page-title
+      span:nth-child(1) {
+        font-size: 1.55rem;
+        line-height: 1.5rem;
+  }
+
   .parispop__caption-panel {
     display: none;
   }
@@ -166,6 +185,22 @@
   .parispop__app-logo {
     top: .5rem;
     left: .5rem;
+  }
+
+  .parispop__app-logo
+    .lblb-page-title
+      span:nth-child(1) {
+        font-weight: 400;
+        letter-spacing: .04rem;
+        font-size: 0.88rem;
+        line-height: 1rem;
+  }
+
+  .parispop__app-logo
+    .lblb-page-title
+      span:nth-child(2) {
+        font-size: 2rem;
+        line-height: 2rem;
   }
 
   .parispop__filters-panel {
@@ -482,16 +517,21 @@
  * Paris pop card
  *
  * * * * * * * * * * * * * */
+
 .parispop__card {
   position: relative;
+  padding-bottom: 4rem;
+  width: 100%;
 }
 
 .parispop__card-close {
-  position: fixed;
+  position: sticky;
+  display: block;
   top: 2rem;
-  right: 2rem;
+  left: calc(100% - 4.5rem);
+  margin-top: -2.5rem;
   border: none;
-  background: rgba(255, 255, 255, .4)
+  background: rgba(255, 255, 255, 1)
     url('/assets/close-icon_40.svg');
   height: 2.5rem;
   width: 2.5rem;
@@ -500,18 +540,26 @@
 }
 
 .parispop__card-close:hover {
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgba(249, 249, 249, 1);
 }
 
 .parispop__card-illustration {
   display: flex;
-  margin-bottom: 2rem;
   justify-content: center;
   background: #212121;
 }
 
 .parispop__card-illustration img {
   max-height: 35rem;
+}
+
+.parispop__card-illustration-credits {
+  margin: .5rem 2rem 2rem;
+}
+
+.parispop__card-illustration-credits
+  .lblb-annotation {
+    color: #888;
 }
 
 .parispop__card-slug,
@@ -524,6 +572,11 @@
   margin-left: 2rem;
   margin-right: 2rem; 
   margin-bottom: 1rem;
+}
+
+.parispop__card-slug
+  .lblb-slug {
+    background-color: #272726;
 }
 
 .parispop__card-share {
@@ -581,13 +634,14 @@
 @media screen and (max-width: 63rem) {
   .parispop__card-close {
     top: 1rem;
-    right: 1rem;
+    left: calc(100% - 3.5rem);
   }
 
   .parispop__card-illustration img {
     max-height: 30rem;
   }
 
+  .parispop__card-illustration-credits,
   .parispop__card-slug,
   .parispop__card-title,
   .parispop__card-share,
@@ -600,26 +654,22 @@
   }
 }
 
-@media screen and (max-width: 50rem) {
-  .parispop__card-close {
-    right: unset;
-    left: 1rem;
-    background-image: url('/assets/back-icon_40.svg');
-  }
-}
-
 @media screen and (max-width: 40rem) {
+  .parispop__card {
+    padding-bottom: 2rem;
+  }
+
   .parispop__card-close {
     top: .5rem;
-    left: .5rem;
-  }
-
-  .parispop__card-illustration {
-    margin-bottom: 1rem;
+    left: calc(100% - 3rem);
   }
 
   .parispop__card-illustration img {
     max-height: 20rem;
+  }
+
+  .parispop__card-illustration-credits {
+    margin: .5rem .5rem 2rem .5rem;
   }
 
   .parispop__card-slug,
@@ -636,7 +686,7 @@
 
   .parispop__card-signature,
   .parispop__card-read-also {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 }
 

@@ -29,7 +29,7 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Prev / Next
 - [ ] Styliser l'app
 - [ ] Optimiser la position du btn back sur les cartes
-- [ ] Mettre le bon style pour le fond de carte
+- [x] Mettre le bon style pour le fond de carte
 - [x] Leaflet fallback
 - [x] Corriger l'affichage des "liens" dans les cartes
 - [x] Scroll to source
