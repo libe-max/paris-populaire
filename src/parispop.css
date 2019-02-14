@@ -39,7 +39,6 @@
 .parispop__error {
   height: 100%;
   width: 100%;
-  background: aliceblue;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -488,7 +487,7 @@
 }
 
 .parispop__card-close {
-  position: absolute;
+  position: fixed;
   top: 2rem;
   right: 2rem;
   border: none;
@@ -541,21 +540,23 @@
   min-width: 2rem;
 }
 
-.parispop__card-content span[data-source] a {
-  border-bottom: 1px solid rgba(204, 204, 204, 0);
+.parispop__card-content span[data-source]
+  .lblb-paragraph__link {
+    border-bottom: 1px solid rgba(204, 204, 204, .7);
 }
 
-.parispop__card-content span[data-source] a:hover {
-  border-bottom-color: rgba(204, 204, 204, 1);
+.parispop__card-content span[data-source]
+  .lblb-paragraph__link:hover {
+    border-bottom-color: rgba(204, 204, 204, 1);
 }
 
-.parispop__card-content span[data-source] a:active {
-  background: #F5F5F5;
+.parispop__card-content span[data-source]
+  .lblb-paragraph__link:active {
+    background: #F5F5F5;
 }
 
 .parispop__card-content span[data-source] sup {
   color: #666;
-  text-decoration: underline;
 }
 
 .parispop__card-signature,
@@ -569,11 +570,12 @@
 }
 
 .parispop__card-source {
-  margin-bottom: .5rem;
+  margin: -.5rem -.5rem 0 -.5rem;
+  padding: .5rem;
 }
 
 .parispop__card-source.parispop__card-source_active {
-  background: blue;
+  background: #FCEBDF;
 }
 
 @media screen and (max-width: 63rem) {

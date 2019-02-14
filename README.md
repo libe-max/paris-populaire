@@ -31,8 +31,8 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Optimiser la position du btn back sur les cartes
 - [ ] Mettre le bon style pour le fond de carte
 - [x] Leaflet fallback
-- [ ] Corriger l'affichage des "liens" dans les cartes
-- [ ] Scroll to source
+- [x] Corriger l'affichage des "liens" dans les cartes
+- [x] Scroll to source
 
 #### After publication
 

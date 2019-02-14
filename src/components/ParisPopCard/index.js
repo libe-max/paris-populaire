@@ -40,17 +40,17 @@ export default class ParisPopCard extends Component {
     const isSource = getParent(e.target, 'span[data-source]')
     if (!isPerson && !isArea && !isNotion && !isLink && !isSource) return
     if (isPerson) {
-      const type = 'persons'
-      const value = isPerson.getAttribute('data-person')
-      return this.props.setFilter(type, value)
+      // const type = 'persons'
+      // const value = isPerson.getAttribute('data-person')
+      // return this.props.setFilter(type, value)
     } else if (isArea) {
-      const type = 'areas'
-      const value = isArea.getAttribute('data-place')
-      return this.props.setFilter(type, value)
+      // const type = 'areas'
+      // const value = isArea.getAttribute('data-place')
+      // return this.props.setFilter(type, value)
     } else if (isNotion) {
-      const type = 'notions'
-      const value = isNotion.getAttribute('data-notion')
-      return this.props.setFilter(type, value)
+      // const type = 'notions'
+      // const value = isNotion.getAttribute('data-notion')
+      // return this.props.setFilter(type, value)
     } else if (isLink) {
       const id = parseInt(isLink.getAttribute('data-link'), 10)
       return this.props.activatePlace(id, { smooth: true })
@@ -67,7 +67,12 @@ export default class ParisPopCard extends Component {
     if (typeof id !== 'number' ||
       id >= sources.length ||
       id < 0) return
-    $root.parentNode.scrollTop = $root.clientHeight
+    // $root.parentNode.scrollTop = $root.clientHeight
+    const source = $root.querySelectorAll('.parispop__card-source')[id]
+    source.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
     return this.setState({ active_source_id: id })
   }
 
