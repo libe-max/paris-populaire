@@ -2,9 +2,6 @@
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# This app specific
-/src/.mapbox-token.js
-
 # dependencies
 /node_modules
 /.pnp
