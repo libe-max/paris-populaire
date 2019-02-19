@@ -41,9 +41,9 @@ export default class ParisPopCard extends Component {
     const isSource = getParent(e.target, 'span[data-source]')
     if (!isPerson && !isArea && !isNotion && !isLink && !isSource) return
     if (isPerson) {
-      // const type = 'persons'
-      // const value = isPerson.getAttribute('data-person')
-      // return this.props.setFilter(type, value)
+      const type = 'persons'
+      const value = isPerson.getAttribute('data-person')
+      return this.props.setFilter(type, value)
     } else if (isArea) {
       // const type = 'areas'
       // const value = isArea.getAttribute('data-place')
@@ -69,7 +69,7 @@ export default class ParisPopCard extends Component {
       id >= sources.length ||
       id < 0) return
     const source = $root.querySelectorAll('.parispop__card-source')[id]
-    source.scrollIntoView({
+    if (source) source.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
     })
@@ -90,13 +90,13 @@ export default class ParisPopCard extends Component {
       _display_sources: displaySources
     } = place
     const { origin, pathname } = window.location
-    const tweetUrl = origin + pathname + `?active_place_id=${id}`
+    const tweetUrl = origin + pathname + `?` + btoa(`a=${id}`)
 
     return <div className={`${c}__card`} ref={n => this.$root = n}>
       <button className={`${c}__card-close`} onClick={unactivatePlace}>
         <Svg src='https://www.liberation.fr/apps/static/assets/tilted-cross-icon_40.svg' />
       </button>
-      <div className={`${c}__card-illustration`}>{photo ? <img src={photo} /> : ''}</div>
+      <div className={`${c}__card-illustration`}>{photo ? <img src={photo} alt={photo_credits} /> : ''}</div>
       <div className={`${c}__card-illustration-credits`}>{photo_credits ? <Annotation>{photo_credits}</Annotation> : ''}</div>
       <div className={`${c}__card-slug`}><Slug big>{address}</Slug></div>
       <div className={`${c}__card-title`}><SectionTitle level={2}>{h2r.parse(name)}</SectionTitle></div>

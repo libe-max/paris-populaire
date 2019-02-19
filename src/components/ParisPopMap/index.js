@@ -6,13 +6,14 @@ import Annotation from 'libe-components/lib/text-levels/Annotation'
 import MapBoxGL from './components/MapBoxGL'
 import LeafletMap from './components/LeafletMap'
 
-/* Map parameters */
+/* Map parameters [WIP] app dependent */
 import vectorMapStyle from './map-style.json'
 const rasterTiles = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png'
 const rasterAttribution = '&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
 const maxBounds = [[1.860, 48.613], [2.824, 49.100]]
 const initCenter = [2.342, 48.854]
-const initZoom = [11.5]
+const offsetCenter = [2.20, 48.854]
+const initZoom = 11.5
 const minZoom = 10
 
 export default class ParisPopMap extends Component {
@@ -24,14 +25,24 @@ export default class ParisPopMap extends Component {
    * * * * * * * * * * * * * * * */
   constructor (props) {
     super(props)
-    this.c = props.appRootClass
-    this.state = { webgl: false }
-    this.h2r = new Parser()
+    this.c = props.appRootClass // [WIP] app dependent
+    this.state = {
+      webgl: false,
+      center: initCenter,
+      zoom: initZoom,
+      max_bounds: maxBounds,
+      min_zoom: minZoom,
+      raster_tiles: rasterTiles,
+      raster_attribution: rasterAttribution,
+      vector_style: vectorMapStyle
+    }
+    this.h2r = new Parser() // [WIP] app dependent
     this.checkWebGl = this.checkWebGl.bind(this)
     this.flyTo = this.flyTo.bind(this)
     this.zoomTo = this.zoomTo.bind(this)
     this.flyAndZoomTo = this.flyAndZoomTo.bind(this)
     this.resetZoom = this.resetZoom.bind(this)
+    this.shiftCenterAndZoom = this.shiftCenterAndZoom.bind(this) // [WIP] app dependent
     this.resetCenterAndZoom = this.resetCenterAndZoom.bind(this)
   }
 
@@ -44,7 +55,6 @@ export default class ParisPopMap extends Component {
     this.checkWebGl()
     return
   }
-
 
   /* * * * * * * * * * * * * * * *
    *
@@ -65,11 +75,10 @@ export default class ParisPopMap extends Component {
    *
    * * * * * * * * * * * * * * * */
   flyTo (lon, lat) {
-    if (this.mapBoxGL &&
-      this.mapBoxGL.flyTo) this.mapBoxGL.flyTo(lon, lat)
-    if (this.leaflet &&
-      this.leaflet.flyTo) this.leaflet.flyTo(lon, lat)
-    return [lon, lat]
+    const { mapBoxGL, leaflet } = this
+    if (mapBoxGL && mapBoxGL.flyTo) mapBoxGL.flyTo(lon, lat)
+    if (leaflet && leaflet.flyTo) leaflet.flyTo(lon, lat)
+    return this.setState({ center: [lon, lat] })
   }
 
   /* * * * * * * * * * * * * * * *
@@ -78,11 +87,10 @@ export default class ParisPopMap extends Component {
    *
    * * * * * * * * * * * * * * * */
   zoomTo (z) {
-    if (this.mapBoxGL &&
-      this.mapBoxGL.zoomTo) this.mapBoxGL.zoomTo(z)
-    if (this.leaflet &&
-      this.leaflet.zoomTo) this.leaflet.zoomTo(z)
-    return z
+    const { mapBoxGL, leaflet } = this
+    if (mapBoxGL && mapBoxGL.zoomTo) mapBoxGL.zoomTo(z)
+    if (leaflet && leaflet.zoomTo) leaflet.zoomTo(z)
+    return this.setState({ zoom: z })
   }
 
   /* * * * * * * * * * * * * * * *
@@ -91,14 +99,13 @@ export default class ParisPopMap extends Component {
    *
    * * * * * * * * * * * * * * * */
   flyAndZoomTo (lon, lat, z) {
-    if (this.mapBoxGL &&
-      this.mapBoxGL.flyAndZoomTo) this.mapBoxGL.flyAndZoomTo(lon, lat, z)
-    if (this.leaflet &&
-      this.leaflet.flyAndZoomTo) this.leaflet.flyAndZoomTo(lon, lat, z)
-    return {
+    const { mapBoxGL, leaflet } = this
+    if (mapBoxGL && mapBoxGL.flyAndZoomTo) mapBoxGL.flyAndZoomTo(lon, lat, z)
+    if (leaflet && leaflet.flyAndZoomTo) leaflet.flyAndZoomTo(lon, lat, z)
+    return this.setState ({
       center: [lon, lat],
       zoom: z
-    }
+    })
   }
 
   /* * * * * * * * * * * * * * * *
@@ -107,7 +114,7 @@ export default class ParisPopMap extends Component {
    *
    * * * * * * * * * * * * * * * */
   resetZoom () {
-    this.zoomTo(...initZoom)
+    this.zoomTo(initZoom)
   }
 
   /* * * * * * * * * * * * * * * *
@@ -116,7 +123,17 @@ export default class ParisPopMap extends Component {
    *
    * * * * * * * * * * * * * * * */
   resetCenterAndZoom () {
-    this.flyAndZoomTo(...initCenter, ...initZoom)
+    this.flyAndZoomTo(...initCenter, initZoom)
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * SHIFT CENTER AND ZOOM
+   * [WIP] app dependent
+   *
+   * * * * * * * * * * * * * * * */
+  shiftCenterAndZoom () {
+    this.flyAndZoomTo(...offsetCenter, initZoom)
   }
 
   /* * * * * * * * * * * * * * * *
@@ -128,12 +145,13 @@ export default class ParisPopMap extends Component {
     const { c, props, state } = this
     const { webgl } = state
     // const webgl = false
+    // [WIP] app dependent
     const {
       pageIsReady,   places,         activeFilter,
-      activePlaceId, activatePlace,  mapboxToken
+      activePlaceId, activatePlace
     } = props
 
-    // Mapbox children
+    // Mapbox children [WIP] app dependent
     const mapboxChildren = places.map(place => {
       const { longitude: lon, latitude: lat, id, exists } = place
       const filterType = activeFilter ? activeFilter.type : null
@@ -155,7 +173,7 @@ export default class ParisPopMap extends Component {
       </MbMarker>
     })
 
-    // Leaflet children
+    // Leaflet children [WIP] app dependent
     const leafletChildren = places.filter(place => {
       const filterType = activeFilter ? activeFilter.type : null
       const filterValue = activeFilter ? activeFilter.value : null
@@ -181,22 +199,21 @@ export default class ParisPopMap extends Component {
     if (!pageIsReady) return <div />
     return <div className={`${c}__map`}>{
       webgl
-        ? <MapBoxGL token={mapboxToken}
-          ref={n => this.mapBoxGL = n}
-          minZoom={minZoom}
-          maxBounds={maxBounds}
-          mapStyle={vectorMapStyle}
-          initCenter={initCenter}
-          initZoom={initZoom}>
+        ? <MapBoxGL ref={n => this.mapBoxGL = n}
+          minZoom={state.min_zoom}
+          maxBounds={state.max_bounds}
+          mapStyle={state.vector_style}
+          initCenter={state.center}
+          initZoom={state.zoom}>
           {mapboxChildren}
         </MapBoxGL>
-        : <LeafletMap rasterTiles={rasterTiles}
-          rasterAttribution={rasterAttribution}
-          ref={n => this.leaflet = n}
-          minZoom={minZoom}
-          maxBounds={maxBounds}
-          initCenter={initCenter}
-          initZoom={initZoom}>
+        : <LeafletMap ref={n => this.leaflet = n}
+          rasterTiles={state.raster_tiles}
+          rasterAttribution={state.raster_attribution}
+          minZoom={state.min_zoom}
+          maxBounds={state.max_bounds}
+          initCenter={state.center}
+          initZoom={state.zoom}>
           {leafletChildren}
         </LeafletMap>
     }</div>

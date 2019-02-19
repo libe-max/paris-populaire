@@ -12,8 +12,8 @@ export default class LeafletMap extends Component {
     super(props)
     this.state = {
       map: {
-        center: [...props.initCenter].reverse(),
-        zoom: props.initZoom[0],
+        center: [props.initCenter[1], props.initCenter[0] + 0.00216],
+        zoom: props.initZoom,
         maxBounds: props.maxBounds.map(bound => bound.reverse()),
         minZoom: props.minZoom,
         rasterTiles: props.rasterTiles,

@@ -29,6 +29,8 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Prev / Next
 - [ ] Ajouter un SVG de la seine
 - [ ] Vous êtes ici
+- [ ] Zoom controls
+- [x] Catch error while enrich data
 - [x] Styliser l'app
 - [x] Optimiser la position du btn back sur les cartes
 - [x] Mettre le bon style pour le fond de carte

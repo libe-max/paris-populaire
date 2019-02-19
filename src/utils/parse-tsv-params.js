@@ -11,8 +11,8 @@ export default [{
     publish: v => (v === 'ok'.toLowerCase()),
     name: v => v.trim(),
     address: v => v.trim(),
-    latitude: (v = 0) => parseFloat(v, 10),
-    longitude: (v = 0) => parseFloat(v, 10),
+    latitude: (v = 0) => parseFloat(v, 10) || 0,
+    longitude: (v = 0) => parseFloat(v, 10) || 0,
     city: v => v.trim(),
     district: v => v.trim(),
     photo: v => v.trim(),
@@ -90,5 +90,17 @@ export default [{
   // Place types
   start: 34,
   end: 35,
+  keysLinePos: 2
+}, {
+
+  // Intro
+  start: 36,
+  end: 37,
+  keysLinePos: 2
+}, {
+
+  // Credits
+  start: 38,
+  end: 38,
   keysLinePos: 2
 }]

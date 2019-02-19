@@ -13,8 +13,6 @@ import ParisPopCaption from './components/ParisPopCaption'
 import ParisPopIntro from './components/ParisPopIntro'
 
 import PageTitle from 'libe-components/lib/text-levels/PageTitle'
-import InterTitle from 'libe-components/lib/text-levels/InterTitle'
-import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 
 /* [WIP] host this file in libe-static-ressources once the work is done */
 import './parispop.css'
@@ -46,6 +44,7 @@ export default class ParisPopulaire extends Component {
     this.interpretUrlQuery = this.interpretUrlQuery.bind(this)
     this.activatePlace = this.activatePlace.bind(this)
     this.unactivatePlace = this.unactivatePlace.bind(this)
+    this.positionMap = this.positionMap.bind(this)
 
     // [WIP] Pre-load data
     this.fetchData().catch(err => {
@@ -56,13 +55,44 @@ export default class ParisPopulaire extends Component {
     }).then(r => {
       const ret = enrichData(r)
       const interpretedState = this.interpretUrlQuery(window.location.search, ret)
+      const { parisPopMap } = this
+      const { page, active_place_id: activePlaceId } = interpretedState
+      if (parisPopMap && page === 'intro') parisPopMap.shiftCenterAndZoom()
+      else if (parisPopMap && page === 'map') parisPopMap.resetCenterAndZoom()
+      else if (parisPopMap && page === 'cards') {
+        const place = ret.places.find(place => place.id === activePlaceId)
+        parisPopMap.flyAndZoomTo(place.longitude + 0.00216, place.latitude, 17)
+      }
       this.setState({
         ...interpretedState,
         data: ret,
         loading: false,
         error: null
       })
+    }).catch(e => {
+      this.setState({
+        loading: false,
+        error: e
+      })
     })
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * DID MOUNT
+   *
+   * * * * * * * * * * * * * * * */
+  componentDidMount () {
+    this.positionMap()
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * DID UPDATE
+   *
+   * * * * * * * * * * * * * * * */
+  componentDidUpdate () {
+    this.positionMap()
   }
 
   /* * * * * * * * * * * * * * * *
@@ -91,18 +121,21 @@ export default class ParisPopulaire extends Component {
    *
    * * * * * * * * * * * * * * * */
   interpretUrlQuery (search, data) {
-    const query = qs.parse(search.slice(1))
-    const rawPage = query.page
-    const rawActivePlace = parseInt(query.active_place_id, 10) || null
-    const rawActiveFilterType = query.active_filter_type
-    const rawActiveFilterValue = query.active_filter_value
+    /* URL Params :
+     *   - a : active_place_id
+     *   - b : active_filter_type
+     *   - c : active_filter_value
+     *   - d : page */
 
-    const page = (rawPage === 'intro' ||
-      rawPage === 'map' ||
-      rawPage === 'filters' ||
-      rawPage === 'cards')
-      ? rawPage
-      : null
+    let decodedSearch = ''
+    try { decodedSearch = atob(search.slice(1)) }
+    catch (e) { console.warn('Wrong url query') }
+    const query = qs.parse(decodedSearch)
+    const rawPage = query.d
+    const rawActivePlace = parseInt(query.a, 10) || null
+    const rawActiveFilterType = query.b
+    const rawActiveFilterValue = query.c
+
     const rawActivePlaceExists = data.places
       .some(place => place.id === rawActivePlace)
     const activePlace = rawActivePlaceExists
@@ -118,6 +151,14 @@ export default class ParisPopulaire extends Component {
         type: rawActiveFilterType,
         value: rawActiveFilterValue }
       : null
+
+    const page = activePlace
+      ? 'cards'
+      : (rawPage === 'intro' ||
+      rawPage === 'map' ||
+      rawPage === 'filters')
+        ? rawPage
+        : null
     
     // [WIP] re-work this using this.activatePlace
     // and this.activateFiltersPanel
@@ -147,6 +188,8 @@ export default class ParisPopulaire extends Component {
     if (a && page === 'intro') return
     if (!a && page !== 'intro') return
     if (page === 'cards') this.unactivatePlace() // [WIP] not so clean (duplicate setState)
+    if (a && this.parisPopMap) this.parisPopMap.shiftCenterAndZoom()
+    if (!a && this.parisPopMap) this.parisPopMap.resetCenterAndZoom()
     return this.setState({ page: a ? 'intro' : 'map' })
   }
 
@@ -187,7 +230,7 @@ export default class ParisPopulaire extends Component {
     const { state, parisPopMap, filtersBlock } = this
     const { data } = state
     if (!data) return
-    const typeExists = [/*'notions',*/ 'periods', /*'persons', 'chapters', 'areas',*/ 'place_types']
+    const typeExists = [/*'notions',*/ 'periods', 'persons', /*'chapters', 'areas',*/ 'place_types']
       .indexOf(type) > -1
     const valueExists = typeExists ? data[type].some(filter => filter.id === value) : false
     const $selectors = filtersBlock.$root.querySelectorAll('select')
@@ -267,6 +310,21 @@ export default class ParisPopulaire extends Component {
 
   /* * * * * * * * * * * * * * * *
    *
+   * POSITION MAP
+   *
+   * * * * * * * * * * * * * * * */
+  positionMap () {
+    if (!this.parisPopMap) return
+    const { page, data, active_place_id: activePlaceId } = this.state
+    if (page === 'intro') this.parisPopMap.shiftCenterAndZoom()
+    else if (page === 'map') this.parisPopMap.resetCenterAndZoom()
+    else if (page === 'cards') {
+      const place = data.places.find(place => place.id === activePlaceId)
+    }
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
    * RENDER
    *
    * * * * * * * * * * * * * * * */
@@ -318,7 +376,7 @@ export default class ParisPopulaire extends Component {
             { type: 'chapters', label: 'Chapitres', data: data ? data.chapters || [] : [] },
             { type: 'areas', label: 'Zones géographiques', data: data ? data.areas || [] : [] },*/
             { type: 'periods', label: 'Périodes', data: data ? data.periods || [] : [] },
-            /*{ type: 'persons', label: 'Personages', data: data ? data.persons || [] : [] },*/
+            { type: 'persons', label: 'Personages', data: data ? data.persons || [] : [] },
             { type: 'place_types', label: 'Types de lieux', data: data ? data.place_types || [] : [] }
           ]} />
       </div>
@@ -335,6 +393,8 @@ export default class ParisPopulaire extends Component {
       </div>
       <div className={`${c}__intro-panel`}>
         <ParisPopIntro appRootClass={c}
+          texts={data ? data.intro : []}
+          credits={data ? data.credits : []}
           closeIntro={() => this.toggleIntro(false)} />
       </div>
       <div className={`${c}__cards-panel`}>

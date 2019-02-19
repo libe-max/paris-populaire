@@ -13,7 +13,7 @@ export default class MapBoxGL extends Component {
     this.state = {
       map: {
         center: props.initCenter,
-        zoom: props.initZoom,
+        zoom: [props.initZoom * 0.95],
         maxBounds: props.maxBounds,
         minZoom: props.minZoom,
         token: props.token,
@@ -61,7 +61,7 @@ export default class MapBoxGL extends Component {
     this.setState(({ map }) => ({
       map: {
         ...map,
-        zoom: [z]
+        zoom: [z * 0.95]
       }
     }))
   }
@@ -76,7 +76,7 @@ export default class MapBoxGL extends Component {
       map: {
         ...map,
         center: [lon, lat],
-        zoom: [z]
+        zoom: [z * 0.95]
       }
     }))
   }

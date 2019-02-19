@@ -8,18 +8,18 @@
  *
  * Input data should be an array of the folloing form:
  *
- * =======================================================================
- *  0      | 1       | 2       | 3     | 4       | 5        | 6           
- * --------|---------|---------|-------|---------|----------|-------------
- *  places | periods | persons | areas | notions | chapters | place_types 
- * --------|---------|---------|-------|---------|----------|-------------
- * =======================================================================
+ * =========================================================================================
+ *  0      | 1       | 2       | 3     | 4       | 5        | 6           | 7     | 8       
+ * --------|---------|---------|-------|---------|----------|-------------|-------|---------
+ *  places | periods | persons | areas | notions | chapters | place_types | intro | credits 
+ * --------|---------|---------|-------|---------|----------|-------------|-------|---------
+ * =========================================================================================
  */
 
 function enrichData (data) {
   // Check if input data is valid
-  if (!Array.isArray(data) || data.length !== 7) {
-    const msg = 'Cannot enrich data which is not an array of length 7'
+  if (!Array.isArray(data) || data.length !== 9) {
+    const msg = 'Cannot enrich data which is not an array of length 9'
     throw new Error(msg)
   }
   const unfilteredPlaces = data[0]
@@ -29,6 +29,8 @@ function enrichData (data) {
   const notions = data[4]
   const chapters = data[5]
   const place_types = data[6]
+  const intro = data[7]
+  const credits = data[8]
 
   // Filter places via 'publish' prop, then return an object
   // containing only useful props
@@ -62,8 +64,8 @@ function enrichData (data) {
       const link = span.getAttribute('data-link')
       if (person) {
         _persons.push(person)
-        // const spanContent = span.innerHTML
-        // span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
+        const spanContent = span.innerHTML
+        span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
       } else if (area) {
         _areas.push(area)
         // const spanContent = span.innerHTML
@@ -113,7 +115,9 @@ function enrichData (data) {
     areas,
     notions,
     chapters,
-    place_types
+    place_types,
+    intro,
+    credits
   }
 }
 
