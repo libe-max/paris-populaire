@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Parser } from 'html-to-react'
 import getParent from 'libe-utils/get-closest-dom-parent'
+import Svg from 'libe-components/lib/primitives/Svg'
 import ShareArticle from 'libe-components/lib/blocks/ShareArticle'
 import Slug from 'libe-components/lib/text-levels/Slug'
 import SectionTitle from 'libe-components/lib/text-levels/SectionTitle'
@@ -92,7 +93,9 @@ export default class ParisPopCard extends Component {
     const tweetUrl = origin + pathname + `?active_place_id=${id}`
 
     return <div className={`${c}__card`} ref={n => this.$root = n}>
-      <button className={`${c}__card-close`} onClick={unactivatePlace} />
+      <button className={`${c}__card-close`} onClick={unactivatePlace}>
+        <Svg src='https://www.liberation.fr/apps/static/assets/tilted-cross-icon_40.svg' />
+      </button>
       <div className={`${c}__card-illustration`}>{photo ? <img src={photo} /> : ''}</div>
       <div className={`${c}__card-illustration-credits`}>{photo_credits ? <Annotation>{photo_credits}</Annotation> : ''}</div>
       <div className={`${c}__card-slug`}><Slug big>{address}</Slug></div>

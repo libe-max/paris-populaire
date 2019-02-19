@@ -6,6 +6,15 @@ import Annotation from 'libe-components/lib/text-levels/Annotation'
 import MapBoxGL from './components/MapBoxGL'
 import LeafletMap from './components/LeafletMap'
 
+/* Map parameters */
+import vectorMapStyle from './map-style.json'
+const rasterTiles = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png'
+const rasterAttribution = '&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
+const maxBounds = [[1.860, 48.613], [2.824, 49.100]]
+const initCenter = [2.342, 48.854]
+const initZoom = [11.5]
+const minZoom = 10
+
 export default class ParisPopMap extends Component {
 
   /* * * * * * * * * * * * * * * *
@@ -18,9 +27,12 @@ export default class ParisPopMap extends Component {
     this.c = props.appRootClass
     this.state = { webgl: false }
     this.h2r = new Parser()
+    this.checkWebGl = this.checkWebGl.bind(this)
     this.flyTo = this.flyTo.bind(this)
     this.zoomTo = this.zoomTo.bind(this)
     this.flyAndZoomTo = this.flyAndZoomTo.bind(this)
+    this.resetZoom = this.resetZoom.bind(this)
+    this.resetCenterAndZoom = this.resetCenterAndZoom.bind(this)
   }
 
   /* * * * * * * * * * * * * * * *
@@ -29,6 +41,17 @@ export default class ParisPopMap extends Component {
    *
    * * * * * * * * * * * * * * * */
   componentDidMount () {
+    this.checkWebGl()
+    return
+  }
+
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * CHECK WEBGL
+   *
+   * * * * * * * * * * * * * * * */
+  checkWebGl () {
     const canvas = document.createElement('canvas')
     const webgl = canvas.getContext('webgl') ||
       canvas.getContext('experimental-webgl')
@@ -80,6 +103,24 @@ export default class ParisPopMap extends Component {
 
   /* * * * * * * * * * * * * * * *
    *
+   * RESET ZOOM
+   *
+   * * * * * * * * * * * * * * * */
+  resetZoom () {
+    this.zoomTo(...initZoom)
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * RESET CENTER AND ZOOM
+   *
+   * * * * * * * * * * * * * * * */
+  resetCenterAndZoom () {
+    this.flyAndZoomTo(...initCenter, ...initZoom)
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
    * RENDER
    *
    * * * * * * * * * * * * * * * */
@@ -89,10 +130,7 @@ export default class ParisPopMap extends Component {
     // const webgl = false
     const {
       pageIsReady,   places,         activeFilter,
-      activePlaceId, activatePlace,  mapboxToken,
-      vectorMapStyle, maxBounds,     initCenter,
-      initZoom,       minZoom,       rasterTiles,
-      rasterAttribution
+      activePlaceId, activatePlace,  mapboxToken
     } = props
 
     // Mapbox children

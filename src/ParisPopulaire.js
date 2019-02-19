@@ -6,10 +6,11 @@ import enrichData from './utils/enrich-data.js'
 
 import LibeLoader from './components/Loader'
 import LibeLoadingError from './components/DataLoadingError'
-import FiltersBlock from './components/FiltersBlock'
+import ParisPopFiltersBlock from './components/ParisPopFiltersBlock'
 import ParisPopMap from './components/ParisPopMap'
 import ParisPopCard from './components/ParisPopCard'
 import ParisPopCaption from './components/ParisPopCaption'
+import ParisPopIntro from './components/ParisPopIntro'
 
 import PageTitle from 'libe-components/lib/text-levels/PageTitle'
 import InterTitle from 'libe-components/lib/text-levels/InterTitle'
@@ -17,15 +18,6 @@ import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 
 /* [WIP] host this file in libe-static-ressources once the work is done */
 import './parispop.css'
-
-/* Map parameters */
-import vectorMapStyle from './map-style.json'
-const rasterTiles = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png'
-const rasterAttribution = '&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
-const maxBounds = [[1.860, 48.613], [2.824, 49.100]]
-const initCenter = [2.342, 48.854]
-const initZoom = [11.5]
-const minZoom = 10
 
 export default class ParisPopulaire extends Component {
   
@@ -199,7 +191,7 @@ export default class ParisPopulaire extends Component {
       .indexOf(type) > -1
     const valueExists = typeExists ? data[type].some(filter => filter.id === value) : false
     const $selectors = filtersBlock.$root.querySelectorAll('select')
-    if (parisPopMap) parisPopMap.flyAndZoomTo(...initCenter, ...initZoom)
+    if (parisPopMap) parisPopMap.resetCenterAndZoom()
     if (typeExists && valueExists) {
       for (let i = 0; i < $selectors.length; i++) {
         const $selector = $selectors[i]
@@ -266,7 +258,7 @@ export default class ParisPopulaire extends Component {
    * * * * * * * * * * * * * * * */
   unactivatePlace () {
     const { parisPopMap } = this
-    if (parisPopMap) parisPopMap.zoomTo(initZoom)
+    if (parisPopMap) parisPopMap.resetCenterAndZoom()
     return this.setState({
       page: 'map',
       active_place_id: null
@@ -309,20 +301,13 @@ export default class ParisPopulaire extends Component {
           activatePlace={this.activatePlace}
           unactivatePlace={this.unactivatePlace}
           activePlaceId={activePlaceId}
-          places={data ? data.places : []}
-          vectorMapStyle={vectorMapStyle}
-          rasterTiles={rasterTiles}
-          rasterAttribution={rasterAttribution}
-          maxBounds={maxBounds}
-          initCenter={initCenter}
-          initZoom={initZoom}
-          minZoom={minZoom}/>
+          places={data ? data.places : []} />
       </div>
       <div className={`${c}__caption-panel`}>
         <ParisPopCaption appRootClass={c} />
       </div>
       <div className={`${c}__filters-panel`}>
-        <FiltersBlock activeFilter={state.active_filter}
+        <ParisPopFiltersBlock activeFilter={state.active_filter}
           isActive={state.page === 'filters'}
           toggleFiltersPanel={this.toggleFiltersPanel}
           ref={n => this.filtersBlock = n}
@@ -349,10 +334,8 @@ export default class ParisPopulaire extends Component {
         </PageTitle>
       </div>
       <div className={`${c}__intro-panel`}>
-        <br/><br/><br/><br/>
-        <Paragraph>Intro</Paragraph>
-        <button onClick={() => this.toggleIntro(false)}>Close</button>
-        <ParisPopCaption appRootClass={c} />
+        <ParisPopIntro appRootClass={c}
+          closeIntro={() => this.toggleIntro(false)} />
       </div>
       <div className={`${c}__cards-panel`}>
         <ParisPopCard place={activePlace}

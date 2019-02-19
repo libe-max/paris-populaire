@@ -31,6 +31,15 @@ export default class MapBoxGL extends Component {
 
   /* * * * * * * * * * * * * * * *
    *
+   * WILL UNMOUNT
+   *
+   * * * * * * * * * * * * * * * */
+  componentWillUnmount () {
+    console.log('UNMOUNT !')
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
    * FLY TO
    *
    * * * * * * * * * * * * * * * */

@@ -24,10 +24,12 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 #### Before publication
 
 - [x] Share component
-- [ ] Récupérer les images
+- [x] Récupérer les images
 - [ ] Intro panel
 - [ ] Prev / Next
-- [ ] Styliser l'app
+- [ ] Ajouter un SVG de la seine
+- [ ] Vous êtes ici
+- [x] Styliser l'app
 - [x] Optimiser la position du btn back sur les cartes
 - [x] Mettre le bon style pour le fond de carte
 - [x] Leaflet fallback
@@ -37,7 +39,6 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 #### After publication
 
 - [ ] Faire un data preload
-- [ ] Vous êtes ici
 - [ ] Commenter le code
 - [ ] Compléter README.md
 - [ ] Standalone components —> libe-components

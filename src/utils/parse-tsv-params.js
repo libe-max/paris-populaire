@@ -17,7 +17,7 @@ export default [{
     district: v => v.trim(),
     photo: v => v.trim(),
     photo_credits: v => v.trim(),
-    exists: v => (v === 'oui' || v === 'rehab' || v === 'maybe'),
+    exists: v => (v === 'oui' || v === 'rehab'),
     text: v => v,
     sources: v => v,
     lifespan: v => {

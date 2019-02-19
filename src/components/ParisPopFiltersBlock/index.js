@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import Svg from 'libe-components/lib/primitives/Svg'
-import BlockTitle from 'libe-components/lib/text-levels/BlockTitle'
-import Overhead from 'libe-components/lib/text-levels/Overhead'
 import Paragraph from 'libe-components/lib/text-levels/Paragraph'
+import Annotation from 'libe-components/lib/text-levels/Annotation'
 
-export default class FiltersBlock extends Component {
+export default class ParisPopFiltersBlock extends Component {
   constructor (props) {
     super(props)
     this.c = props.appRootClass
@@ -40,7 +39,13 @@ export default class FiltersBlock extends Component {
       <div className={`${c}__filters-block-head`}
         onClick={() => toggleFiltersPanel(!isActive)}>
         <div className={`${c}__filters-block-title`}>
-          <Overhead>Filtrer</Overhead>
+          <Paragraph huge>Filtrer</Paragraph>
+          <button className={`${c}__filters-block-close ${c}__filters-block-close_desktop`}>
+            <Svg src='https://www.liberation.fr/apps/static/assets/up-arrow-head-icon_24.svg' />
+          </button>
+          <button className={`${c}__filters-block-close ${c}__filters-block-close_mobile`}>
+            <Svg src='https://www.liberation.fr/apps/static/assets/down-arrow-head-icon_24.svg' />
+          </button>
         </div>
         <div className={`${c}__filters-block-active-filter`}>
           <Paragraph>
@@ -48,7 +53,7 @@ export default class FiltersBlock extends Component {
             <span>{activeFilterDisplayName}</span>
           </Paragraph>
           <button onClick={this.handleClearFilterClick}>
-            <Svg src='https://www.liberation.fr/apps/static/assets/tilted-cross-icon_24.svg?x=x' />
+            <Svg src='https://www.liberation.fr/apps/static/assets/tilted-cross-icon_24.svg' />
           </button>
         </div>
       </div>
@@ -56,7 +61,7 @@ export default class FiltersBlock extends Component {
         filters.map((filter, i) => {
           return <div key={i}
             className={`${c}__filter`}>
-            <Paragraph>{filter.label}</Paragraph>
+            <Annotation>{filter.label}</Annotation>
             <select defaultValue='placeholder'
               data-type={filter.type}
               onChange={e => setFilter(
