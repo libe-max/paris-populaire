@@ -25,11 +25,12 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 
 - [x] Share component
 - [x] Récupérer les images
-- [ ] Intro panel
+- [x] Intro panel
 - [ ] Prev / Next
-- [ ] Ajouter un SVG de la seine
+- [ ] Ajouter un SVG de la seine (abandonné)
 - [ ] Vous êtes ici
 - [ ] Zoom controls
+- [ ] Retirer le filtre "personnes"
 - [x] Catch error while enrich data
 - [x] Styliser l'app
 - [x] Optimiser la position du btn back sur les cartes

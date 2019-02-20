@@ -8,12 +8,12 @@ import LeafletMap from './components/LeafletMap'
 
 /* Map parameters [WIP] app dependent */
 import vectorMapStyle from './map-style.json'
-const rasterTiles = 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.png'
+const rasterTiles = 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png'
 const rasterAttribution = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 const maxBounds = [[1.860, 48.613], [2.824, 49.100]]
 const initCenter = [2.342, 48.854]
-const offsetCenter = [2.20, 48.854]
-const initZoom = window.innerWidth > 1008 ? 11.5 : 11.2
+const offsetCenter = [2.2725, 48.854]
+const initZoom = window.innerWidth > 1008 ? 13 : 11
 const minZoom = 10
 
 export default class ParisPopMap extends Component {
