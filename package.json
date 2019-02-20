@@ -4,11 +4,10 @@
   "private": true,
   "homepage": "https://www.liberation.fr/apps/maxime/paris-populaire",
   "dependencies": {
-    "handlebars": "^4.1.0",
     "html-to-react": "^1.3.4",
     "leaflet": "^1.4.0",
     "libe-components": "^0.4.1",
-    "libe-utils": "^0.3.0",
+    "libe-utils": "^0.3.1",
     "mapbox-gl": "^0.52.0",
     "moment": "^2.24.0",
     "querystring": "^0.2.0",
@@ -16,7 +15,8 @@
     "react-dom": "^16.8.1",
     "react-leaflet": "^2.2.0",
     "react-mapbox-gl": "^4.2.0",
-    "react-scripts": "^2.1.3"
+    "react-scripts": "^2.1.3",
+    "source-map-explorer": "^1.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -24,7 +24,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "standard": "standard --verbose | snazzy",
-    "standard-fix": "standard --fix --verbose | snazzy"
+    "standard-fix": "standard --fix --verbose | snazzy",
+    "analyze": "source-map-explorer build/static/js/main.*"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -63,36 +63,19 @@ export default class ParisPopulaire extends Component {
         const place = ret.places.find(place => place.id === activePlaceId)
         parisPopMap.flyAndZoomTo(place.longitude + 0.00216, place.latitude, 17)
       }
-      this.setState({
+      const newState = {
         ...interpretedState,
         data: ret,
         loading: false,
         error: null
-      })
+      }
+      this.setState(newState, this.positionMap)
     }).catch(e => {
       this.setState({
         loading: false,
         error: e
       })
     })
-  }
-
-  /* * * * * * * * * * * * * * * *
-   *
-   * DID MOUNT
-   *
-   * * * * * * * * * * * * * * * */
-  componentDidMount () {
-    this.positionMap()
-  }
-
-  /* * * * * * * * * * * * * * * *
-   *
-   * DID UPDATE
-   *
-   * * * * * * * * * * * * * * * */
-  componentDidUpdate () {
-    this.positionMap()
   }
 
   /* * * * * * * * * * * * * * * *
@@ -187,7 +170,6 @@ export default class ParisPopulaire extends Component {
     const { page } = this.state
     if (a && page === 'intro') return
     if (!a && page !== 'intro') return
-    if (page === 'cards') this.unactivatePlace() // [WIP] not so clean (duplicate setState)
     if (a && this.parisPopMap) this.parisPopMap.shiftCenterAndZoom()
     if (!a && this.parisPopMap) this.parisPopMap.resetCenterAndZoom()
     return this.setState({ page: a ? 'intro' : 'map' })
@@ -301,7 +283,10 @@ export default class ParisPopulaire extends Component {
    * * * * * * * * * * * * * * * */
   unactivatePlace () {
     const { parisPopMap } = this
-    if (parisPopMap) parisPopMap.resetCenterAndZoom()
+    if (parisPopMap) {
+      if (window.innerWidth <= 1008) parisPopMap.zoomTo(13.7)
+      else parisPopMap.zoomTo(15.5)
+    }
     return this.setState({
       page: 'map',
       active_place_id: null

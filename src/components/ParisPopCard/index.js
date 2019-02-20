@@ -110,13 +110,13 @@ export default class ParisPopCard extends Component {
           tweetText={``}
           tweetVia='@libe, @Libe_Labo' />
       </div>
-      <div className={`${c}__card-read-also`}>{long_read
-        ? <div>
+      {long_read
+        ? <div className={`${c}__card-read-also`}>
           <BlockTitle level={4}>À lire aussi</BlockTitle>
           <Paragraph><a href={long_read}>{h2r.parse(long_read_intro) || long_read}</a></Paragraph>
         </div>
         : ''
-      }</div>
+      }
       <div className={`${c}__card-sources`}>
         <BlockTitle level={4}>Sources</BlockTitle>
         {displaySources.map((s, i) => {

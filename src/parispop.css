@@ -315,12 +315,102 @@
  *
  * * * * * * * * * * * * * */
 
+.parispop__intro {
+  position: relative;
+  width: 100%;
+}
+
 .parispop__intro-illustration {
   background-color: #771619;
   width: 100%;
   height: 400px;
 }
 
+.parispop__intro-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.parispop__intro-paragraph {
+  margin-bottom: 1rem;
+}
+
+.parispop__intro-caption,
+.parispop__intro-credits,
+.parispop__intro-contribution {
+  margin-top: 2rem;
+}
+
+.parispop__intro-credits-title {
+  margin-bottom: 1rem;
+}
+
+.parispop__intro-contribution-text {
+  background: #FCEBDF;
+  padding: .5rem;
+  margin: -.5rem;
+  margin-bottom: 1rem;
+}
+
+.parispop__intro-logo {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.parispop__intro-logo img {
+  width: 6rem;
+}
+
+.parispop__intro-go-to-map {
+  position: sticky;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 .25rem 0 0 rgba(33, 33, 33, .3);
+  border: none;
+  background: #771619;
+  padding: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.parispop__intro-go-to-map
+  .lblb-paragraph {
+    color: #FFFFFF;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: 'Libe-Sans-Semicondensed';
+    letter-spacing: 0.05rem;
+}
+
+/* Media queries */
+@media screen and (max-width: 63rem) {
+  .parispop__intro-content {
+    padding: 1rem;
+  }
+
+  .parispop__intro-go-to-map {
+    transform: unset;
+    left: 1rem;
+    bottom: 1rem;
+    width: calc(100% - 2rem);
+  }
+}
+
+@media screen and (max-width: 40rem) {
+  .parispop__intro-content {
+    padding: .5rem;
+  }
+
+  .parispop__intro-go-to-map {
+    left: .5rem;
+    bottom: .5rem;
+    width: calc(100% - 1rem);
+  }
+}
 
 /* * * * * * * * * * * * * * 
  *
@@ -552,6 +642,9 @@
   fill: #FFFFFF;
   stroke: #8B1002;
   stroke-width: .25rem;
+}
+
+.parispop__mb-map-marker_not-exists {
   box-shadow: inset 0 0 0 .25rem #8B1002;
 }
 
@@ -635,6 +728,7 @@
   display: block;
   top: 2rem;
   left: calc(100% - 4.5rem);
+  box-shadow: 0 0 0 .25rem rgba(33, 33, 33, .3);
   padding: 0;
   margin-top: -2.5rem;
   border: none;
