@@ -101,7 +101,7 @@ export default class ParisPopCard extends Component {
       <div className={`${c}__card-slug`}><Slug big>{address}</Slug></div>
       <div className={`${c}__card-title`}><SectionTitle level={2}>{h2r.parse(name)}</SectionTitle></div>
       <div className={`${c}__card-content`}><Paragraph>{h2r.parse(displayText.innerHTML)}</Paragraph></div>
-      <div className={`${c}__card-signature`}><Paragraph>{author}</Paragraph></div>
+      <div className={`${c}__card-signature`}><Paragraph>{h2r.parse(author)}</Paragraph></div>
       <div className={`${c}__card-share`}>
         <BlockTitle level={4}>Partager</BlockTitle>
         <ShareArticle short

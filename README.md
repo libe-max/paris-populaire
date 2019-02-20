@@ -26,10 +26,12 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [x] Share component
 - [x] Récupérer les images
 - [x] Intro panel
+- [ ] Panneau de titre
 - [ ] Prev / Next
 - [ ] Ajouter un SVG de la seine (abandonné)
 - [ ] Vous êtes ici
 - [ ] Zoom controls
+- [ ] Ajouter une zone cliquable qui déclenche l'intro à gauche de l'écran
 - [ ] Retirer le filtre "personnes"
 - [x] Catch error while enrich data
 - [x] Styliser l'app
