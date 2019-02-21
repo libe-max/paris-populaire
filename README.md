@@ -38,6 +38,8 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [x] Share & social
 - [x] Afficher dates de début et fin dans le tooltip et dans lebloc d'intro
 - [ ] Ajouter des fallback fonts dans fonts.css
+- [ ] Styliser prev/next inactive
+- [ ] Mettre plus de sécurité sur le parsing du html
 - [x] Afficher "vous êtes ici" dans la légende
 - [x] Catch error while enrich data
 - [x] Styliser l'app
