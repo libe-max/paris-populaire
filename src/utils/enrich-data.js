@@ -64,8 +64,8 @@ function enrichData (data) {
       const link = span.getAttribute('data-link')
       if (person) {
         _persons.push(person)
-        const spanContent = span.innerHTML
-        span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
+        // const spanContent = span.innerHTML
+        // span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
       } else if (area) {
         _areas.push(area)
         // const spanContent = span.innerHTML

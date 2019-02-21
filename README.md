@@ -26,13 +26,19 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [x] Share component
 - [x] Récupérer les images
 - [x] Intro panel
-- [ ] Panneau de titre
-- [ ] Prev / Next
-- [ ] Ajouter un SVG de la seine (abandonné)
-- [ ] Vous êtes ici
-- [ ] Zoom controls
+- [x] Vous êtes ici
+- [x] Panneau de titre
+- [x] Retirer le filtre "personnes"
+- [x] Temps de chargement
+- [x] Taille des points sur mobile
+- [x] Prev / Next
+- [x] Ajouter un SVG de la seine (abandonné)
+- [x] Zoom controls
 - [ ] Ajouter une zone cliquable qui déclenche l'intro à gauche de l'écran
-- [ ] Retirer le filtre "personnes"
+- [x] Share & social
+- [x] Afficher dates de début et fin dans le tooltip et dans lebloc d'intro
+- [ ] Ajouter des fallback fonts dans fonts.css
+- [x] Afficher "vous êtes ici" dans la légende
 - [x] Catch error while enrich data
 - [x] Styliser l'app
 - [x] Optimiser la position du btn back sur les cartes

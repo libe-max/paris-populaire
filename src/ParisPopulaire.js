@@ -212,7 +212,7 @@ export default class ParisPopulaire extends Component {
     const { state, parisPopMap, filtersBlock } = this
     const { data } = state
     if (!data) return
-    const typeExists = [/*'notions',*/ 'periods', 'persons', /*'chapters', 'areas',*/ 'place_types']
+    const typeExists = [/*'notions',*/ 'periods', /*'persons', 'chapters', 'areas',*/ 'place_types']
       .indexOf(type) > -1
     const valueExists = typeExists ? data[type].some(filter => filter.id === value) : false
     const $selectors = filtersBlock.$root.querySelectorAll('select')
@@ -321,6 +321,25 @@ export default class ParisPopulaire extends Component {
     const activePlace = data
       ? data.places.filter(p => p.id === activePlaceId)[0]
       : null
+    const chronoSortedPlaces = data
+      ? data.places.sort((a, b) => a.lifespan.start_date - b.lifespan.end_date)
+      : null
+    const { prevPlace, nextPlace } = (() => {
+      if (!activePlace) return {}
+      const activePlaceChronoPos = chronoSortedPlaces
+        .findIndex((p, i) => p.id === activePlace.id)
+      const prevPlace = activePlaceChronoPos > 0
+        && activePlaceChronoPos < chronoSortedPlaces.length
+        ? chronoSortedPlaces[activePlaceChronoPos - 1].id
+        : null
+      const nextPlace = activePlaceChronoPos > -1
+        && activePlaceChronoPos < chronoSortedPlaces.length - 1
+        ? chronoSortedPlaces[activePlaceChronoPos + 1].id
+        : null
+      return { prevPlace, nextPlace }
+    })()
+
+    console.log()
 
     /* Assign state related classes */
     const classes = [c]
@@ -361,7 +380,7 @@ export default class ParisPopulaire extends Component {
             { type: 'chapters', label: 'Chapitres', data: data ? data.chapters || [] : [] },
             { type: 'areas', label: 'Zones géographiques', data: data ? data.areas || [] : [] },*/
             { type: 'periods', label: 'Périodes', data: data ? data.periods || [] : [] },
-            { type: 'persons', label: 'Personages', data: data ? data.persons || [] : [] },
+            /*{ type: 'persons', label: 'Personages', data: data ? data.persons || [] : [] },*/
             { type: 'place_types', label: 'Types de lieux', data: data ? data.place_types || [] : [] }
           ]} />
       </div>
@@ -386,6 +405,8 @@ export default class ParisPopulaire extends Component {
         <ParisPopCard place={activePlace}
           activatePlace={this.activatePlace}
           unactivatePlace={this.unactivatePlace}
+          prevPlace={prevPlace}
+          nextPlace={nextPlace}
           setFilter={this.setFilter}
           appRootClass={c} />
       </div>

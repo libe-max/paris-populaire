@@ -40,10 +40,13 @@ export default class ParisPopCard extends Component {
     const isLink = getParent(e.target, 'span[data-link]')
     const isSource = getParent(e.target, 'span[data-source]')
     if (!isPerson && !isArea && !isNotion && !isLink && !isSource) return
-    if (isPerson) {
-      const type = 'persons'
-      const value = isPerson.getAttribute('data-person')
-      return this.props.setFilter(type, value)
+    if (isSource) {
+      const sourceId = parseInt(isSource.getAttribute('data-source'), 10) - 1
+      return this.activateSource(sourceId)
+    } else if (isPerson) {
+      // const type = 'persons'
+      // const value = isPerson.getAttribute('data-person')
+      // return this.props.setFilter(type, value)
     } else if (isArea) {
       // const type = 'areas'
       // const value = isArea.getAttribute('data-place')
@@ -55,10 +58,7 @@ export default class ParisPopCard extends Component {
     } else if (isLink) {
       const id = parseInt(isLink.getAttribute('data-link'), 10)
       return this.props.activatePlace(id, { smooth: true })
-    } else if (isSource) {
-      const sourceId = parseInt(isSource.getAttribute('data-source'), 10) - 1
-      return this.activateSource(sourceId)
-    }
+    } 
     return
   }
 
@@ -78,7 +78,7 @@ export default class ParisPopCard extends Component {
 
   render () {
     const { props, state, c, h2r } = this
-    const { unactivatePlace, place } = props
+    const { activatePlace, unactivatePlace, place, prevPlace, nextPlace } = props
     const { active_source_id: activeSourceId } = state
     if (!place) return <div className={`${c}__card`} ref={n => this.$root = n} />
 
@@ -93,9 +93,19 @@ export default class ParisPopCard extends Component {
     const tweetUrl = origin + pathname + `?` + btoa(`a=${id}`)
 
     return <div className={`${c}__card`} ref={n => this.$root = n}>
-      <button className={`${c}__card-close`} onClick={unactivatePlace}>
-        <Svg src='https://www.liberation.fr/apps/static/assets/tilted-cross-icon_40.svg' />
-      </button>
+      <div className={`${c}__card-actions`}>
+        <button className={`${c}__card-prev ${c}__card-prev_${prevPlace ? 'active' : 'inactive'}`}
+          onClick={prevPlace ? () => activatePlace(prevPlace, { smooth: true }) : null}>
+          <Svg src='https://www.liberation.fr/apps/static/assets/left-arrow-head-icon_40.svg' />
+        </button>
+        <button className={`${c}__card-next ${c}__card-next_${nextPlace ? 'active' : 'inactive'}`}
+          onClick={nextPlace ? () => activatePlace(nextPlace, { smooth: true }) : null}>
+          <Svg src='https://www.liberation.fr/apps/static/assets/right-arrow-head-icon_40.svg' />
+        </button>
+        <button className={`${c}__card-close`} onClick={unactivatePlace}>
+          <Svg src='https://www.liberation.fr/apps/static/assets/tilted-cross-icon_40.svg' />
+        </button>
+      </div>
       <div className={`${c}__card-illustration`}>{photo ? <img src={photo} alt={photo_credits} /> : ''}</div>
       <div className={`${c}__card-illustration-credits`}>{photo_credits ? <Annotation>{photo_credits}</Annotation> : ''}</div>
       <div className={`${c}__card-slug`}><Slug big>{address}</Slug></div>
@@ -104,11 +114,7 @@ export default class ParisPopCard extends Component {
       <div className={`${c}__card-signature`}><Paragraph>{h2r.parse(author)}</Paragraph></div>
       <div className={`${c}__card-share`}>
         <BlockTitle level={4}>Partager</BlockTitle>
-        <ShareArticle short
-          iconsOnly
-          url={tweetUrl}
-          tweetText={``}
-          tweetVia='@libe, @Libe_Labo' />
+        <ShareArticle short iconsOnly url={tweetUrl} />
       </div>
       {long_read
         ? <div className={`${c}__card-read-also`}>

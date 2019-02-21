@@ -17,6 +17,13 @@ export default class ParisPopCaption extends Component {
         <div className={`${c}__mb-map-marker ${c}__mb-map-marker_not-exists`} />
         <Annotation>Lieu invisible ou transformé</Annotation>
       </div>
+      {('geolocation' in navigator)
+        ? <div className={`${c}__caption-field`}>
+          <div className={`${c}__lf-map-marker_user`} />
+          <Annotation>Votre position</Annotation>
+        </div>
+        : ''
+      }
     </div>
   }
 }

@@ -1,18 +1,22 @@
 import React, { Component } from 'react'
-import { Marker as MbMarker } from 'react-mapbox-gl'
+// import { Marker as MbMarker } from 'react-mapbox-gl'
+import L from 'leaflet'
 import { CircleMarker as LfMarker, Popup as LfPopup } from 'react-leaflet'
 import { Parser } from 'html-to-react'
 import Annotation from 'libe-components/lib/text-levels/Annotation'
-import MapBoxGL from './components/MapBoxGL'
+// import MapBoxGL from './components/MapBoxGL'
 import LeafletMap from './components/LeafletMap'
+import existingIcon from './leaflet-existing-place.png'
+import notExistingIcon from './leaflet-not-existing-place.png'
+import userPositionIcon from './leaflet-user-position.png'
 
 /* Map parameters [WIP] app dependent */
 import vectorMapStyle from './map-style.json'
 const rasterTiles = 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png'
 const rasterAttribution = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-const maxBounds = [[1.860, 48.613], [2.824, 49.100]]
-const initCenter = [2.342, 48.854]
-const offsetCenter = [2.2725, 48.854]
+const maxBounds = [[1.860, 48.616], [2.824, 49.103]]
+const initCenter = [2.342, 48.857]
+const offsetCenter = [2.2725, 48.857]
 const initZoom = window.innerWidth > 1008 ? 13 : 11
 const minZoom = 10
 
@@ -30,11 +34,12 @@ export default class ParisPopMap extends Component {
       webgl: false,
       center: initCenter,
       zoom: initZoom,
-      max_bounds: maxBounds,
+      max_bounds: [[...maxBounds[0]], [...maxBounds[1]]],
       min_zoom: minZoom,
       raster_tiles: rasterTiles,
       raster_attribution: rasterAttribution,
-      vector_style: vectorMapStyle
+      vector_style: vectorMapStyle,
+      user_position: null
     }
     this.h2r = new Parser() // [WIP] app dependent
     this.checkWebGl = this.checkWebGl.bind(this)
@@ -44,6 +49,9 @@ export default class ParisPopMap extends Component {
     this.resetZoom = this.resetZoom.bind(this)
     this.shiftCenterAndZoom = this.shiftCenterAndZoom.bind(this) // [WIP] app dependent
     this.resetCenterAndZoom = this.resetCenterAndZoom.bind(this)
+    this.getClientPosition = this.getClientPosition.bind(this)
+    this.getClientPosition()
+    window.setInterval(this.getClientPosition, 6000)
   }
 
   /* * * * * * * * * * * * * * * *
@@ -53,6 +61,16 @@ export default class ParisPopMap extends Component {
    * * * * * * * * * * * * * * * */
   componentDidMount () {
     this.checkWebGl()
+    return
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * WILL UNMOUNT
+   *
+   * * * * * * * * * * * * * * * */
+  componentWillUnmount () {
+    window.clearInterval(this.getClientPosition)
     return
   }
 
@@ -138,41 +156,84 @@ export default class ParisPopMap extends Component {
 
   /* * * * * * * * * * * * * * * *
    *
+   * GET CLIENT POSITION
+   *
+   * * * * * * * * * * * * * * * */
+  getClientPosition () {
+    if ('geolocation' in navigator) {
+      const { geolocation } = navigator
+      this.gpsWatcher = geolocation.watchPosition(pos => {
+        const { longitude, latitude, accuracy } = pos.coords
+        this.setState({
+          user_position: {
+            center: [longitude, latitude],
+            accuracy: accuracy
+          }
+        })
+      }, null, {
+        enableHighAccuracy: true, 
+        maximumAge: 30000, 
+        timeout: 27000
+      })
+    }
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
    * RENDER
    *
    * * * * * * * * * * * * * * * */
   render () {
     const { c, props, state } = this
-    // const { webgl } = state
+    // const { webgl } = state [WIP] this should work
     const webgl = false
     // [WIP] app dependent
     const {
       pageIsReady,   places,         activeFilter,
       activePlaceId, activatePlace
     } = props
+    const { user_position: userPosition } = state
 
     // Mapbox children [WIP] app dependent
-    const mapboxChildren = places.map(place => {
-      const { longitude: lon, latitude: lat, id, exists } = place
-      const filterType = activeFilter ? activeFilter.type : null
-      const filterValue = activeFilter ? activeFilter.value : null
-      const placeFilters = place[`_${filterType}`] || []
-      const inFilter = filterValue ? (placeFilters.indexOf(filterValue) > -1) : true
-      return <MbMarker key={id}
-        anchor='center'
-        coordinates={[lon, lat]}
-        onClick={() => activatePlace(id)}>
-        <div className={`${c}__mb-map-marker
-          ${c}__mb-map-marker_${inFilter ? 'in-filter' : 'out-filter'}
-          ${c}__mb-map-marker_${exists ? 'exists' : 'not-exists'}
-          ${c}__mb-map-marker_${activePlaceId === id ? 'active' : 'inactive'}`}>
-          <div className={`${c}__mb-map-marker-tooltip`}>
-            <Annotation>{this.h2r.parse(place.name)}</Annotation>
-          </div>
-        </div>
-      </MbMarker>
-    })
+    // const mapboxChildren = places.map(place => {
+    //   const { longitude: lon, latitude: lat, id, exists } = place
+    //   const filterType = activeFilter ? activeFilter.type : null
+    //   const filterValue = activeFilter ? activeFilter.value : null
+    //   const placeFilters = place[`_${filterType}`] || []
+    //   const inFilter = filterValue ? (placeFilters.indexOf(filterValue) > -1) : true
+    //   return <MbMarker key={id}
+    //     anchor='center'
+    //     coordinates={[lon, lat]}
+    //     onClick={() => activatePlace(id)}>
+    //     <div className={`${c}__mb-map-marker
+    //       ${c}__mb-map-marker_${inFilter ? 'in-filter' : 'out-filter'}
+    //       ${c}__mb-map-marker_${exists ? 'exists' : 'not-exists'}
+    //       ${c}__mb-map-marker_${activePlaceId === id ? 'active' : 'inactive'}`}>
+    //       <div className={`${c}__mb-map-marker-tooltip`}>
+    //         <Annotation>{this.h2r.parse(place.name)}</Annotation>
+    //       </div>
+    //     </div>
+    //   </MbMarker>
+    // })
 
+    const leafletExistingIcon = new L.icon({
+      iconUrl: existingIcon,
+      iconSize: [20, 20],
+      iconAnchor: [10, 10],
+      popupAnchor: [10, -10]
+    })
+    const leafletNotExistingIcon = new L.icon({
+      iconUrl: notExistingIcon,
+      iconSize: [20, 20],
+      iconAnchor: [10, 10],
+      popupAnchor: [10, -10]
+    })
+    const leafletUserPositionIcon = new L.icon({
+      iconUrl: userPositionIcon,
+      iconSize: [20, 20],
+      iconAnchor: [10, 10],
+      popupAnchor: [10, -10]
+    })
     // Leaflet children [WIP] app dependent
     const leafletChildren = places.filter(place => {
       const filterType = activeFilter ? activeFilter.type : null
@@ -182,8 +243,10 @@ export default class ParisPopMap extends Component {
       return inFilter
     }).map(place => {
       const { longitude: lon, latitude: lat, id, exists } = place
+      const startYear = place.lifespan.start_date.year()
+      const endYear = place.lifespan.end_date.year()
       return <LfMarker key={id}
-        radius={window.innerWidth > 1008 ? 7 : 9}
+        radius={8}
         center={[lat, lon]}
         ref={n => this[`lfMarker_${id}`] = n}
         onClick={() => activatePlace(id)}
@@ -192,30 +255,66 @@ export default class ParisPopMap extends Component {
         className={`${c}__lf-map-marker
           ${c}__lf-map-marker_${exists ? 'exists' : 'not-exists'}
           ${c}__lf-map-marker_${activePlaceId === id ? 'active' : 'inactive'}`}>
-          <LfPopup><Annotation>{this.h2r.parse(place.name)}</Annotation></LfPopup>
+          <LfPopup>
+            <Annotation>{this.h2r.parse(place.name)} ({startYear}{endYear !== startYear ? this.h2r.parse(`&nbsp;-&nbsp;${endYear}`) : ''})</Annotation>
+          </LfPopup>
         </LfMarker>
     })
 
+    // Add user position
+    const [[westBound, southBound], [eastBound, northBound]] = maxBounds
+    const [userLon, userLat] = userPosition ? userPosition.center : [null, null]
+    const userIsInParis = userLon > westBound
+      && userLon < eastBound
+      && userLat > southBound
+      && userLat < northBound
+    if (userIsInParis) {
+      // [WIP] should work in mapbox also
+      leafletChildren.push(<LfMarker key='user-position'
+        center={[userLat, userLon]}
+        radius={6}
+        ref={n => this['lfMarker_user-position'] = n}
+        onMouseOver={() => this['lfMarker_user-position'].leafletElement.openPopup()}
+        onMouseOut={() => {this['lfMarker_user-position'].leafletElement.closePopup()}}
+        className={`${c}__lf-map-marker ${c}__lf-map-marker_user-position`}>
+        <LfPopup><Annotation>Vous êtes ici</Annotation></LfPopup>
+      </LfMarker>)
+    }
+
     if (!pageIsReady) return <div />
+
+    // [WIP] Abandonned this part
+    // return <div className={`${c}__map`}>{
+    //   webgl
+    //     ? <MapBoxGL ref={n => this.mapBoxGL = n}
+    //       minZoom={state.min_zoom}
+    //       maxBounds={[...state.max_bounds]}
+    //       mapStyle={state.vector_style}
+    //       initCenter={state.center}
+    //       initZoom={state.zoom}>
+    //       {mapboxChildren}
+    //     </MapBoxGL>
+    //     : <LeafletMap ref={n => this.leaflet = n}
+    //       rasterTiles={state.raster_tiles}
+    //       rasterAttribution={state.raster_attribution}
+    //       minZoom={state.min_zoom}
+    //       maxBounds={[...state.max_bounds]}
+    //       initCenter={state.center}
+    //       initZoom={state.zoom}>
+    //       {leafletChildren}
+    //     </LeafletMap>
+    // }</div>
+
     return <div className={`${c}__map`}>{
-      webgl
-        ? <MapBoxGL ref={n => this.mapBoxGL = n}
-          minZoom={state.min_zoom}
-          maxBounds={state.max_bounds}
-          mapStyle={state.vector_style}
-          initCenter={state.center}
-          initZoom={state.zoom}>
-          {mapboxChildren}
-        </MapBoxGL>
-        : <LeafletMap ref={n => this.leaflet = n}
-          rasterTiles={state.raster_tiles}
-          rasterAttribution={state.raster_attribution}
-          minZoom={state.min_zoom}
-          maxBounds={state.max_bounds}
-          initCenter={state.center}
-          initZoom={state.zoom}>
-          {leafletChildren}
-        </LeafletMap>
+      <LeafletMap ref={n => this.leaflet = n}
+        rasterTiles={state.raster_tiles}
+        rasterAttribution={state.raster_attribution}
+        minZoom={state.min_zoom}
+        maxBounds={[...state.max_bounds]}
+        initCenter={state.center}
+        initZoom={state.zoom}>
+        {leafletChildren}
+      </LeafletMap>
     }</div>
   }
 }
