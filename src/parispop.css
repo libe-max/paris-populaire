@@ -957,6 +957,16 @@
   color: #666;
 }
 
+.parispop__card-content img {
+  max-width: 100%;
+  margin: 1rem 0 0;
+}
+
+.parispop__card-content
+  .lblb-annotation {
+    color: #888;
+}
+
 .parispop__card-signature,
 .parispop__card-read-also {
   margin-bottom: 2rem;

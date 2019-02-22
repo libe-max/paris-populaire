@@ -45,6 +45,7 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Photo trop grande sur 13"
 - [ ] Share sur la carte
 - [ ] Adresses dans le share
+- [ ] Afficher le lien de partage dans les fiches
 - [x] Virer les flèches
 - [x] Afficher "vous êtes ici" dans la légende
 - [x] Catch error while enrich data

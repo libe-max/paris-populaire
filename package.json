@@ -16,7 +16,8 @@
     "react-leaflet": "^2.2.0",
     "react-mapbox-gl": "^4.2.0",
     "react-scripts": "^2.1.3",
-    "source-map-explorer": "^1.7.0"
+    "source-map-explorer": "^1.7.0",
+    "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

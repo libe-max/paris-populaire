@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import 'whatwg-fetch'
 import qs from 'querystring'
 import { parseTsvWithTabs } from 'libe-utils/parse-tsv'
 import parseTsvParams from './utils/parse-tsv-params.js'
@@ -344,8 +345,6 @@ export default class ParisPopulaire extends Component {
         : null
       return { prevPlace, nextPlace }
     })()
-
-    console.log()
 
     /* Assign state related classes */
     const classes = [c]
