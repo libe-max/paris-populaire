@@ -9,9 +9,9 @@
  * Input data should be an array of the folloing form:
  *
  * =========================================================================================
- *  0      | 1       | 2       | 3     | 4       | 5        | 6           | 7     | 8       
+ *  0      | 1       | 2       | 3     | 4       | 5        | 6           | 7     | 8
  * --------|---------|---------|-------|---------|----------|-------------|-------|---------
- *  places | periods | persons | areas | notions | chapters | place_types | intro | credits 
+ *  places | periods | persons | areas | notions | chapters | place_types | intro | credits
  * --------|---------|---------|-------|---------|----------|-------------|-------|---------
  * =========================================================================================
  */
@@ -28,7 +28,7 @@ function enrichData (data) {
   const areas = data[3]
   const notions = data[4]
   const chapters = data[5]
-  const place_types = data[6]
+  const placeTypes = data[6]
   const intro = data[7]
   const credits = data[8]
 
@@ -37,26 +37,26 @@ function enrichData (data) {
   const filteredPlaces = unfilteredPlaces.filter(p => p.publish)
   const places = filteredPlaces.map(p => {
     // Getting persons, areas and notions from p.text
-    const _place_types = [p.type]
+    const _placeTypes = [p.type]
     const _persons = []
     const _areas = []
     const _notions = []
-    const _display_text = document.createElement('div')
-    _display_text.innerHTML = p.text
+    const _displayText = document.createElement('div')
+    _displayText.innerHTML = p.text
     const $sources = document.createElement('div')
     $sources.innerHTML = p.sources
     const sources = $sources.querySelectorAll('span.source')
     const sourcesArr = []
     for (let source of sources) sourcesArr.push(source)
-    const _display_sources = sourcesArr.map(s => {
+    const _displaySources = sourcesArr.map(s => {
       const urlRegexp = /https?:\/\/[a-z0-9-._~/?#[\]@!$&'()*+,;=:%]+/igm
       return s.innerHTML.replace(urlRegexp, txt => `<a href="${txt}" target="_blank">${txt}</a>`)
     })
 
     // Handle data-* spans (links between cards, people markup, sources markup...)
     let whileCnt = 0
-    while (_display_text.querySelector('span:not([data-handled])') && whileCnt < 100) {
-      const span = _display_text.querySelector('span:not([data-handled])')
+    while (_displayText.querySelector('span:not([data-handled])') && whileCnt < 100) {
+      const span = _displayText.querySelector('span:not([data-handled])')
       const person = span.getAttribute('data-person')
       const area = span.getAttribute('data-place')
       const notion = span.getAttribute('data-notion')
@@ -83,7 +83,7 @@ function enrichData (data) {
         span.innerHTML = `<span class="lblb-paragraph__link">${spanContent}</span>`
       }
       span.setAttribute('data-handled', 'true')
-      whileCnt ++
+      whileCnt++
     }
 
     // Getting periods from matching p.lifespan and data[2]
@@ -96,18 +96,35 @@ function enrichData (data) {
 
     // Return final place object
     return {
-      id: p.id,                           name: p.name,
-      address: p.address,                 longitude: p.longitude, latitude: p.latitude,
-      city: p.city,                       district: p.district,   photo: p.photo,
-      photo_credits: p.photo_credits,     exists: p.exists,       text: p.text,
-      lifespan: p.lifespan,               type: p.type,           author: p.author,
-      long_read_intro: p.long_read_intro, long_read: p.long_read, sources: p.sources,
-      _chapters: p.chapters,              _persons,               _areas,
-      _notions,                           _periods,               _place_types,
-      _display_text,                      _display_sources
+      id: p.id,
+      name: p.name,
+      address: p.address,
+      longitude: p.longitude,
+      latitude: p.latitude,
+      city: p.city,
+      district: p.district,
+      photo: p.photo,
+      photo_credits: p.photo_credits,
+      exists: p.exists,
+      text: p.text,
+      lifespan: p.lifespan,
+      type: p.type,
+      author: p.author,
+      long_read_intro: p.long_read_intro,
+      long_read: p.long_read,
+      sources: p.sources,
+      display_lifespan: p.display_lifespan,
+      _chapters: p.chapters,
+      _persons,
+      _areas,
+      _notions,
+      _periods,
+      _place_types: _placeTypes,
+      _display_text: _displayText,
+      _display_sources: _displaySources
     }
   })
-  
+
   return {
     places,
     periods,
@@ -115,7 +132,7 @@ function enrichData (data) {
     areas,
     notions,
     chapters,
-    place_types,
+    place_types: placeTypes,
     intro,
     credits
   }

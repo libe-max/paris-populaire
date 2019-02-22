@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import MapboxGL from 'react-mapbox-gl'
 
 export default class MapBoxGL extends Component {
-
   /* * * * * * * * * * * * * * * *
    *
    * CONSTRUCTOR

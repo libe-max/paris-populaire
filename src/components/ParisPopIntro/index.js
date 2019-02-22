@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Parser } from 'html-to-react'
 import ShareArticle from 'libe-components/lib/blocks/ShareArticle'
 import PageTitle from 'libe-components/lib/text-levels/PageTitle'
-import BlockTitle from 'libe-components/lib/text-levels/BlockTitle'
 import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 import Annotation from 'libe-components/lib/text-levels/Annotation'
 import AnnotationTitle from 'libe-components/lib/text-levels/AnnotationTitle'
@@ -26,6 +25,12 @@ export default class ParisPopIntro extends Component {
           <span>Populaire</span>
         </PageTitle>
         <Paragraph big>1830 – 1980</Paragraph>
+        <button className={`${c}__intro-first-go-to-map`}
+          onClick={props.closeIntro}>
+          <Paragraph big>
+            Voir la carte
+          </Paragraph>
+        </button>
       </div>
       <div className={`${c}__intro-content`}>
         <div className={`${c}__intro-paragraphs`}>{
@@ -46,7 +51,7 @@ export default class ParisPopIntro extends Component {
             credits.map((chunk, i) => {
               return <div key={i} className={`${c}__intro-credit-line`}>
                 <Annotation>{h2r.parse(chunk.credit_line)}</Annotation>
-               </div>
+              </div>
             })
           }</div>
         </div>
@@ -62,7 +67,7 @@ export default class ParisPopIntro extends Component {
         </div>
         <div className={`${c}__intro-logo`}>
           <a href='https://www.liberation.fr/libe-labo-data-nouveaux-formats,100538'>
-            <img src='assets/libe-labo-logo.png' />
+            <img alt='Logo Libé Labo' src='assets/libe-labo-logo.png' />
           </a>
         </div>
       </div>

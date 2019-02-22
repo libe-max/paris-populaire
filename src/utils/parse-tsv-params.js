@@ -4,7 +4,7 @@ export default [{
 
   // Places
   start: 0,
-  end: 21,
+  end: 22,
   keysLinePos: 2,
   types: {
     id: 'number',
@@ -43,6 +43,7 @@ export default [{
         end_date: cleanBounds[1]
       }
     },
+    display_lifespan: v => v.trim(),
     type: v => v.trim(),
     author: v => v.trim(),
     long_read_intro: v => v.trim(),
@@ -54,8 +55,8 @@ export default [{
 }, {
 
   // Periods
-  start: 22,
-  end: 25,
+  start: 23,
+  end: 26,
   keysLinePos: 2,
   types: {
     start_date: v => moment(v, 'DD/MM/YYYY').startOf('day'),
@@ -64,43 +65,43 @@ export default [{
 }, {
 
   // People
-  start: 26,
-  end: 27,
+  start: 27,
+  end: 28,
   keysLinePos: 2
 }, {
 
   // Areas
-  start: 28,
-  end: 29,
+  start: 29,
+  end: 30,
   keysLinePos: 2
 }, {
 
   // Notions
-  start: 30,
-  end: 31,
+  start: 31,
+  end: 32,
   keysLinePos: 2
 }, {
 
   // Chapters
-  start: 32,
-  end: 33,
+  start: 33,
+  end: 34,
   keysLinePos: 2
 }, {
 
   // Place types
-  start: 34,
-  end: 35,
+  start: 35,
+  end: 36,
   keysLinePos: 2
 }, {
 
   // Intro
-  start: 36,
-  end: 37,
+  start: 37,
+  end: 38,
   keysLinePos: 2
 }, {
 
   // Credits
-  start: 38,
-  end: 38,
+  start: 39,
+  end: 39,
   keysLinePos: 2
 }]

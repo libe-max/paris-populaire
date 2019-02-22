@@ -38,8 +38,14 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [x] Share & social
 - [x] Afficher dates de début et fin dans le tooltip et dans lebloc d'intro
 - [ ] Ajouter des fallback fonts dans fonts.css
-- [ ] Styliser prev/next inactive
+- [x] Styliser prev/next inactive (abandonné)
 - [ ] Mettre plus de sécurité sur le parsing du html
+- [ ] Enlever "votre position" sur desktop
+- [ ] Prendre en compte "display_lifespan"
+- [ ] Photo trop grande sur 13"
+- [ ] Share sur la carte
+- [ ] Adresses dans le share
+- [x] Virer les flèches
 - [x] Afficher "vous êtes ici" dans la légende
 - [x] Catch error while enrich data
 - [x] Styliser l'app

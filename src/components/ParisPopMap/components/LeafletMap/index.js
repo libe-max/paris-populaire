@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Map as Leaflet, TileLayer } from 'react-leaflet'
 
 export default class LeafletMap extends Component {
-
   /* * * * * * * * * * * * * * * *
    *
    * CONSTRUCTOR
@@ -62,7 +61,7 @@ export default class LeafletMap extends Component {
       !node.leafletElement ||
       !node.leafletElement.setView) return
     node.leafletElement.setView([lat, lon + 0.00216], z)
-  }  
+  }
 
   /* * * * * * * * * * * * * * * *
    *
@@ -77,7 +76,7 @@ export default class LeafletMap extends Component {
       zoom={map.zoom}
       maxBounds={map.maxBounds}
       minZoom={map.minZoom}
-      ref={n => this.node = n}>
+      ref={n => { this.node = n }}>
       <TileLayer
         url={map.rasterTiles}
         attribution={map.rasterAttribution} />

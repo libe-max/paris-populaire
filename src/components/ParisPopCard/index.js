@@ -58,8 +58,7 @@ export default class ParisPopCard extends Component {
     } else if (isLink) {
       const id = parseInt(isLink.getAttribute('data-link'), 10)
       return this.props.activatePlace(id, { smooth: true })
-    } 
-    return
+    }
   }
 
   activateSource (id) {
@@ -69,45 +68,47 @@ export default class ParisPopCard extends Component {
       id >= sources.length ||
       id < 0) return
     const source = $root.querySelectorAll('.parispop__card-source')[id]
-    if (source) source.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    })
+    if (source) {
+      source.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
     return this.setState({ active_source_id: id })
   }
 
   render () {
     const { props, state, c, h2r } = this
-    const { activatePlace, unactivatePlace, place, prevPlace, nextPlace } = props
+    const { unactivatePlace, place } = props
     const { active_source_id: activeSourceId } = state
-    if (!place) return <div className={`${c}__card`} ref={n => this.$root = n} />
+    if (!place) return <div className={`${c}__card`} ref={n => { this.$root = n }} />
 
     const {
-      id,     address,   name,
-      author, photo,     photo_credits,
-      long_read,         long_read_intro,
+      id, address, name,
+      author, photo, photo_credits: photoCredits,
+      long_read: longRead, long_read_intro: longReadIntro,
       _display_text: displayText,
       _display_sources: displaySources
     } = place
     const { origin, pathname } = window.location
-    const tweetUrl = origin + pathname + `?` + btoa(`a=${id}`)
+    const tweetUrl = origin + pathname + `?` + window.btoa(`a=${id}`)
 
-    return <div className={`${c}__card`} ref={n => this.$root = n}>
+    return <div className={`${c}__card`} ref={n => { this.$root = n }}>
       <div className={`${c}__card-actions`}>
-        <button className={`${c}__card-prev ${c}__card-prev_${prevPlace ? 'active' : 'inactive'}`}
+        {/* <button className={`${c}__card-prev ${c}__card-prev_${prevPlace ? 'active' : 'inactive'}`}
           onClick={prevPlace ? () => activatePlace(prevPlace, { smooth: true }) : null}>
           <Svg src='https://www.liberation.fr/apps/static/assets/left-arrow-head-icon_40.svg' />
         </button>
         <button className={`${c}__card-next ${c}__card-next_${nextPlace ? 'active' : 'inactive'}`}
           onClick={nextPlace ? () => activatePlace(nextPlace, { smooth: true }) : null}>
           <Svg src='https://www.liberation.fr/apps/static/assets/right-arrow-head-icon_40.svg' />
-        </button>
+        </button> */}
         <button className={`${c}__card-close`} onClick={unactivatePlace}>
           <Svg src='https://www.liberation.fr/apps/static/assets/tilted-cross-icon_40.svg' />
         </button>
       </div>
-      <div className={`${c}__card-illustration`}>{photo ? <img src={photo} alt={photo_credits} /> : ''}</div>
-      <div className={`${c}__card-illustration-credits`}>{photo_credits ? <Annotation>{photo_credits}</Annotation> : ''}</div>
+      <div className={`${c}__card-illustration`}>{photo ? <img src={photo} alt={photoCredits} /> : ''}</div>
+      <div className={`${c}__card-illustration-credits`}>{photoCredits ? <Annotation>{photoCredits}</Annotation> : ''}</div>
       <div className={`${c}__card-slug`}><Slug big>{address}</Slug></div>
       <div className={`${c}__card-title`}><SectionTitle level={2}>{h2r.parse(name)}</SectionTitle></div>
       <div className={`${c}__card-content`}><Paragraph>{h2r.parse(displayText.innerHTML)}</Paragraph></div>
@@ -116,10 +117,10 @@ export default class ParisPopCard extends Component {
         <BlockTitle level={4}>Partager</BlockTitle>
         <ShareArticle short iconsOnly url={tweetUrl} />
       </div>
-      {long_read
+      {longRead
         ? <div className={`${c}__card-read-also`}>
           <BlockTitle level={4}>À lire aussi</BlockTitle>
-          <Paragraph><a href={long_read}>{h2r.parse(long_read_intro) || long_read}</a></Paragraph>
+          <Paragraph><a href={longRead}>{h2r.parse(longReadIntro) || longRead}</a></Paragraph>
         </div>
         : ''
       }

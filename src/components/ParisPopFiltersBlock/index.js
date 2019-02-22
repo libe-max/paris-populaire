@@ -35,7 +35,7 @@ export default class ParisPopFiltersBlock extends Component {
     if (activeFilterDisplayName) classes.push(`${c}__filters-block_with-filter`)
 
     return <div className={classes.join(' ')}
-      ref={n => this.$root = n}>
+      ref={n => { this.$root = n }}>
       <div className={`${c}__filters-block-head`}
         onClick={() => toggleFiltersPanel(!isActive)}>
         <div className={`${c}__filters-block-title`}>
@@ -68,18 +68,18 @@ export default class ParisPopFiltersBlock extends Component {
                 filter.type,
                 e.target.value
               )}>{[
-              <option disabled
-                key={-1}
-                value='placeholder'>
+                <option disabled
+                  key={-1}
+                  value='placeholder'>
                 Choisir...
-              </option>,
-              ...filter.data.map((opt, j) => {
-                return <option key={j}
-                  value={opt.id}>
-                  {opt.name}
-                </option>
-              })]
-            }</select>
+                </option>,
+                ...filter.data.map((opt, j) => {
+                  return <option key={j}
+                    value={opt.id}>
+                    {opt.name}
+                  </option>
+                })]
+              }</select>
           </div>
         })
       }</div>

@@ -11,7 +11,7 @@ export default class ParisPopCaption extends Component {
       </div>
       <div className={`${c}__caption-field`}>
         <div className={`${c}__mb-map-marker ${c}__mb-map-marker_exists`} />
-        <Annotation>Lieu visible</Annotation>
+        <Annotation>Lieu encore visible</Annotation>
       </div>
       <div className={`${c}__caption-field`}>
         <div className={`${c}__mb-map-marker ${c}__mb-map-marker_not-exists`} />
