@@ -41,11 +41,12 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [x] Styliser prev/next inactive (abandonné)
 - [ ] Mettre plus de sécurité sur le parsing du html
 - [ ] Enlever "votre position" sur desktop
-- [ ] Prendre en compte "display_lifespan"
+- [x] Prendre en compte "display_lifespan"
 - [ ] Photo trop grande sur 13"
 - [ ] Share sur la carte
 - [ ] Adresses dans le share
 - [ ] Afficher le lien de partage dans les fiches
+- [ ] Upgrade prev / next
 - [x] Virer les flèches
 - [x] Afficher "vous êtes ici" dans la légende
 - [x] Catch error while enrich data
