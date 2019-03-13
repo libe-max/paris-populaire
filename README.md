@@ -34,19 +34,21 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [x] Prev / Next
 - [x] Ajouter un SVG de la seine (abandonné)
 - [x] Zoom controls
-- [ ] Ajouter une zone cliquable qui déclenche l'intro à gauche de l'écran
+- [x] Ajouter une zone cliquable qui déclenche l'intro à gauche de l'écran
 - [x] Share & social
 - [x] Afficher dates de début et fin dans le tooltip et dans lebloc d'intro
-- [ ] Ajouter des fallback fonts dans fonts.css
+- [x] Ajouter des fallback fonts dans fonts.css
 - [x] Styliser prev/next inactive (abandonné)
+- [x] Réactiver les chapitres
 - [ ] Mettre plus de sécurité sur le parsing du html
 - [ ] Enlever "votre position" sur desktop
 - [x] Prendre en compte "display_lifespan"
-- [ ] Photo trop grande sur 13"
-- [ ] Share sur la carte
-- [ ] Adresses dans le share
-- [ ] Afficher le lien de partage dans les fiches
+- [ ] NOPE – Photo trop grande sur 13"
+- [x] NOPE – Share sur la carte
+- [x] Adresses dans le share
+- [x] Afficher le lien de partage dans les fiches
 - [ ] Upgrade prev / next
+- [x] NOPE – Signaler les brèves doublons
 - [x] Virer les flèches
 - [x] Afficher "vous êtes ici" dans la légende
 - [x] Catch error while enrich data
@@ -56,6 +58,7 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [x] Leaflet fallback
 - [x] Corriger l'affichage des "liens" dans les cartes
 - [x] Scroll to source
+- [ ] Améliorer le share component
 
 #### After publication
 

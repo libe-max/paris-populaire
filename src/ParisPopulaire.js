@@ -14,6 +14,10 @@ import ParisPopCaption from './components/ParisPopCaption'
 import ParisPopIntro from './components/ParisPopIntro'
 
 import PageTitle from 'libe-components/lib/text-levels/PageTitle'
+import AnnotationTitle from 'libe-components/lib/text-levels/AnnotationTitle'
+import ShareArticle from 'libe-components/lib/blocks/ShareArticle'
+
+import style from './style.css'
 
 export default class ParisPopulaire extends Component {
   /* * * * * * * * * * * * * * * *
@@ -87,10 +91,11 @@ export default class ParisPopulaire extends Component {
       dev_spreadsheet: devSpreadsheet,
       prod_spreadsheet: prodSpreadsheet
     } = this.props
-    const spreadsheetToFecth = process.env.NODE_ENV === 'production'
+    const { pathname } = window.location
+    const spreadsheetToFetch = pathname.match(/\/apps\/2019\/02\/paris-populaire\/?/)
       ? prodSpreadsheet
       : devSpreadsheet
-    const res = await window.fetch(spreadsheetToFecth)
+    const res = await window.fetch(spreadsheetToFetch)
     const status = { res }
     const err = `Server responded with a ${status} error status.`
     if (!res.ok) throw new Error(err)
@@ -187,7 +192,11 @@ export default class ParisPopulaire extends Component {
    * * * * * * * * * * * * * * * */
   suggestIntro (a) {
     if (typeof a !== 'boolean') return
-    const { suggest_intro: suggestIntro } = this.state
+    const {
+      page,
+      suggest_intro: suggestIntro
+    } = this.state
+    if (a && page === 'intro') return
     if (a && suggestIntro) return
     else if (!a && !suggestIntro) return
     return this.setState({ suggest_intro: a })
@@ -218,7 +227,7 @@ export default class ParisPopulaire extends Component {
     const { data } = state
     if (!data) return
     // const typeExists = ['notions', 'periods', 'persons', 'chapters', 'areas', 'place_types'].indexOf(type) > -1
-    const typeExists = ['periods', 'place_types'].indexOf(type) > -1
+    const typeExists = ['periods', 'chapters', 'place_types'].indexOf(type) > -1
     const valueExists = typeExists ? data[type].some(filter => filter.id === value) : false
     const $selectors = filtersBlock.$root.querySelectorAll('select')
     if (parisPopMap) parisPopMap.resetCenterAndZoom()
@@ -336,11 +345,11 @@ export default class ParisPopulaire extends Component {
         .findIndex((p, i) => p.id === activePlace.id)
       const prevPlace = activePlaceChronoPos > 0 &&
         activePlaceChronoPos < chronoSortedPlaces.length
-        ? chronoSortedPlaces[activePlaceChronoPos - 1].id
+        ? chronoSortedPlaces[activePlaceChronoPos - 1]
         : null
       const nextPlace = activePlaceChronoPos > -1 &&
         activePlaceChronoPos < chronoSortedPlaces.length - 1
-        ? chronoSortedPlaces[activePlaceChronoPos + 1].id
+        ? chronoSortedPlaces[activePlaceChronoPos + 1]
         : null
       return { prevPlace, nextPlace }
     })()
@@ -380,9 +389,9 @@ export default class ParisPopulaire extends Component {
           setFilter={this.setFilter}
           appRootClass={c}
           filters={[
-            /* { type: 'notions', label: 'Notions', data: data ? data.notions || [] : [] },
+            /* { type: 'notions', label: 'Notions', data: data ? data.notions || [] : [] }, */
             { type: 'chapters', label: 'Chapitres', data: data ? data.chapters || [] : [] },
-            { type: 'areas', label: 'Zones géographiques', data: data ? data.areas || [] : [] }, */
+            /* { type: 'areas', label: 'Zones géographiques', data: data ? data.areas || [] : [] }, */
             { type: 'periods', label: 'Périodes', data: data ? data.periods || [] : [] },
             /* { type: 'persons', label: 'Personages', data: data ? data.persons || [] : [] }, */
             { type: 'place_types', label: 'Types de lieux', data: data ? data.place_types || [] : [] }
@@ -390,6 +399,9 @@ export default class ParisPopulaire extends Component {
       </div>
       <div className={`${c}__intro-overlay`} onClick={() => this.toggleIntro(false)} />
       <div className={`${c}__cards-overlay`} onClick={this.unactivatePlace} />
+      <div className={`${c}__intro-panel-triggerer`}
+        onMouseOver={() => this.suggestIntro(true)}
+        onMouseOut={() => this.suggestIntro(false)} />
       <div className={`${c}__app-logo`}
         onMouseOver={() => this.suggestIntro(true)}
         onMouseOut={() => this.suggestIntro(false)}
@@ -399,7 +411,10 @@ export default class ParisPopulaire extends Component {
           <span>Populaire</span>
         </PageTitle>
       </div>
-      <div className={`${c}__intro-panel`}>
+      <div className={`${c}__intro-panel`}
+        onMouseOver={() => this.suggestIntro(true)}
+        onMouseOut={() => this.suggestIntro(false)}
+        onClick={() => this.toggleIntro(true)}>
         <ParisPopIntro appRootClass={c}
           texts={data ? data.intro : []}
           credits={data ? data.credits : []}

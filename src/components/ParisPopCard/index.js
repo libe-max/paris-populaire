@@ -10,6 +10,11 @@ import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 import Annotation from 'libe-components/lib/text-levels/Annotation'
 
 export default class ParisPopCard extends Component {
+  /* * * * * * * * * * * * * * * *
+   *
+   * CONSTRUCTOR
+   *
+   * * * * * * * * * * * * * * * */
   constructor (props) {
     super(props)
     this.c = props.appRootClass
@@ -17,22 +22,43 @@ export default class ParisPopCard extends Component {
     this.h2r = new Parser()
     this.handleClicksInCard = this.handleClicksInCard.bind(this)
     this.activateSource = this.activateSource.bind(this)
+    this.copyLink = this.copyLink.bind(this)
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * DID MOUNT
+   *
+   * * * * * * * * * * * * * * * */
   componentDidMount () {
     this.$root.addEventListener('click', this.handleClicksInCard)
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * WILL UNMOUNT
+   *
+   * * * * * * * * * * * * * * * */
   componentWillUnmount () {
     this.$root.addEventListener('click', this.handleClicksInCard)
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * DID UPDATE
+   *
+   * * * * * * * * * * * * * * * */
   componentDidUpdate (prevProps) {
     const prevPlace = prevProps.place || {}
     const place = this.props.place || {}
     if (place.id !== prevPlace.id) this.setState({ active_source_id: null })
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * HANDLE CLICKS IN CARD
+   *
+   * * * * * * * * * * * * * * * */
   handleClicksInCard (e) {
     const isPerson = getParent(e.target, 'span[data-person]')
     const isArea = getParent(e.target, 'span[data-place]')
@@ -61,13 +87,18 @@ export default class ParisPopCard extends Component {
     }
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * ACTIVATE SOURCE
+   *
+   * * * * * * * * * * * * * * * */
   activateSource (id) {
-    const { props, $root } = this
+    const { props, $root, c } = this
     const { _display_sources: sources } = props.place
     if (typeof id !== 'number' ||
       id >= sources.length ||
       id < 0) return
-    const source = $root.querySelectorAll('.parispop__card-source')[id]
+    const source = $root.querySelectorAll(`.${c}__card-source`)[id]
     if (source) {
       source.scrollIntoView({
         behavior: 'smooth',
@@ -77,9 +108,34 @@ export default class ParisPopCard extends Component {
     return this.setState({ active_source_id: id })
   }
 
+  /* * * * * * * * * * * * * * * *
+   *
+   * COPY LINK
+   *
+   * * * * * * * * * * * * * * * */
+  copyLink () {
+    const { c } = this
+    const linkSelector = `.${c}__card-share-hidden-link`
+    const buttonSelector = `.${c}__card-share-link`
+    const linkContainer = document.querySelector(linkSelector)
+    const button = document.querySelector(buttonSelector)
+    linkContainer.select()
+    document.execCommand('copy')
+    if (window.getSelection) window.getSelection().removeAllRanges()
+    else if (document.selection) document.selection.empty()
+    linkContainer.blur()
+    button.innerHTML = '<p class="lblb-paragraph lblb-paragraph_small">Lien copié !</p>'
+    return linkContainer.innerHTML
+  }
+
+  /* * * * * * * * * * * * * * * *
+   *
+   * RENDER
+   *
+   * * * * * * * * * * * * * * * */
   render () {
     const { props, state, c, h2r } = this
-    const { unactivatePlace, place } = props
+    const { unactivatePlace, place, activatePlace, prevPlace, nextPlace } = props
     const { active_source_id: activeSourceId } = state
     if (!place) return <div className={`${c}__card`} ref={n => { this.$root = n }} />
 
@@ -88,21 +144,18 @@ export default class ParisPopCard extends Component {
       author, photo, photo_credits: photoCredits,
       long_read: longRead, long_read_intro: longReadIntro,
       _display_text: displayText,
-      _display_sources: displaySources
+      _display_sources: displaySources,
     } = place
     const { origin, pathname } = window.location
     const tweetUrl = origin + pathname + `?` + window.btoa(`a=${id}`)
+    const tweetText = `${address} ou ailleurs… Parcourez les lieux connus et méconnus du Paris populaire de 1830 à 1980 avec la carte interactive de @Libe, @Libe_Labo.`
+
+    const activatePrevCard = prevPlace ? () => activatePlace(prevPlace.id, { smooth: true }) : null
+    const activateNextCard = nextPlace ? () => activatePlace(nextPlace.id, { smooth: true }) : null
+    console.log(prevPlace, nextPlace)
 
     return <div className={`${c}__card`} ref={n => { this.$root = n }}>
       <div className={`${c}__card-actions`}>
-        {/* <button className={`${c}__card-prev ${c}__card-prev_${prevPlace ? 'active' : 'inactive'}`}
-          onClick={prevPlace ? () => activatePlace(prevPlace, { smooth: true }) : null}>
-          <Svg src='https://www.liberation.fr/apps/static/assets/left-arrow-head-icon_40.svg' />
-        </button>
-        <button className={`${c}__card-next ${c}__card-next_${nextPlace ? 'active' : 'inactive'}`}
-          onClick={nextPlace ? () => activatePlace(nextPlace, { smooth: true }) : null}>
-          <Svg src='https://www.liberation.fr/apps/static/assets/right-arrow-head-icon_40.svg' />
-        </button> */}
         <button className={`${c}__card-close`} onClick={unactivatePlace}>
           <Svg src='https://www.liberation.fr/apps/static/assets/tilted-cross-icon_40.svg' />
         </button>
@@ -113,9 +166,24 @@ export default class ParisPopCard extends Component {
       <div className={`${c}__card-title`}><SectionTitle level={2}>{h2r.parse(name)}</SectionTitle></div>
       <div className={`${c}__card-content`}><Paragraph>{h2r.parse(displayText.innerHTML)}</Paragraph></div>
       <div className={`${c}__card-signature`}><Paragraph>{h2r.parse(author)}</Paragraph></div>
+      <div className={`${c}__card-prev-next`}>
+        <BlockTitle>Pour continuer la lecture</BlockTitle>
+        <div className={`${c}__prev-card`}
+          onClick={activatePrevCard}>
+          <Slug>{prevPlace.address}</Slug>
+          <Paragraph>Prev card</Paragraph>
+        </div>
+        <div className={`${c}__next-card`}
+          onClick={activateNextCard}>
+          <Slug>{nextPlace.address}</Slug>
+          <Paragraph>Next card</Paragraph>
+        </div>
+      </div>
       <div className={`${c}__card-share`}>
         <BlockTitle level={4}>Partager</BlockTitle>
-        <ShareArticle short iconsOnly url={tweetUrl} />
+        <ShareArticle short iconsOnly url={tweetUrl} tweetText={tweetText} />
+        <div className={`${c}__card-share-link`} onClick={this.copyLink}><Paragraph small><a>Copier le lien</a></Paragraph></div>
+        <input className={`${c}__card-share-hidden-link`} type='text' value={tweetUrl} readOnly />
       </div>
       {longRead
         ? <div className={`${c}__card-read-also`}>
@@ -127,9 +195,7 @@ export default class ParisPopCard extends Component {
       <div className={`${c}__card-sources`}>
         <BlockTitle level={4}>Sources</BlockTitle>
         {displaySources.map((s, i) => {
-          const activeClass = (i === activeSourceId)
-            ? ` ${c}__card-source_active`
-            : ''
+          const activeClass = (i === activeSourceId) ? ` ${c}__card-source_active` : ''
           return <div key={i}
             id={`${c}__card-source-${i}`}
             className={`${c}__card-source${activeClass}`}>
