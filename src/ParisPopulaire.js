@@ -24,15 +24,17 @@ export default class ParisPopulaire extends Component {
   constructor (props) {
     super(props)
     this.c = 'parispop' // Prefix for all css classes (BEM method)
+    /* eslint-disable no-multi-spaces */
     this.state = {
-      page: 'intro', // 'intro' || 'map' || 'filters' || 'cards'
-      suggest_intro: false, // <Boolean>
-      loading: true, // <Boolean>
-      error: null, // null || <Error>
-      data: null, // null || <Object>
+      page: 'intro',         // 'intro' || 'map' || 'filters' || 'cards'
+      suggest_intro: false,  // <Boolean>
+      loading: true,         // <Boolean>
+      error: null,           // null || <Error>
+      data: null,            // null || <Object>
       active_place_id: null, // null || <Number>
-      active_filter: null // null || <Object>
+      active_filter: null    // null || <Object>
     }
+    /* eslint-enable no-multi-spaces */
     this.fetchData = this.fetchData.bind(this)
     this.toggleFiltersPanel = this.toggleFiltersPanel.bind(this)
     this.setFilter = this.setFilter.bind(this)
