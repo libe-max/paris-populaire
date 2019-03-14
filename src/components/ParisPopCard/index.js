@@ -152,7 +152,6 @@ export default class ParisPopCard extends Component {
 
     const activatePrevCard = prevPlace ? () => activatePlace(prevPlace.id, { smooth: true }) : null
     const activateNextCard = nextPlace ? () => activatePlace(nextPlace.id, { smooth: true }) : null
-    console.log(prevPlace, nextPlace)
 
     return <div className={`${c}__card`} ref={n => { this.$root = n }}>
       <div className={`${c}__card-actions`}>
@@ -168,15 +167,25 @@ export default class ParisPopCard extends Component {
       <div className={`${c}__card-signature`}><Paragraph>{h2r.parse(author)}</Paragraph></div>
       <div className={`${c}__card-prev-next`}>
         <BlockTitle>Pour continuer la lecture</BlockTitle>
-        <div className={`${c}__prev-card`}
-          onClick={activatePrevCard}>
-          <Slug>{prevPlace.address}</Slug>
-          <Paragraph>Prev card</Paragraph>
-        </div>
-        <div className={`${c}__next-card`}
-          onClick={activateNextCard}>
-          <Slug>{nextPlace.address}</Slug>
-          <Paragraph>Next card</Paragraph>
+        <div className={`${c}__card-prev-next-buttons`}>
+          <div className={`${c}__prev-card`} onClick={activatePrevCard}>
+            <div className={`${c}__card-prev-next-buttons-text`}>
+              <Slug>{prevPlace.address}</Slug><br/>
+              <Paragraph>{prevPlace.name}</Paragraph><br/>
+            </div>
+            <div className={`${c}__card-prev-next-buttons-button`}>
+              <Paragraph><a>Lire</a></Paragraph>
+            </div>
+          </div>
+          <div className={`${c}__next-card`} onClick={activateNextCard}>
+            <div className={`${c}__card-prev-next-buttons-text`}>
+              <Slug>{nextPlace.address}</Slug><br/>
+              <Paragraph>{nextPlace.name}</Paragraph><br/>
+            </div>
+            <div className={`${c}__card-prev-next-buttons-button`}>
+              <Paragraph><a>Lire</a></Paragraph>
+            </div>
+          </div>
         </div>
       </div>
       <div className={`${c}__card-share`}>

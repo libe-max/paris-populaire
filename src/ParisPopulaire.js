@@ -72,6 +72,22 @@ export default class ParisPopulaire extends Component {
         loading: false,
         error: null
       }
+      ret.places.forEach(place => {
+        try {
+          const div = document.createElement('div')
+          div.innerHTML += place.author
+          div.innerHTML += place.name
+          div.innerHTML += place.photo_credits
+          div.innerHTML += place.sources
+          div.innerHTML += place.text
+          place._display_sources.forEach(source => {
+            div.innerHTML += source
+          })
+        } catch (e) {
+          console.log(place)
+          console.log(e)
+        }
+      })
       this.setState(newState, this.positionMap)
     }).catch(e => {
       this.setState({
@@ -272,7 +288,9 @@ export default class ParisPopulaire extends Component {
       active_place_id: id
     }
     if (activePlaceId && options.smooth) {
-      this.unactivatePlace()
+      this.unactivatePlace({
+        stay_here: true
+      })
       return window.setTimeout(() => {
         if (this.parisPopMap) {
           this.parisPopMap.flyAndZoomTo(
@@ -299,9 +317,9 @@ export default class ParisPopulaire extends Component {
    * UNACTIVATE PLACE
    *
    * * * * * * * * * * * * * * * */
-  unactivatePlace () {
+  unactivatePlace (options = {}) {
     const { parisPopMap } = this
-    if (parisPopMap) {
+    if (parisPopMap && !options.stay_here) {
       if (window.innerWidth <= 1008) parisPopMap.zoomTo(13.7)
       else parisPopMap.zoomTo(15.5)
     }
@@ -334,10 +352,10 @@ export default class ParisPopulaire extends Component {
     const pageIsReady = !state.loading && !state.error
     const activePlaceId = state.active_place_id
     const activePlace = data
-      ? data.places.filter(p => p.id === activePlaceId)[0]
+      ? [...data.places].filter(p => p.id === activePlaceId)[0]
       : null
     const chronoSortedPlaces = data
-      ? data.places.sort((a, b) => a.lifespan.start_date - b.lifespan.end_date)
+      ? [...data.places].sort((a, b) => a.lifespan.start_date - b.lifespan.end_date)
       : null
     const { prevPlace, nextPlace } = (() => {
       if (!activePlace) return {}
@@ -346,11 +364,11 @@ export default class ParisPopulaire extends Component {
       const prevPlace = activePlaceChronoPos > 0 &&
         activePlaceChronoPos < chronoSortedPlaces.length
         ? chronoSortedPlaces[activePlaceChronoPos - 1]
-        : null
+        : chronoSortedPlaces[chronoSortedPlaces.length - 1]
       const nextPlace = activePlaceChronoPos > -1 &&
         activePlaceChronoPos < chronoSortedPlaces.length - 1
         ? chronoSortedPlaces[activePlaceChronoPos + 1]
-        : null
+        : chronoSortedPlaces[0]
       return { prevPlace, nextPlace }
     })()
 

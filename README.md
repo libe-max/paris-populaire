@@ -43,11 +43,11 @@ This app has been built on top of the [Libé apps template](https://github.com/l
 - [ ] Mettre plus de sécurité sur le parsing du html
 - [ ] Enlever "votre position" sur desktop
 - [x] Prendre en compte "display_lifespan"
-- [ ] NOPE – Photo trop grande sur 13"
+- [x] NOPE – Photo trop grande sur 13"
 - [x] NOPE – Share sur la carte
 - [x] Adresses dans le share
 - [x] Afficher le lien de partage dans les fiches
-- [ ] Upgrade prev / next
+- [X] Upgrade prev / next
 - [x] NOPE – Signaler les brèves doublons
 - [x] Virer les flèches
 - [x] Afficher "vous êtes ici" dans la légende

@@ -926,13 +926,23 @@
 .parispop__card-title,
 .parispop__card-share,
 .parispop__card-content,
-.parispop__card-signature,
-.parispop__card-prev-next,
-.parispop__card-read-also,
 .parispop__card-sources {
   margin-left: 2rem;
   margin-right: 2rem; 
   margin-bottom: 1rem;
+}
+
+.parispop__card-signature,
+.parispop__card-prev-next {
+  margin-left: 2rem;
+  margin-right: 2rem; 
+  margin-bottom: 3rem;
+}
+
+.parispop__card-read-also {
+  margin-left: 2rem;
+  margin-right: 2rem; 
+  margin-bottom: 2rem;
 }
 
 .parispop__card-slug
@@ -990,20 +1000,10 @@
     color: #888;
 }
 
-.parispop__card-signature,
-.parispop__card-read-also {
-  margin-bottom: 2rem;
-}
-
 .parispop__card-prev-next .lblb-block-title,
 .parispop__card-read-also .lblb-block-title,
 .parispop__card-sources .lblb-block-title {
   margin-bottom: 1rem;
-}
-
-.parispop__card-prev-next {
-  display: flex;
-  flex-wrap: wrap;
 }
 
 .parispop__card-prev-next
@@ -1012,11 +1012,33 @@
     flex-shrink: 0;
 }
 
+.parispop__card-prev-next
+  .parispop__card-prev-next-buttons {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .parispop__card-prev-next .parispop__prev-card,
 .parispop__card-prev-next .parispop__next-card {
-  flex-grow: 1;
-  padding-bottom: .5rem;
-  /*border-bottom: .25rem solid black;*/
+  width: calc(50% - 8px);
+  cursor: pointer;
+  border: 1px solid #CCC;
+  border-top: .25rem solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.parispop__card-prev-next-buttons-text {
+  padding: 1rem;
+}
+
+.parispop__card-prev-next-buttons-button {
+  padding: 1rem;
+  background: #F8F8F8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .parispop__card-prev-next .parispop__prev-card {
@@ -1059,6 +1081,7 @@
   .parispop__card-share,
   .parispop__card-content,
   .parispop__card-signature,
+  .parispop__card-prev-next,
   .parispop__card-read-also,
   .parispop__card-sources {
     margin-left: 1rem;
@@ -1084,6 +1107,7 @@
   .parispop__card-share,
   .parispop__card-content,
   .parispop__card-signature,
+  .parispop__card-prev-next,
   .parispop__card-read-also,
   .parispop__card-sources {
     margin-left: .5rem;
