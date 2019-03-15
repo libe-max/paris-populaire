@@ -14,10 +14,6 @@ import ParisPopCaption from './components/ParisPopCaption'
 import ParisPopIntro from './components/ParisPopIntro'
 
 import PageTitle from 'libe-components/lib/text-levels/PageTitle'
-import AnnotationTitle from 'libe-components/lib/text-levels/AnnotationTitle'
-import ShareArticle from 'libe-components/lib/blocks/ShareArticle'
-
-import style from './style.css'
 
 export default class ParisPopulaire extends Component {
   /* * * * * * * * * * * * * * * *
@@ -72,22 +68,23 @@ export default class ParisPopulaire extends Component {
         loading: false,
         error: null
       }
-      ret.places.forEach(place => {
-        try {
-          const div = document.createElement('div')
-          div.innerHTML += place.author
-          div.innerHTML += place.name
-          div.innerHTML += place.photo_credits
-          div.innerHTML += place.sources
-          div.innerHTML += place.text
-          place._display_sources.forEach(source => {
-            div.innerHTML += source
-          })
-        } catch (e) {
-          console.log(place)
-          console.log(e)
-        }
-      })
+      // [WIP] If something goes wrong
+      // ret.places.forEach(place => {
+      //   try {
+      //     const div = document.createElement('div')
+      //     div.innerHTML += place.author
+      //     div.innerHTML += place.name
+      //     div.innerHTML += place.photo_credits
+      //     div.innerHTML += place.sources
+      //     div.innerHTML += place.text
+      //     place._display_sources.forEach(source => {
+      //       div.innerHTML += source
+      //     })
+      //   } catch (e) {
+      //     console.log(place)
+      //     console.log(e)
+      //   }
+      // })
       this.setState(newState, this.positionMap)
     }).catch(e => {
       this.setState({
@@ -108,6 +105,7 @@ export default class ParisPopulaire extends Component {
       prod_spreadsheet: prodSpreadsheet
     } = this.props
     const { pathname } = window.location
+    console.log(pathname.match(/\/apps\/2019\/02\/paris-populaire\/?/) ? 'prod' : 'dev')
     const spreadsheetToFetch = pathname.match(/\/apps\/2019\/02\/paris-populaire\/?/)
       ? prodSpreadsheet
       : devSpreadsheet

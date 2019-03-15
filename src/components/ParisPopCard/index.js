@@ -144,7 +144,7 @@ export default class ParisPopCard extends Component {
       author, photo, photo_credits: photoCredits,
       long_read: longRead, long_read_intro: longReadIntro,
       _display_text: displayText,
-      _display_sources: displaySources,
+      _display_sources: displaySources
     } = place
     const { origin, pathname } = window.location
     const tweetUrl = origin + pathname + `?` + window.btoa(`a=${id}`)
@@ -170,8 +170,8 @@ export default class ParisPopCard extends Component {
         <div className={`${c}__card-prev-next-buttons`}>
           <div className={`${c}__prev-card`} onClick={activatePrevCard}>
             <div className={`${c}__card-prev-next-buttons-text`}>
-              <Slug>{prevPlace.address}</Slug><br/>
-              <Paragraph>{prevPlace.name}</Paragraph><br/>
+              <Slug>{prevPlace.address}</Slug><br />
+              <Paragraph>{prevPlace.name}</Paragraph><br />
             </div>
             <div className={`${c}__card-prev-next-buttons-button`}>
               <Paragraph><a>Lire</a></Paragraph>
@@ -179,8 +179,8 @@ export default class ParisPopCard extends Component {
           </div>
           <div className={`${c}__next-card`} onClick={activateNextCard}>
             <div className={`${c}__card-prev-next-buttons-text`}>
-              <Slug>{nextPlace.address}</Slug><br/>
-              <Paragraph>{nextPlace.name}</Paragraph><br/>
+              <Slug>{nextPlace.address}</Slug><br />
+              <Paragraph>{nextPlace.name}</Paragraph><br />
             </div>
             <div className={`${c}__card-prev-next-buttons-button`}>
               <Paragraph><a>Lire</a></Paragraph>
