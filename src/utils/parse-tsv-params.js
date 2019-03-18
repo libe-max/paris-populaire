@@ -8,7 +8,7 @@ export default [{
   keysLinePos: 2,
   types: {
     id: 'number',
-    publish: v => (v === 'ok'.toLowerCase()),
+    publish: v => (v.toLowerCase() === 'ok'),
     name: v => v.trim(),
     address: v => v.trim(),
     latitude: (v = 0) => parseFloat(v, 10) || 0,
