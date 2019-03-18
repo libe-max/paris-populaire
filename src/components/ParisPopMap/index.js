@@ -46,7 +46,6 @@ export default class ParisPopMap extends Component {
     this.resetCenterAndZoom = this.resetCenterAndZoom.bind(this)
     this.getClientPosition = this.getClientPosition.bind(this)
     this.getClientPosition()
-    window.setInterval(this.getClientPosition, 6000)
   }
 
   /* * * * * * * * * * * * * * * *
@@ -56,15 +55,6 @@ export default class ParisPopMap extends Component {
    * * * * * * * * * * * * * * * */
   componentDidMount () {
     this.checkWebGl()
-  }
-
-  /* * * * * * * * * * * * * * * *
-   *
-   * WILL UNMOUNT
-   *
-   * * * * * * * * * * * * * * * */
-  componentWillUnmount () {
-    window.clearInterval(this.getClientPosition)
   }
 
   /* * * * * * * * * * * * * * * *
