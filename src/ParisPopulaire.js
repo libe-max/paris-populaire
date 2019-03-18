@@ -47,6 +47,7 @@ export default class ParisPopulaire extends Component {
 
     // [WIP] Pre-load data
     this.fetchData().catch(err => {
+      console.error(err)
       this.setState({
         loading: false,
         error: err
@@ -87,6 +88,7 @@ export default class ParisPopulaire extends Component {
       // })
       this.setState(newState, this.positionMap)
     }).catch(e => {
+      console.error(e)
       this.setState({
         loading: false,
         error: e
