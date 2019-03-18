@@ -160,7 +160,7 @@ export default class ParisPopCard extends Component {
         </button>
       </div>
       <div className={`${c}__card-illustration`}>{photo ? <img src={photo} alt={photoCredits} /> : ''}</div>
-      <div className={`${c}__card-illustration-credits`}>{photoCredits ? <Annotation>{photoCredits}</Annotation> : ''}</div>
+      <div className={`${c}__card-illustration-credits`}>{photoCredits ? <Annotation>{h2r.parse(photoCredits)}</Annotation> : ''}</div>
       <div className={`${c}__card-slug`}><Slug big>{address}</Slug></div>
       <div className={`${c}__card-title`}><SectionTitle level={2}>{h2r.parse(name)}</SectionTitle></div>
       <div className={`${c}__card-content`}><Paragraph>{h2r.parse(displayText.innerHTML)}</Paragraph></div>
@@ -171,7 +171,7 @@ export default class ParisPopCard extends Component {
           <div className={`${c}__prev-card`} onClick={activatePrevCard}>
             <div className={`${c}__card-prev-next-buttons-text`}>
               <Slug>{prevPlace.address}</Slug><br />
-              <Paragraph>{prevPlace.name}</Paragraph><br />
+              <Paragraph>{h2r.parse(prevPlace.name)}</Paragraph><br />
             </div>
             <div className={`${c}__card-prev-next-buttons-button`}>
               <Paragraph><a>Lire</a></Paragraph>
@@ -180,7 +180,7 @@ export default class ParisPopCard extends Component {
           <div className={`${c}__next-card`} onClick={activateNextCard}>
             <div className={`${c}__card-prev-next-buttons-text`}>
               <Slug>{nextPlace.address}</Slug><br />
-              <Paragraph>{nextPlace.name}</Paragraph><br />
+              <Paragraph>{h2r.parse(nextPlace.name)}</Paragraph><br />
             </div>
             <div className={`${c}__card-prev-next-buttons-button`}>
               <Paragraph><a>Lire</a></Paragraph>
