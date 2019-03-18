@@ -107,10 +107,9 @@ export default class ParisPopulaire extends Component {
       prod_spreadsheet: prodSpreadsheet
     } = this.props
     const { pathname } = window.location
-    console.log(pathname.match(/\/apps\/2019\/02\/paris-populaire\/?/) ? 'prod' : 'dev')
-    const spreadsheetToFetch = pathname.match(/\/apps\/2019\/02\/paris-populaire\/?/)
-      ? prodSpreadsheet
-      : devSpreadsheet
+    const isProd = pathname.match(/\/apps\/2019\/02\/paris-populaire\/?/)
+    const spreadsheetToFetch = isProd ? prodSpreadsheet : devSpreadsheet
+    console.log(isProd ? 'prod' : 'dev')
     const res = await window.fetch(spreadsheetToFetch)
     const status = { res }
     const err = `Server responded with a ${status} error status.`
