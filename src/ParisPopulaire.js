@@ -15,6 +15,8 @@ import ParisPopIntro from './components/ParisPopIntro'
 
 import PageTitle from 'libe-components/lib/text-levels/PageTitle'
 
+import './custom.css'
+
 export default class ParisPopulaire extends Component {
   /* * * * * * * * * * * * * * * *
    *
