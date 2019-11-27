@@ -21,8 +21,7 @@ export default class ParisPopIntro extends Component {
     return <div className={`${c}__intro`}>
       <div className={`${c}__intro-illustration`}>
         <PageTitle small>
-          <span>Plongée dans le Paris</span>
-          <span>Populaire</span>
+          <span>On mange où ?</span>
         </PageTitle>
         <Paragraph big>1830 – 1980</Paragraph>
         <button className={`${c}__intro-first-go-to-map`}

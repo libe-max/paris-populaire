@@ -215,11 +215,6 @@ export default class ParisPopMap extends Component {
       } = place
       const startYear = place.lifespan.start_date.year()
       const endYear = place.lifespan.end_date.year()
-      const displayLifespan = rawDisplayLifespan
-        ? `(${h2r.parse(rawDisplayLifespan)})`
-        : startYear === endYear
-          ? `(${startYear})`
-          : h2r.parse(`(${startYear}&nbsp;-&nbsp;${endYear})`)
       return <LfMarker key={id}
         radius={8}
         center={[lat, lon]}
@@ -231,7 +226,7 @@ export default class ParisPopMap extends Component {
           ${c}__lf-map-marker_${exists ? 'exists' : 'not-exists'}
           ${c}__lf-map-marker_${activePlaceId === id ? 'active' : 'inactive'}`}>
         <LfPopup>
-          <Annotation>{h2r.parse(place.name)} {displayLifespan}</Annotation>
+          <Annotation>{h2r.parse(place.name)}</Annotation>
         </LfPopup>
       </LfMarker>
     })

@@ -5,3 +5,130 @@
 .parispop__card-actions {
   position: sticky;
 }
+
+.parispop__app-logo {
+  background-color: #2FAC66;
+}
+
+.parispop__app-logo
+  .lblb-page-title {
+    text-transform: unset;
+}
+
+.parispop__app-logo
+  .lblb-page-title h1 span {
+    color: #FAF9E6;
+}
+
+.parispop__app-logo
+  .lblb-page-title
+    span:nth-child(1) {
+      font-size: 2.5rem;
+      line-height: 2.5rem;
+}
+
+@media screen and (max-width: 63rem) {
+  .parispop__app-logo
+    .lblb-page-title
+      span:nth-child(1) {
+        font-size: 2rem;
+        line-height: 2rem;
+  }
+}
+
+@media screen and (max-width: 40rem) {
+  .parispop__app-logo
+    .lblb-page-title
+      span:nth-child(1) {
+        font-weight: inherit;
+        letter-spacing: inherit;
+        font-size: 1.5rem;
+        line-height: 1.5rem;
+  }
+}
+
+.parispop__filters-panel {
+  background: #FFFFFF;
+  border-radius: .25rem;
+  border: .125rem solid #DDDDDD;
+}
+
+.parispop__filters-block-title .lblb-paragraph-title {
+  color: #2FAC66;
+}
+
+.parispop__filters-block-active-filter .lblb-paragraph {
+  color: #2FAC66;
+}
+
+.parispop__filters-block.parispop__filters-block_active {
+  min-width: 18rem;
+}
+
+.parispop__filter .lblb-annotation {
+  color: #777777;
+  margin-bottom: 0;
+}
+
+.parispop__filters-block-close
+  .lblb-svg #fill-1 {
+    fill: #2FAC66;
+}
+
+.parispop__filters-block-active-filter
+  button .lblb-svg #fill-1 {
+    fill: #2FAC66;
+}
+
+@media screen and (max-width: 40rem) {
+  .parispop__filters-panel {
+    background: #FFFFFF;
+    border-radius: 0;
+    border: 0;
+  }
+}
+
+.parispop__lf-map-marker_exists {
+  fill: #2FAC66;
+  stroke: #2FAC66;
+}
+
+.parispop__card-prev-next .parispop__prev-card,
+.parispop__card-prev-next .parispop__next-card {
+  border-top: .25rem solid #2FAC66;
+}
+
+.parispop__card-slug .lblb-slug,
+.parispop__prev-card .lblb-slug,
+.parispop__next-card .lblb-slug {
+  background: #2FAC66;
+  color: #FAF9E6;
+}
+
+.parispop__card-prev-next .lblb-paragraph-title {
+  margin-bottom: 1rem;
+}
+
+.parispop__card-meta {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
+}
+
+.parispop__card-meta .lblb-annotation {
+  color: #777777;
+}
+
+@media screen and (max-width: 63rem) {
+  .parispop__card-meta {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+@media screen and (max-width: 40rem) {
+  .parispop__card-meta {
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+}

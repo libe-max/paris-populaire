@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Svg from 'libe-components/lib/primitives/Svg'
+import ParagraphTitle from 'libe-components/lib/text-levels/ParagraphTitle'
 import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 import Annotation from 'libe-components/lib/text-levels/Annotation'
 
@@ -39,7 +40,7 @@ export default class ParisPopFiltersBlock extends Component {
       <div className={`${c}__filters-block-head`}
         onClick={() => toggleFiltersPanel(!isActive)}>
         <div className={`${c}__filters-block-title`}>
-          <Paragraph huge>Filtrer</Paragraph>
+          <ParagraphTitle>Filtrer</ParagraphTitle>
           <button className={`${c}__filters-block-close ${c}__filters-block-close_desktop`}>
             <Svg src='https://www.liberation.fr/apps/static/assets/up-arrow-head-icon_24.svg' />
           </button>

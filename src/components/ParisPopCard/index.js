@@ -5,7 +5,7 @@ import Svg from 'libe-components/lib/primitives/Svg'
 import ShareArticle from 'libe-components/lib/blocks/ShareArticle'
 import Slug from 'libe-components/lib/text-levels/Slug'
 import SectionTitle from 'libe-components/lib/text-levels/SectionTitle'
-import BlockTitle from 'libe-components/lib/text-levels/BlockTitle'
+import ParagraphTitle from 'libe-components/lib/text-levels/ParagraphTitle'
 import Paragraph from 'libe-components/lib/text-levels/Paragraph'
 import Annotation from 'libe-components/lib/text-levels/Annotation'
 
@@ -146,9 +146,6 @@ export default class ParisPopCard extends Component {
       _display_text: displayText,
       _display_sources: displaySources
     } = place
-    const { origin, pathname } = window.location
-    const tweetUrl = origin + pathname + `?` + window.btoa(`a=${id}`)
-    const tweetText = `${address} ou ailleurs… Parcourez les lieux connus et méconnus du Paris populaire de 1830 à 1980 avec la carte interactive de @Libe, @Libe_Labo.`
 
     const activatePrevCard = prevPlace ? () => activatePlace(prevPlace.id, { smooth: true }) : null
     const activateNextCard = nextPlace ? () => activatePlace(nextPlace.id, { smooth: true }) : null
@@ -161,12 +158,13 @@ export default class ParisPopCard extends Component {
       </div>
       <div className={`${c}__card-illustration`}>{photo ? <img src={photo} alt={photoCredits} /> : ''}</div>
       <div className={`${c}__card-illustration-credits`}>{photoCredits ? <Annotation>{h2r.parse(photoCredits)}</Annotation> : ''}</div>
-      <div className={`${c}__card-slug`}><Slug big>{address}</Slug></div>
-      <div className={`${c}__card-title`}><SectionTitle level={2}>{h2r.parse(name)}</SectionTitle></div>
+      <div className={`${c}__card-slug`}><Slug>{address}</Slug></div>
+      <div className={`${c}__card-title`}><SectionTitle huge level={2}>{h2r.parse(name)}</SectionTitle></div>
+      <div className={`${c}__card-meta`}><Annotation>Catégories: {[...place._chapters, ...place._place_types].join(', ')}</Annotation></div>
       <div className={`${c}__card-content`}><Paragraph>{h2r.parse(displayText.innerHTML)}</Paragraph></div>
-      <div className={`${c}__card-signature`}><Paragraph>{h2r.parse(author)}</Paragraph></div>
+      <div className={`${c}__card-signature`}><Paragraph>– {h2r.parse(author)}</Paragraph></div>
       <div className={`${c}__card-prev-next`}>
-        <BlockTitle>Pour continuer la lecture</BlockTitle>
+        <ParagraphTitle>Pour continuer la lecture</ParagraphTitle>
         <div className={`${c}__card-prev-next-buttons`}>
           <div className={`${c}__prev-card`} onClick={activatePrevCard}>
             <div className={`${c}__card-prev-next-buttons-text`}>
@@ -187,32 +185,6 @@ export default class ParisPopCard extends Component {
             </div>
           </div>
         </div>
-      </div>
-      <div className={`${c}__card-share`}>
-        <BlockTitle level={4}>Partager</BlockTitle>
-        <ShareArticle short iconsOnly url={tweetUrl} tweetText={tweetText} />
-        <div className={`${c}__card-share-link`} onClick={this.copyLink}><Paragraph small><a>Copier le lien</a></Paragraph></div>
-        <input className={`${c}__card-share-hidden-link`} type='text' value={tweetUrl} readOnly />
-      </div>
-      {longRead
-        ? <div className={`${c}__card-read-also`}>
-          <BlockTitle level={4}>À lire aussi</BlockTitle>
-          <Paragraph><a href={longRead}>{h2r.parse(longReadIntro) || longRead}</a></Paragraph>
-        </div>
-        : ''
-      }
-      <div className={`${c}__card-sources`}>
-        <BlockTitle level={4}>Sources</BlockTitle>
-        {displaySources.map((s, i) => {
-          const activeClass = (i === activeSourceId) ? ` ${c}__card-source_active` : ''
-          return <div key={i}
-            id={`${c}__card-source-${i}`}
-            className={`${c}__card-source${activeClass}`}>
-            <Annotation literary>
-              {`(${i + 1})`} {h2r.parse(s)}
-            </Annotation>
-          </div>
-        })}
       </div>
     </div>
   }

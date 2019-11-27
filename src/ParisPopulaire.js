@@ -28,7 +28,7 @@ export default class ParisPopulaire extends Component {
     this.c = 'parispop' // Prefix for all css classes (BEM method)
     /* eslint-disable no-multi-spaces */
     this.state = {
-      page: 'intro',         // 'intro' || 'map' || 'filters' || 'cards'
+      page: 'map',         // 'intro' || 'map' || 'filters' || 'cards'
       suggest_intro: false,  // <Boolean>
       loading: true,         // <Boolean>
       error: null,           // null || <Error>
@@ -71,23 +71,6 @@ export default class ParisPopulaire extends Component {
         loading: false,
         error: null
       }
-      // [WIP] If something goes wrong
-      // ret.places.forEach(place => {
-      //   try {
-      //     const div = document.createElement('div')
-      //     div.innerHTML += place.author
-      //     div.innerHTML += place.name
-      //     div.innerHTML += place.photo_credits
-      //     div.innerHTML += place.sources
-      //     div.innerHTML += place.text
-      //     place._display_sources.forEach(source => {
-      //       div.innerHTML += source
-      //     })
-      //   } catch (e) {
-      //     console.log(place)
-      //     console.log(e)
-      //   }
-      // })
       this.setState(newState, this.positionMap)
     }).catch(e => {
       console.error(e)
@@ -109,7 +92,7 @@ export default class ParisPopulaire extends Component {
       prod_spreadsheet: prodSpreadsheet
     } = this.props
     const { pathname } = window.location
-    const isProd = pathname.match(/\/apps\/2019\/02\/paris-populaire\/?/)
+    const isProd = pathname.match(/\/apps\/maxime\/restos\/?/)
     const spreadsheetToFetch = isProd ? prodSpreadsheet : devSpreadsheet
     console.log(isProd ? 'prod' : 'dev')
     const res = await window.fetch(spreadsheetToFetch)
@@ -199,7 +182,7 @@ export default class ParisPopulaire extends Component {
     if (!a && page !== 'intro') return
     if (a && this.parisPopMap) this.parisPopMap.shiftCenterAndZoom()
     if (!a && this.parisPopMap) this.parisPopMap.resetCenterAndZoom()
-    return this.setState({ page: a ? 'intro' : 'map' })
+    return this.setState({ page: 'map' })
   }
 
   /* * * * * * * * * * * * * * * *
@@ -216,7 +199,7 @@ export default class ParisPopulaire extends Component {
     if (a && page === 'intro') return
     if (a && suggestIntro) return
     else if (!a && !suggestIntro) return
-    return this.setState({ suggest_intro: a })
+    return this.setState({ suggest_intro: false })
   }
 
   /* * * * * * * * * * * * * * * *
@@ -355,24 +338,14 @@ export default class ParisPopulaire extends Component {
     const activePlace = data
       ? [...data.places].filter(p => p.id === activePlaceId)[0]
       : null
-    const chronoSortedPlaces = data
-      ? [...data.places].sort((a, b) => a.lifespan.start_date - b.lifespan.end_date)
-      : null
     const { prevPlace, nextPlace } = (() => {
       if (!activePlace) return {}
-      const activePlaceChronoPos = chronoSortedPlaces
-        .findIndex((p, i) => p.id === activePlace.id)
-      const prevPlace = activePlaceChronoPos > 0 &&
-        activePlaceChronoPos < chronoSortedPlaces.length
-        ? chronoSortedPlaces[activePlaceChronoPos - 1]
-        : chronoSortedPlaces[chronoSortedPlaces.length - 1]
-      const nextPlace = activePlaceChronoPos > -1 &&
-        activePlaceChronoPos < chronoSortedPlaces.length - 1
-        ? chronoSortedPlaces[activePlaceChronoPos + 1]
-        : chronoSortedPlaces[0]
-      return { prevPlace, nextPlace }
+      const activePlacePos = data.places.findIndex(place => place.id === activePlaceId)
+      const prevPlacePos = activePlacePos !== 0 ? activePlacePos - 1 : data.places.length - 1
+      const nextPlacePos = activePlacePos !== data.places.length - 1 ? activePlacePos + 1 : 0
+      return { prevPlace: data.places[prevPlacePos], nextPlace: data.places[nextPlacePos] }
     })()
-
+    
     /* Assign state related classes */
     const classes = [c]
     if (state.loading) classes.push(`${c}_loading`)
@@ -397,9 +370,6 @@ export default class ParisPopulaire extends Component {
           activePlaceId={activePlaceId}
           places={data ? data.places : []} />
       </div>
-      <div className={`${c}__caption-panel`}>
-        <ParisPopCaption appRootClass={c} />
-      </div>
       <div className={`${c}__filters-panel`}>
         <ParisPopFiltersBlock activeFilter={state.active_filter}
           isActive={state.page === 'filters'}
@@ -409,11 +379,11 @@ export default class ParisPopulaire extends Component {
           appRootClass={c}
           filters={[
             /* { type: 'notions', label: 'Notions', data: data ? data.notions || [] : [] }, */
-            { type: 'chapters', label: 'Chapitres', data: data ? data.chapters || [] : [] },
+            { type: 'chapters', label: 'Budget', data: data ? data.chapters || [] : [] },
             /* { type: 'areas', label: 'Zones géographiques', data: data ? data.areas || [] : [] }, */
-            { type: 'periods', label: 'Périodes', data: data ? data.periods || [] : [] },
+            // { type: 'periods', label: 'Périodes', data: data ? data.periods || [] : [] },
             /* { type: 'persons', label: 'Personages', data: data ? data.persons || [] : [] }, */
-            { type: 'place_types', label: 'Types de lieux', data: data ? data.place_types || [] : [] }
+            { type: 'place_types', label: 'Type de restaurant', data: data ? data.place_types || [] : [] }
           ]} />
       </div>
       <div className={`${c}__intro-overlay`} onClick={() => this.toggleIntro(false)} />
@@ -426,8 +396,7 @@ export default class ParisPopulaire extends Component {
         onMouseOut={() => this.suggestIntro(false)}
         onClick={() => this.toggleIntro(true)}>
         <PageTitle small>
-          <span>Plongée dans le Paris</span>
-          <span>Populaire</span>
+          <span>On a faim.</span>
         </PageTitle>
       </div>
       <div className={`${c}__intro-panel`}
