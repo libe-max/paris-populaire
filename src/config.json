@@ -1,5 +1,5 @@
 {
-  "spreadsheet": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTHEOiNo2J41lLY1TllNDBidSkFzr9DPdpWlavAwJ2W6Lwm5TVVhYUqi0Abd27R4suNZ5W3UflPjgMZ/pub?gid=884317917&single=true&output=tsv",
-  "dev_spreadsheet": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTHEOiNo2J41lLY1TllNDBidSkFzr9DPdpWlavAwJ2W6Lwm5TVVhYUqi0Abd27R4suNZ5W3UflPjgMZ/pub?gid=884317917&single=true&output=tsv",
-  "prod_spreadsheet": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTp7mu3Dku4OFjpYYorgZe7pQhg8xAHk-aQJsHp143uD3baGWuEkHi6hYLthT2jDAsZhUiK8-ExCdL6/pub?gid=884317917&single=true&output=tsv"
+  "spreadsheet": "./data.dev.tsv",
+  "dev_spreadsheet": "./data.dev.tsv",
+  "prod_spreadsheet": "./data.prod.tsv"
 }
